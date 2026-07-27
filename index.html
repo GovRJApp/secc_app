@@ -320,30 +320,30 @@
       </form>
     </div>
 
-   <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO -->
-<div class="cartao oculto" id="cartaoCriarNucleo">
-  <h2>Criar núcleo</h2>
-  <p class="descricao">Crie os núcleos vinculados a uma Secretaria ou Subsecretaria.</p>
-  <form id="formularioCriarNucleo" class="linha-formulario">
-    <div>
-      <label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label>
-      <select id="vinculoDoNucleo" required>
-        <option value="">Selecione o local...</option>
-      </select>
+  <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO -->
+    <div class="cartao oculto" id="cartaoCriarNucleo">
+      <h2>Criar núcleo</h2>
+      <p class="descricao">Crie os núcleos vinculados a uma Secretaria ou Subsecretaria.</p>
+      <form id="formularioCriarNucleo" class="linha-formulario">
+        <div>
+          <label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label>
+          <select id="vinculoDoNucleo" required>
+            <option value="">Selecione o local...</option>
+          </select>
+        </div>
+        <div>
+          <label for="nomeNucleo">Nome do núcleo</label>
+          <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
+        </div>
+        <div>
+          <label for="agendaNucleo">URL da Agenda de Produção (Google Agenda)</label>
+          <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda" required>
+        </div>
+        <div style="flex: 0 0 auto;">
+          <button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button>
+        </div>
+      </form>
     </div>
-    <div>
-      <label for="nomeNucleo">Nome do núcleo</label>
-      <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
-    </div>
-    <div>
-      <label for="agendaNucleo">URL da Agenda de Produção (Google Agenda)</label>
-      <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda" required>
-    </div>
-    <div style="flex: 0 0 auto;">
-      <button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button>
-    </div>
-  </form>
-</div>
 
 <!-- ESTE BLOCO ABRE A CRIAÇÃO DE USUÁRIO -->
 <div class="cartao oculto" id="cartaoCriarUsuario">
