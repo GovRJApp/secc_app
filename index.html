@@ -520,17 +520,29 @@ document.getElementById('cartaoCriarUsuario').classList.toggle('oculto', usuario
     await carregarEstrutura();
   }
 
-  async function carregarEstrutura() {
-  const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
-  const container = document.getElementById('listaEstrutura');
+ // Variable global para armazenar a estrutura carregada
+let dadosEstruturaGlobal = null;
 
-  if (!resposta.sucesso) {
-    container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-    return;
+// Função auxiliar para atualizar dropdowns de usuário se existirem na tela
+function atualizarDropdownsDependenteUsuario() {
+  if (!dadosEstruturaGlobal) return;
+  const secId = document.getElementById('secretariaDoUsuario')?.value;
+
+  const selSub = document.getElementById('subsecretariaDoUsuario');
+  const selNuc = document.getElementById('nucleoDoUsuario');
+
+  if (selSub) {
+    const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
+    selSub.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
+      subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
   }
 
-  dadosEstruturaGlobal = resposta;
-
+  if (selNuc) {
+    const nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
+    selNuc.innerHTML = '<option value="">Nenhum / Todos</option>' + 
+      nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
+  }
+}
   // Preenche o seletor simples de secretaria (para criar Subsecretaria)
   const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
   if (seletorSecretariaSub) {
@@ -556,7 +568,28 @@ document.getElementById('cartaoCriarUsuario').classList.toggle('oculto', usuario
     
     seletorVinculoNucleo.innerHTML = htmlOptions;
   }
+       
+// Função para atualizar subsecretarias e núcleos dinamicamente ao selecionar a secretaria do usuário
+function atualizarDropdownsDependenteUsuario() {
+  if (typeof dadosEstruturaGlobal === 'undefined' || !dadosEstruturaGlobal) return;
+  const secId = document.getElementById('secretariaDoUsuario')?.value;
 
+  const selSub = document.getElementById('subsecretariaDoUsuario');
+  const selNuc = document.getElementById('nucleoDoUsuario');
+
+  if (selSub) {
+    const subsFiltradas = dadosEstruturaGlobal.subsecretarias.filter(s => s.SecretariaID === secId);
+    selSub.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
+      subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
+  }
+
+  if (selNuc) {
+    const nucsFiltrados = dadosEstruturaGlobal.nucleos.filter(n => n.SecretariaID === secId);
+    selNuc.innerHTML = '<option value="">Nenhum / Todos</option>' + 
+      nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
+  }
+}
+       
   // Preenche o dropdown do formulário de Usuário (se existir)
   const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
   if (seletorSecretariaUsu) {
