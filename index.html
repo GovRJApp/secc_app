@@ -521,42 +521,80 @@ document.getElementById('cartaoCriarUsuario').classList.toggle('oculto', usuario
   }
 
   async function carregarEstrutura() {
-    const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
-    const container = document.getElementById('listaEstrutura');
+  const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
+  const container = document.getElementById('listaEstrutura');
 
-    if (!resposta.sucesso) {
-      container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-      return;
-    }
-
-    // Preenche também o seletor de secretarias do formulário de subsecretaria.
-    const seletorSecretaria = document.getElementById('secretariaDaSubsecretaria');
-    if (seletorSecretaria) {
-      seletorSecretaria.innerHTML = resposta.secretarias
-        .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-    }
-
-    // Desenha a árvore: secretaria > subsecretaria > núcleo
-    let html = '<ul>';
-    resposta.secretarias.forEach(secretaria => {
-      html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
-
-      resposta.subsecretarias
-        .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
-        .forEach(sub => {
-          html += `<li class="item-subsecretaria">${sub.Nome} (${sub.Sigla})</li>`;
-        });
-
-      resposta.nucleos
-        .filter(nucleo => nucleo.SecretariaID === secretaria.SecretariaID)
-        .forEach(nucleo => {
-          html += `<li class="item-nucleo">Núcleo: ${nucleo.Nome}</li>`;
-        });
-    });
-    html += '</ul>';
-
-    container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
+  if (!resposta.sucesso) {
+    container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
+    return;
   }
+
+  dadosEstruturaGlobal = resposta;
+
+  // Preenche o seletor simples de secretaria (para criar Subsecretaria)
+  const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
+  if (seletorSecretariaSub) {
+    seletorSecretariaSub.innerHTML = resposta.secretarias
+      .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+  }
+
+  // Preenche o seletor de Vínculo do Núcleo (Secretaria OU Subsecretaria)
+  const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
+  if (seletorVinculoNucleo) {
+    let htmlOptions = '<option value="">Selecione o local...</option>';
+    
+    resposta.secretarias.forEach(sec => {
+      // Opção da Secretaria Pai
+      htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
+      
+      // Subsecretarias pertencentes a esta Secretaria
+      const subs = resposta.subsecretarias.filter(sub => sub.SecretariaID === sec.SecretariaID);
+      subs.forEach(sub => {
+        htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
+      });
+    });
+    
+    seletorVinculoNucleo.innerHTML = htmlOptions;
+  }
+
+  // Preenche o dropdown do formulário de Usuário (se existir)
+  const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
+  if (seletorSecretariaUsu) {
+    seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
+      resposta.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+  }
+
+  atualizarDropdownsDependenteUsuario();
+
+  // Desenha a árvore na tela: Secretaria > Subsecretaria > Núcleo
+  let html = '<ul>';
+  resposta.secretarias.forEach(secretaria => {
+    html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
+
+    // Núcleos diretos da Secretaria (sem subsecretaria)
+    resposta.nucleos
+      .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
+      .forEach(nucleo => {
+        html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
+      });
+
+    // Subsecretarias e seus respectivos núcleos
+    resposta.subsecretarias
+      .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
+      .forEach(sub => {
+        html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
+        
+        resposta.nucleos
+          .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
+          .forEach(nucleo => {
+            html += `<li class="item-nucleo" style="margin-left: 60px;">📌 Núcleo: ${nucleo.Nome}</li>`;
+          });
+      });
+  });
+  html += '</ul>';
+
+  container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
+}
 
 
 /* ---------------------------------------------------------------
@@ -585,21 +623,42 @@ document.getElementById('cartaoCriarUsuario').classList.toggle('oculto', usuario
     if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
   });
 
-  // --- ENVIO DE NÚCLEO (Corrigido para pegar a secretaria selecionada) ---
+  // --- ENVIO DE NÚCLEO (Extrai se é vinculado a Secretaria ou Subsecretaria) ---
   document.getElementById('formularioCriarNucleo').addEventListener('submit', async (evento) => {
     evento.preventDefault();
     const usuario = pegarUsuarioSalvo();
-    const secId = document.getElementById('secretariaDoNucleo').value || usuario.secretariaId;
+    const vinculoValor = document.getElementById('vinculoDoNucleo').value;
+
+    if (!vinculoValor) {
+      alert('Por favor, selecione a Secretaria ou Subsecretaria de vínculo.');
+      return;
+    }
+
+    // O valor vem no formato "SEC:idSecretaria" ou "SUB:idSecretaria:idSubsecretaria"
+    const partes = vinculoValor.split(':');
+    let secId = '';
+    let subSecId = '';
+
+    if (partes[0] === 'SEC') {
+      secId = partes[1];
+    } else if (partes[0] === 'SUB') {
+      secId = partes[1];
+      subSecId = partes[2];
+    }
     
     const resposta = await chamarBackend('criarNucleo', {
       token: pegarTokenSalvo(),
-      secretariaId: secId,
-      subsecretariaId: usuario.subsecretariaId || '',
+      secretariaId: secId || usuario.secretariaId || '',
+      subsecretariaId: subSecId || usuario.subsecretariaId || '',
       nome: document.getElementById('nomeNucleo').value,
       agendaGoogleUrl: document.getElementById('agendaNucleo').value
     });
-    alert(resposta.sucesso ? 'Núcleo criado!' : resposta.mensagem);
-    if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
+
+    alert(resposta.sucesso ? 'Núcleo criado com sucesso!' : resposta.mensagem);
+    if (resposta.sucesso) { 
+      evento.target.reset(); 
+      carregarEstrutura(); 
+    }
   });
 
   // --- ENVIO DE USUÁRIO (Novo: aceita secretaria/subsecretaria/núcleo do formulário) ---
