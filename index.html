@@ -348,7 +348,7 @@
 <!-- ESTE BLOCO ABRE A CRIAÇÃO DE USUÁRIO -->
 <div class="cartao oculto" id="cartaoCriarUsuario">
   <h2>Criar usuário</h2>
-  <p class="descricao">Cadastre usuários em nível inferior ao seu na hierarquia.</p>
+  <p class="descricao">Cadastre usuários vinculando-os estritamente à sua Secretaria, Subsecretaria ou Núcleo.</p>
   <form id="formularioCriarUsuario" class="linha-formulario">
     <div>
       <label for="nomeUsuarioNovo">Nome de Exibição</label>
@@ -366,6 +366,24 @@
         <option value="COORDENADOR">COORDENADOR</option>
         <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
         <option value="PROFISSIONAL">PROFISSIONAL</option>
+      </select>
+    </div>
+    <div>
+      <label for="secretariaDoUsuario">Secretaria</label>
+      <select id="secretariaDoUsuario" required>
+        <option value="">Selecione...</option>
+      </select>
+    </div>
+    <div>
+      <label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label>
+      <select id="subsecretariaDoUsuario">
+        <option value="">Nenhuma / Todas</option>
+      </select>
+    </div>
+    <div>
+      <label for="nucleoDoUsuario">Núcleo (opcional)</label>
+      <select id="nucleoDoUsuario">
+        <option value="">Nenhum / Todos</option>
       </select>
     </div>
     <div style="flex: 0 0 auto;">
