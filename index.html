@@ -533,25 +533,47 @@
     await carregarEstrutura();
   }
 
-  function atualizarDropdownsDependenteUsuario() {
-    if (!dadosEstruturaGlobal) return;
-    const secId = document.getElementById('secretariaDoUsuario')?.value;
+  // Função que atualiza Subsecretarias e Núcleos em cascata estrita
+function atualizarDropdownsDependenteUsuario() {
+  if (!dadosEstruturaGlobal) return;
+  const secId = document.getElementById('secretariaDoUsuario')?.value;
+  const subSel = document.getElementById('subsecretariaDoUsuario');
+  const nucSel = document.getElementById('nucleoDoUsuario');
 
-    const selSub = document.getElementById('subsecretariaDoUsuario');
-    const selNuc = document.getElementById('nucleoDoUsuario');
-
-    if (selSub) {
-      const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
-      selSub.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
-        subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
-    }
-
-    if (selNuc) {
-      const nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
-      selNuc.innerHTML = '<option value="">Nenhum / Todos</option>' + 
-        nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
-    }
+  // 1. Filtra Subsecretarias pertencentes à Secretaria selecionada
+  if (subSel) {
+    const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
+    subSel.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
+      subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
   }
+
+  // 2. Atualiza a lista de Núcleos em função da Secretaria e Subsecretaria
+  filtrarNucleosDoUsuario();
+}
+
+// Filtra núcleos estritamente vinculados à Secretaria ou Subsecretaria escolhida
+function filtrarNucleosDoUsuario() {
+  if (!dadosEstruturaGlobal) return;
+  const secId = document.getElementById('secretariaDoUsuario')?.value;
+  const subId = document.getElementById('subsecretariaDoUsuario')?.value;
+  const nucSel = document.getElementById('nucleoDoUsuario');
+
+  if (!nucSel) return;
+
+  let nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
+
+  // Se uma subsecretaria específica foi escolhida, filtra só os núcleos dela
+  if (subId) {
+    nucsFiltrados = nucsFiltrados.filter(n => n.SubsecretariaID === subId);
+  }
+
+  nucSel.innerHTML = '<option value="">Nenhum / Todos</option>' + 
+    nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
+}
+
+// Ouvintes para disparar a cascata assim que o usuário selecionar os dropdowns
+document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
+document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
 
   async function carregarEstrutura() {
     const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
