@@ -320,25 +320,27 @@
       </form>
     </div>
 
-    <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO -->
+   <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO -->
 <div class="cartao oculto" id="cartaoCriarNucleo">
   <h2>Criar núcleo</h2>
-  <p class="descricao">Crie os núcleos da sua secretaria ou subsecretaria.</p>
+  <p class="descricao">Crie os núcleos vinculados a uma Secretaria ou Subsecretaria.</p>
   <form id="formularioCriarNucleo" class="linha-formulario">
     <div>
-      <label for="secretariaDoNucleo">Secretaria</label>
-      <select id="secretariaDoNucleo" required></select>
+      <label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label>
+      <select id="vinculoDoNucleo" required>
+        <option value="">Selecione o local...</option>
+      </select>
     </div>
     <div>
       <label for="nomeNucleo">Nome do núcleo</label>
       <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
     </div>
     <div>
-      <label for="agendaNucleo">Endereço da Google Agenda</label>
-      <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda">
+      <label for="agendaNucleo">URL da Agenda de Produção (Google Agenda)</label>
+      <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda" required>
     </div>
     <div style="flex: 0 0 auto;">
-      <button type="submit" class="botao-principal" style="margin-top:0;">Criar</button>
+      <button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button>
     </div>
   </form>
 </div>
@@ -552,7 +554,7 @@
     }
 
     // Seletor hierárquico na criação de Núcleo
-    const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
+   const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
     if (seletorVinculoNucleo) {
       let htmlOptions = '<option value="">Selecione o local...</option>';
       resposta.secretarias.forEach(sec => {
