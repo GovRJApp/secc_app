@@ -345,49 +345,217 @@
       </form>
     </div>
 
-<!-- ESTE BLOCO ABRE A CRIAÇÃO DE USUÁRIO -->
+<!-- ESTE BLOCO ABRE A CRIAÇÃO DE USUÁRIO COM TODOS OS CAMPOS DO BANCO -->
 <div class="cartao oculto" id="cartaoCriarUsuario">
-  <h2>Criar usuário</h2>
-  <p class="descricao">Cadastre usuários vinculando-os estritamente à sua Secretaria, Subsecretaria ou Núcleo.</p>
-  <form id="formularioCriarUsuario" class="linha-formulario">
-    <div>
-      <label for="nomeUsuarioNovo">Nome de Exibição</label>
-      <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
+  <h2>Criar usuário / Ficha cadastral</h2>
+  <p class="descricao">Cadastre usuários vinculando-os à hierarquia e preenchendo os dados do perfil.</p>
+  
+  <form id="formularioCriarUsuario">
+    <!-- SEÇÃO 1: DADOS DE ACESSO E HIERARQUIA -->
+    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:10px;">1. Acesso e Estrutura Organizacional</h3>
+    <div class="linha-formulario">
+      <div>
+        <label for="nomeUsuarioNovo">Nome de Exibição*</label>
+        <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
+      </div>
+      <div>
+        <label for="emailUsuarioNovo">E-mail</label>
+        <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
+      </div>
+      <div>
+        <label for="nivelUsuarioNovo">Nível de Acesso</label>
+        <select id="nivelUsuarioNovo" required>
+          <option value="SECRETARIO">SECRETARIO</option>
+          <option value="SUBSECRETARIO">SUBSECRETARIO</option>
+          <option value="COORDENADOR">COORDENADOR</option>
+          <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
+          <option value="PROFISSIONAL">PROFISSIONAL</option>
+        </select>
+      </div>
     </div>
-    <div>
-      <label for="emailUsuarioNovo">E-mail</label>
-      <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
+
+    <div class="linha-formulario" style="margin-top:10px;">
+      <div>
+        <label for="secretariaDoUsuario">Secretaria</label>
+        <select id="secretariaDoUsuario" required><option value="">Selecione...</option></select>
+      </div>
+      <div>
+        <label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label>
+        <select id="subsecretariaDoUsuario"><option value="">Nenhuma / Todas</option></select>
+      </div>
+      <div>
+        <label for="nucleoDoUsuario">Núcleo (opcional)</label>
+        <select id="nucleoDoUsuario"><option value="">Nenhum / Todos</option></select>
+      </div>
     </div>
-    <div>
-      <label for="nivelUsuarioNovo">Nível de Acesso</label>
-      <select id="nivelUsuarioNovo" required>
-        <option value="SECRETARIO">SECRETARIO</option>
-        <option value="SUBSECRETARIO">SUBSECRETARIO</option>
-        <option value="COORDENADOR">COORDENADOR</option>
-        <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
-        <option value="PROFISSIONAL">PROFISSIONAL</option>
-      </select>
+
+    <!-- SEÇÃO 2: DADOS PROFISSIONAIS E CONTRATUAIS -->
+    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">2. Dados Profissionais e Pessoais</h3>
+    <div class="linha-formulario">
+      <div>
+        <label for="nomeCompleto">Nome Completo</label>
+        <input type="text" id="nomeCompleto" placeholder="Nome civil completo">
+      </div>
+      <div>
+        <label for="cargo">Cargo</label>
+        <input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor">
+      </div>
+      <div>
+        <label for="empregador">Empregador</label>
+        <select id="empregador">
+          <option value="NOMEADO">NOMEADO</option>
+          <option value="FSB">FSB</option>
+          <option value="INPACTO">INPACTO</option>
+        </select>
+      </div>
+      <div>
+        <label for="dataAdmissao">Data de Admissão</label>
+        <input type="date" id="dataAdmissao">
+      </div>
     </div>
-    <div>
-      <label for="secretariaDoUsuario">Secretaria</label>
-      <select id="secretariaDoUsuario" required>
-        <option value="">Selecione...</option>
-      </select>
+
+    <div class="linha-formulario" style="margin-top:10px;">
+      <div>
+        <label for="horarioEntrada">Horário de Entrada*</label>
+        <input type="time" id="horarioEntrada">
+      </div>
+      <div>
+        <label for="horarioSaida">Horário de Saída*</label>
+        <input type="time" id="horarioSaida">
+      </div>
+      <div>
+        <label for="telefone">Telefone / WhatsApp*</label>
+        <input type="text" id="telefone" placeholder="(21) 99999-9999">
+      </div>
+      <div>
+        <label for="fotoUrl">Link da Foto de Perfil*</label>
+        <input type="text" id="fotoUrl" placeholder="URL da foto no Drive/Web">
+      </div>
     </div>
-    <div>
-      <label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label>
-      <select id="subsecretariaDoUsuario">
-        <option value="">Nenhuma / Todas</option>
-      </select>
+
+    <!-- SEÇÃO 3: DOCUMENTAÇÃO -->
+    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">3. Documentação</h3>
+    <div class="linha-formulario">
+      <div>
+        <label for="cpf">CPF</label>
+        <input type="text" id="cpf" placeholder="000.000.000-00">
+      </div>
+      <div>
+        <label for="rg">RG</label>
+        <input type="text" id="rg">
+      </div>
+      <div>
+        <label for="orgaoEmissor">Órgão Emissor / UF</label>
+        <input type="text" id="orgaoEmissor" placeholder="Ex: DETRAN/RJ">
+      </div>
+      <div>
+        <label for="dataExpedicao">Data Expedição RG</label>
+        <input type="date" id="dataExpedicao">
+      </div>
     </div>
-    <div>
-      <label for="nucleoDoUsuario">Núcleo (opcional)</label>
-      <select id="nucleoDoUsuario">
-        <option value="">Nenhum / Todos</option>
-      </select>
+
+    <div class="linha-formulario" style="margin-top:10px;">
+      <div>
+        <label for="idFuncional">ID Funcional</label>
+        <input type="text" id="idFuncional">
+      </div>
+      <div>
+        <label for="dataNascimento">Data de Nascimento</label>
+        <input type="date" id="dataNascimento">
+      </div>
+      <div>
+        <label for="nomeMae">Nome da Mãe</label>
+        <input type="text" id="nomeMae">
+      </div>
+      <div>
+        <label for="registroProfissional">Registro Profissional (DRT/MTE)</label>
+        <input type="text" id="registroProfissional">
+      </div>
     </div>
-    <div style="flex: 0 0 auto;">
-      <button type="submit" class="botao-principal" style="margin-top:0;">Criar Usuário</button>
+
+    <!-- SEÇÃO 4: ENDEREÇO -->
+    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">4. Endereço Residencial*</h3>
+    <div class="linha-formulario">
+      <div>
+        <label for="cep">CEP*</label>
+        <input type="text" id="cep" placeholder="00000-000">
+      </div>
+      <div style="flex: 2;">
+        <label for="enderecoCompleto">Endereço Completo*</label>
+        <input type="text" id="enderecoCompleto" placeholder="Rua, número, complemento">
+      </div>
+    </div>
+
+    <div class="linha-formulario" style="margin-top:10px;">
+      <div>
+        <label for="bairro">Bairro*</label>
+        <input type="text" id="bairro">
+      </div>
+      <div>
+        <label for="cidade">Cidade*</label>
+        <input type="text" id="cidade" value="Rio de Janeiro">
+      </div>
+      <div>
+        <label for="uf">UF*</label>
+        <input type="text" id="uf" value="RJ" maxlength="2">
+      </div>
+    </div>
+
+    <!-- SEÇÃO 5: CONTATO DE EMERGÊNCIA, SAÚDE E UNIFORME -->
+    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">5. Emergência, Saúde e Uniforme*</h3>
+    <div class="linha-formulario">
+      <div>
+        <label for="nomeContatoEmergencia">Contato de Emergência*</label>
+        <input type="text" id="nomeContatoEmergencia">
+      </div>
+      <div>
+        <label for="grauParentesco">Grau de Parentesco*</label>
+        <input type="text" id="grauParentesco" placeholder="Ex: Mãe, Cônjuge">
+      </div>
+      <div>
+        <label for="telefoneEmergencia">Telefone de Emergência*</label>
+        <input type="text" id="telefoneEmergencia">
+      </div>
+    </div>
+
+    <div class="linha-formulario" style="margin-top:10px;">
+      <div>
+        <label for="planoSaude">Possui Plano de Saúde?*</label>
+        <select id="planoSaude">
+          <option value="NÃO">NÃO</option>
+          <option value="SIM">SIM</option>
+        </select>
+      </div>
+      <div id="boxAceitePlano" class="oculto">
+        <label for="aceitePlano">Hospitais / Clínicas que aceitam*</label>
+        <input type="text" id="aceitePlano" placeholder="Ex: Hospital Unimed, Barra D'Or">
+      </div>
+      <div>
+        <label for="alergia">Possui Alguma Alergia?*</label>
+        <select id="alergia">
+          <option value="NÃO">NÃO</option>
+          <option value="SIM">SIM</option>
+        </select>
+      </div>
+      <div id="boxTipoAlergia" class="oculto">
+        <label for="tipoAlergia">Especifique a Alergia*</label>
+        <input type="text" id="tipoAlergia" placeholder="Ex: Dipirona, Camarão">
+      </div>
+    </div>
+
+    <div class="linha-formulario" style="margin-top:10px;">
+      <div>
+        <label for="numeroSapato">Número do Calçado*</label>
+        <input type="text" id="numeroSapato" placeholder="Ex: 40">
+      </div>
+      <div>
+        <label for="manequim">Tamanho Manequim/Camisa*</label>
+        <input type="text" id="manequim" placeholder="Ex: M, G, 42">
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; text-align: right;">
+      <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">Cadastrar Usuário</button>
     </div>
   </form>
 </div>
@@ -734,7 +902,75 @@ document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', fi
       if (resposta.sucesso) { evento.target.reset(); }
     });
   }
+// Controle dos campos condicionais SIM/NÃO
+document.getElementById('planoSaude')?.addEventListener('change', (e) => {
+  const box = document.getElementById('boxAceitePlano');
+  if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
+});
 
+document.getElementById('alergia')?.addEventListener('change', (e) => {
+  const box = document.getElementById('boxTipoAlergia');
+  if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
+});
+
+// Listener atualizado para salvar todas as informações no Apps Script
+document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (evento) => {
+  evento.preventDefault();
+  const usuario = pegarUsuarioSalvo();
+
+  const dadosPayload = {
+    token: pegarTokenSalvo(),
+    nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
+    email: document.getElementById('emailUsuarioNovo').value,
+    nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
+    secretariaId: document.getElementById('secretariaDoUsuario').value || usuario.secretariaId || '',
+    subsecretariaId: document.getElementById('subsecretariaDoUsuario').value || usuario.subsecretariaId || '',
+    nucleoId: document.getElementById('nucleoDoUsuario').value || usuario.nucleoId || '',
+    
+    // Dados Pessoais / Contratuais
+    nomeCompleto: document.getElementById('nomeCompleto').value,
+    cargo: document.getElementById('cargo').value,
+    empregador: document.getElementById('empregador').value,
+    dataAdmissao: document.getElementById('dataAdmissao').value,
+    horarioEntrada: document.getElementById('horarioEntrada').value,
+    horarioSaida: document.getElementById('horarioSaida').value,
+    telefone: document.getElementById('telefone').value,
+    foto: document.getElementById('fotoUrl').value,
+
+    // Documentação
+    cpf: document.getElementById('cpf').value,
+    rg: document.getElementById('rg').value,
+    orgaoEmissor: document.getElementById('orgaoEmissor').value,
+    dataExpedicao: document.getElementById('dataExpedicao').value,
+    idFuncional: document.getElementById('idFuncional').value,
+    dataNascimento: document.getElementById('dataNascimento').value,
+    nomeMae: document.getElementById('nomeMae').value,
+    registroProfissional: document.getElementById('registroProfissional').value,
+
+    // Endereço
+    cep: document.getElementById('cep').value,
+    enderecoCompleto: document.getElementById('enderecoCompleto').value,
+    bairro: document.getElementById('bairro').value,
+    cidade: document.getElementById('cidade').value,
+    uf: document.getElementById('uf').value,
+
+    // Emergência, Saúde e Uniforme
+    nomeContatoEmergencia: document.getElementById('nomeContatoEmergencia').value,
+    grauParentesco: document.getElementById('grauParentesco').value,
+    telefoneEmergencia: document.getElementById('telefoneEmergencia').value,
+    planoSaude: document.getElementById('planoSaude').value,
+    aceitePlano: document.getElementById('aceitePlano').value,
+    numeroSapato: document.getElementById('numeroSapato').value,
+    manequim: document.getElementById('manequim').value,
+    alergia: document.getElementById('alergia').value,
+    tipoAlergia: document.getElementById('tipoAlergia').value
+  };
+
+  const resposta = await chamarBackend('criarUsuario', dadosPayload);
+
+  alert(resposta.sucesso ? 'Usuário cadastrado com sucesso! Acesso provisório enviado por e-mail.' : resposta.mensagem);
+  if (resposta.sucesso) { evento.target.reset(); }
+});
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
