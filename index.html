@@ -393,18 +393,14 @@
 <script>
 
   /* ---------------------------------------------------------------
-     BLOCO JS 1 - CONFIGURAÇÃO
-     Cole aqui a URL do seu Web App publicado no Google Apps Script
-     (Extensões > Apps Script > Implantar > Nova implantação > App da Web).
+     BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
   const URL_BACKEND = 'https://script.google.com/macros/s/AKfycbytPBf843O6gK6oy-Qv0Xbi856cW2aaDRA6JltC1oOg4Hps0YRWxu3nO2SBZD6NeFHa/exec';
+  let dadosEstruturaGlobal = null;
 
 
   /* ---------------------------------------------------------------
      BLOCO JS 2 - COMUNICAÇÃO COM O BACKEND
-     Uma função única pra chamar qualquer "action" do Apps Script.
-     Usamos POST com corpo simples (text/plain) de propósito: isso
-     evita o preflight de CORS, que o Apps Script não trata bem.
      --------------------------------------------------------------- */
   async function chamarBackend(acao, dadosExtras = {}) {
     const corpo = Object.assign({ action: acao }, dadosExtras);
@@ -415,9 +411,6 @@
     return resposta.json();
   }
 
-  // Sessão guardada no navegador. Isso é um site real (GitHub Pages),
-  // então localStorage é o lugar certo pra manter o usuário logado
-  // entre uma visita e outra.
   function salvarSessao(token, usuario) {
     localStorage.setItem('secc_token', token);
     localStorage.setItem('secc_usuario', JSON.stringify(usuario));
@@ -500,9 +493,7 @@
 
 
   /* ---------------------------------------------------------------
-     BLOCO JS 4 - PAINEL PRINCIPAL
-     Mostra os cartões certos conforme o nível de acesso e carrega
-     a estrutura organizacional (secretarias/subsecretarias/núcleos).
+     BLOCO JS 4 - PAINEL PRINCIPAL E ESTRUTURA ORGANIZACIONAL
      --------------------------------------------------------------- */
   async function iniciarPainelPrincipal() {
     const usuario = pegarUsuarioSalvo();
@@ -511,127 +502,112 @@
     document.getElementById('nomeUsuarioLogado').textContent = usuario.nome;
     document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
 
-    // Mostra cada cartão de criação só pra quem tem permissão.
-    // Controle de exibição dos formulários no JS
-document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
-document.getElementById('cartaoCriarUsuario').classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
+    // Exibição dos cartões de acordo com o nível de acesso
+    document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
+    document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
+    document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
+    
+    const cartaoUsu = document.getElementById('cartaoCriarUsuario');
+    if (cartaoUsu) cartaoUsu.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
+
     await carregarEstrutura();
   }
 
- // Variable global para armazenar a estrutura carregada
-let dadosEstruturaGlobal = null;
+  function atualizarDropdownsDependenteUsuario() {
+    if (!dadosEstruturaGlobal) return;
+    const secId = document.getElementById('secretariaDoUsuario')?.value;
 
-// Função auxiliar para atualizar dropdowns de usuário se existirem na tela
-function atualizarDropdownsDependenteUsuario() {
-  if (!dadosEstruturaGlobal) return;
-  const secId = document.getElementById('secretariaDoUsuario')?.value;
+    const selSub = document.getElementById('subsecretariaDoUsuario');
+    const selNuc = document.getElementById('nucleoDoUsuario');
 
-  const selSub = document.getElementById('subsecretariaDoUsuario');
-  const selNuc = document.getElementById('nucleoDoUsuario');
+    if (selSub) {
+      const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
+      selSub.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
+        subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
+    }
 
-  if (selSub) {
-    const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
-    selSub.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
-      subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
+    if (selNuc) {
+      const nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
+      selNuc.innerHTML = '<option value="">Nenhum / Todos</option>' + 
+        nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
+    }
   }
 
-  if (selNuc) {
-    const nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
-    selNuc.innerHTML = '<option value="">Nenhum / Todos</option>' + 
-      nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
-  }
-}
-  // Preenche o seletor simples de secretaria (para criar Subsecretaria)
-  const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
-  if (seletorSecretariaSub) {
-    seletorSecretariaSub.innerHTML = resposta.secretarias
-      .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-  }
+  async function carregarEstrutura() {
+    const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
+    const container = document.getElementById('listaEstrutura');
 
-  // Preenche o seletor de Vínculo do Núcleo (Secretaria OU Subsecretaria)
-  const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
-  if (seletorVinculoNucleo) {
-    let htmlOptions = '<option value="">Selecione o local...</option>';
-    
-    resposta.secretarias.forEach(sec => {
-      // Opção da Secretaria Pai
-      htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
-      
-      // Subsecretarias pertencentes a esta Secretaria
-      const subs = resposta.subsecretarias.filter(sub => sub.SecretariaID === sec.SecretariaID);
-      subs.forEach(sub => {
-        htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
+    if (!resposta.sucesso) {
+      container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
+      return;
+    }
+
+    dadosEstruturaGlobal = resposta;
+
+    // Seletor de Secretaria na criação de Subsecretaria
+    const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
+    if (seletorSecretariaSub) {
+      seletorSecretariaSub.innerHTML = resposta.secretarias
+        .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+    }
+
+    // Seletor hierárquico na criação de Núcleo
+    const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
+    if (seletorVinculoNucleo) {
+      let htmlOptions = '<option value="">Selecione o local...</option>';
+      resposta.secretarias.forEach(sec => {
+        htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
+        const subs = resposta.subsecretarias.filter(sub => sub.SecretariaID === sec.SecretariaID);
+        subs.forEach(sub => {
+          htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
+        });
       });
+      seletorVinculoNucleo.innerHTML = htmlOptions;
+    }
+
+    // Seletor de Secretaria na criação de Usuário
+    const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
+    if (seletorSecretariaUsu) {
+      seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
+        resposta.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+    }
+
+    atualizarDropdownsDependenteUsuario();
+
+    // Desenha a árvore na tela
+    let html = '<ul>';
+    resposta.secretarias.forEach(secretaria => {
+      html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
+
+      resposta.nucleos
+        .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
+        .forEach(nucleo => {
+          html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
+        });
+
+      resposta.subsecretarias
+        .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
+        .forEach(sub => {
+          html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
+          
+          resposta.nucleos
+            .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
+            .forEach(nucleo => {
+              html += `<li class="item-nucleo" style="margin-left: 60px;">📌 Núcleo: ${nucleo.Nome}</li>`;
+            });
+        });
     });
-    
-    seletorVinculoNucleo.innerHTML = htmlOptions;
-  }
-       
-// Função para atualizar subsecretarias e núcleos dinamicamente ao selecionar a secretaria do usuário
-function atualizarDropdownsDependenteUsuario() {
-  if (typeof dadosEstruturaGlobal === 'undefined' || !dadosEstruturaGlobal) return;
-  const secId = document.getElementById('secretariaDoUsuario')?.value;
+    html += '</ul>';
 
-  const selSub = document.getElementById('subsecretariaDoUsuario');
-  const selNuc = document.getElementById('nucleoDoUsuario');
-
-  if (selSub) {
-    const subsFiltradas = dadosEstruturaGlobal.subsecretarias.filter(s => s.SecretariaID === secId);
-    selSub.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
-      subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
+    container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
   }
 
-  if (selNuc) {
-    const nucsFiltrados = dadosEstruturaGlobal.nucleos.filter(n => n.SecretariaID === secId);
-    selNuc.innerHTML = '<option value="">Nenhum / Todos</option>' + 
-      nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
-  }
-}
-       
-  // Preenche o dropdown do formulário de Usuário (se existir)
-  const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
-  if (seletorSecretariaUsu) {
-    seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
-      resposta.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-  }
-
-  atualizarDropdownsDependenteUsuario();
-
-  // Desenha a árvore na tela: Secretaria > Subsecretaria > Núcleo
-  let html = '<ul>';
-  resposta.secretarias.forEach(secretaria => {
-    html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
-
-    // Núcleos diretos da Secretaria (sem subsecretaria)
-    resposta.nucleos
-      .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
-      .forEach(nucleo => {
-        html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
-      });
-
-    // Subsecretarias e seus respectivos núcleos
-    resposta.subsecretarias
-      .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
-      .forEach(sub => {
-        html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
-        
-        resposta.nucleos
-          .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
-          .forEach(nucleo => {
-            html += `<li class="item-nucleo" style="margin-left: 60px;">📌 Núcleo: ${nucleo.Nome}</li>`;
-          });
-      });
-  });
-  html += '</ul>';
-
-  container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
-}
+  // Evento de escuta para filtrar subsecretarias/núcleos na criação de usuário
+  document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
 
 
-/* ---------------------------------------------------------------
-     BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO (secretaria, subsecretaria, núcleo e usuário)
+  /* ---------------------------------------------------------------
+     BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO
      --------------------------------------------------------------- */
   document.getElementById('formularioCriarSecretaria').addEventListener('submit', async (evento) => {
     evento.preventDefault();
@@ -656,18 +632,16 @@ function atualizarDropdownsDependenteUsuario() {
     if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
   });
 
-  // --- ENVIO DE NÚCLEO (Extrai se é vinculado a Secretaria ou Subsecretaria) ---
   document.getElementById('formularioCriarNucleo').addEventListener('submit', async (evento) => {
     evento.preventDefault();
     const usuario = pegarUsuarioSalvo();
-    const vinculoValor = document.getElementById('vinculoDoNucleo').value;
+    const vinculoValor = document.getElementById('vinculoDoNucleo')?.value;
 
     if (!vinculoValor) {
       alert('Por favor, selecione a Secretaria ou Subsecretaria de vínculo.');
       return;
     }
 
-    // O valor vem no formato "SEC:idSecretaria" ou "SUB:idSecretaria:idSubsecretaria"
     const partes = vinculoValor.split(':');
     let secId = '';
     let subSecId = '';
@@ -694,32 +668,34 @@ function atualizarDropdownsDependenteUsuario() {
     }
   });
 
-  // --- ENVIO DE USUÁRIO (Novo: aceita secretaria/subsecretaria/núcleo do formulário) ---
-  document.getElementById('formularioCriarUsuario').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const usuario = pegarUsuarioSalvo();
+  const formUsu = document.getElementById('formularioCriarUsuario');
+  if (formUsu) {
+    formUsu.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      const usuario = pegarUsuarioSalvo();
 
-    const secSel = document.getElementById('secretariaDoUsuario').value;
-    const subSel = document.getElementById('subsecretariaDoUsuario').value;
-    const nucSel = document.getElementById('nucleoDoUsuario').value;
+      const secSel = document.getElementById('secretariaDoUsuario')?.value || '';
+      const subSel = document.getElementById('subsecretariaDoUsuario')?.value || '';
+      const nucSel = document.getElementById('nucleoDoUsuario')?.value || '';
 
-    const resposta = await chamarBackend('criarUsuario', {
-      token: pegarTokenSalvo(),
-      nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
-      email: document.getElementById('emailUsuarioNovo').value,
-      nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
-      secretariaId: secSel || usuario.secretariaId || '',
-      subsecretariaId: subSel || usuario.subsecretariaId || '',
-      nucleoId: nucSel || usuario.nucleoId || ''
+      const resposta = await chamarBackend('criarUsuario', {
+        token: pegarTokenSalvo(),
+        nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
+        email: document.getElementById('emailUsuarioNovo').value,
+        nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
+        secretariaId: secSel || usuario.secretariaId || '',
+        subsecretariaId: subSel || usuario.subsecretariaId || '',
+        nucleoId: nucSel || usuario.nucleoId || ''
+      });
+
+      alert(resposta.sucesso ? 'Usuário criado com sucesso! Senha enviada por e-mail.' : resposta.mensagem);
+      if (resposta.sucesso) { evento.target.reset(); }
     });
+  }
 
-    alert(resposta.sucesso ? 'Usuário criado com sucesso! Senha provisória enviada por e-mail.' : resposta.mensagem);
-    if (resposta.sucesso) { evento.target.reset(); }
-  });
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
-     Se já existe sessão salva no navegador, pula direto pro painel.
      --------------------------------------------------------------- */
   (function iniciar() {
     if (pegarTokenSalvo() && pegarUsuarioSalvo()) {
