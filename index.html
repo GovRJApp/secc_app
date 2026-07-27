@@ -320,25 +320,58 @@
       </form>
     </div>
 
-    <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO (aparece para Secretário e Subsecretário) -->
-    <div class="cartao oculto" id="cartaoCriarNucleo">
-      <h2>Criar núcleo</h2>
-      <p class="descricao">Crie os núcleos da sua secretaria ou subsecretaria e, depois, cole aqui o endereço da Google Agenda desse núcleo (usada para folgas, férias e plantões).</p>
-      <form id="formularioCriarNucleo" class="linha-formulario">
-        <div>
-          <label for="nomeNucleo">Nome do núcleo</label>
-          <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
-        </div>
-        <div>
-          <label for="agendaNucleo">Endereço da Google Agenda</label>
-          <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda">
-        </div>
-        <div style="flex: 0 0 auto;">
-          <button type="submit" class="botao-principal" style="margin-top:0;">Criar</button>
-        </div>
-      </form>
+    <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO -->
+<div class="cartao oculto" id="cartaoCriarNucleo">
+  <h2>Criar núcleo</h2>
+  <p class="descricao">Crie os núcleos da sua secretaria ou subsecretaria.</p>
+  <form id="formularioCriarNucleo" class="linha-formulario">
+    <div>
+      <label for="secretariaDoNucleo">Secretaria</label>
+      <select id="secretariaDoNucleo" required></select>
     </div>
+    <div>
+      <label for="nomeNucleo">Nome do núcleo</label>
+      <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
+    </div>
+    <div>
+      <label for="agendaNucleo">Endereço da Google Agenda</label>
+      <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda">
+    </div>
+    <div style="flex: 0 0 auto;">
+      <button type="submit" class="botao-principal" style="margin-top:0;">Criar</button>
+    </div>
+  </form>
+</div>
 
+<!-- ESTE BLOCO ABRE A CRIAÇÃO DE USUÁRIO -->
+<div class="cartao oculto" id="cartaoCriarUsuario">
+  <h2>Criar usuário</h2>
+  <p class="descricao">Cadastre usuários em nível inferior ao seu na hierarquia.</p>
+  <form id="formularioCriarUsuario" class="linha-formulario">
+    <div>
+      <label for="nomeUsuarioNovo">Nome de Exibição</label>
+      <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
+    </div>
+    <div>
+      <label for="emailUsuarioNovo">E-mail</label>
+      <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
+    </div>
+    <div>
+      <label for="nivelUsuarioNovo">Nível de Acesso</label>
+      <select id="nivelUsuarioNovo" required>
+        <option value="SECRETARIO">SECRETARIO</option>
+        <option value="SUBSECRETARIO">SUBSECRETARIO</option>
+        <option value="COORDENADOR">COORDENADOR</option>
+        <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
+        <option value="PROFISSIONAL">PROFISSIONAL</option>
+      </select>
+    </div>
+    <div style="flex: 0 0 auto;">
+      <button type="submit" class="botao-principal" style="margin-top:0;">Criar Usuário</button>
+    </div>
+  </form>
+</div>
+       
     <!-- ESTE BLOCO MOSTRA A ÁRVORE ORGANIZACIONAL JÁ CRIADA -->
     <div class="cartao">
       <h2>Estrutura organizacional</h2>
@@ -479,10 +512,11 @@
     document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
 
     // Mostra cada cartão de criação só pra quem tem permissão.
-    document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-    document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-    document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
-
+    // Controle de exibição dos formulários no JS
+document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
+document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
+document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
+document.getElementById('cartaoCriarUsuario').classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
     await carregarEstrutura();
   }
 
@@ -525,8 +559,8 @@
   }
 
 
-  /* ---------------------------------------------------------------
-     BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO (secretaria, subsecretaria, núcleo)
+/* ---------------------------------------------------------------
+     BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO (secretaria, subsecretaria, núcleo e usuário)
      --------------------------------------------------------------- */
   document.getElementById('formularioCriarSecretaria').addEventListener('submit', async (evento) => {
     evento.preventDefault();
@@ -551,13 +585,16 @@
     if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
   });
 
+  // --- ENVIO DE NÚCLEO (Corrigido para pegar a secretaria selecionada) ---
   document.getElementById('formularioCriarNucleo').addEventListener('submit', async (evento) => {
     evento.preventDefault();
     const usuario = pegarUsuarioSalvo();
+    const secId = document.getElementById('secretariaDoNucleo').value || usuario.secretariaId;
+    
     const resposta = await chamarBackend('criarNucleo', {
       token: pegarTokenSalvo(),
-      secretariaId: usuario.secretariaId,
-      subsecretariaId: usuario.subsecretariaId,
+      secretariaId: secId,
+      subsecretariaId: usuario.subsecretariaId || '',
       nome: document.getElementById('nomeNucleo').value,
       agendaGoogleUrl: document.getElementById('agendaNucleo').value
     });
@@ -565,6 +602,28 @@
     if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
   });
 
+  // --- ENVIO DE USUÁRIO (Novo: aceita secretaria/subsecretaria/núcleo do formulário) ---
+  document.getElementById('formularioCriarUsuario').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const usuario = pegarUsuarioSalvo();
+
+    const secSel = document.getElementById('secretariaDoUsuario').value;
+    const subSel = document.getElementById('subsecretariaDoUsuario').value;
+    const nucSel = document.getElementById('nucleoDoUsuario').value;
+
+    const resposta = await chamarBackend('criarUsuario', {
+      token: pegarTokenSalvo(),
+      nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
+      email: document.getElementById('emailUsuarioNovo').value,
+      nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
+      secretariaId: secSel || usuario.secretariaId || '',
+      subsecretariaId: subSel || usuario.subsecretariaId || '',
+      nucleoId: nucSel || usuario.nucleoId || ''
+    });
+
+    alert(resposta.sucesso ? 'Usuário criado com sucesso! Senha provisória enviada por e-mail.' : resposta.mensagem);
+    if (resposta.sucesso) { evento.target.reset(); }
+  });
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
