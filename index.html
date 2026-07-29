@@ -470,16 +470,18 @@
       </form>
     </div>
 
-    <!-- 4. BOTÃO PARA EXPANDIR CRIAÇÃO DE USUÁRIO / PROFISSIONAL -->
-    <div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <h2 style="margin:0; font-size:16px;">Gestão de Profissionais e Usuários</h2>
-        <p style="margin:0; font-size:13px; color:var(--gov-texto-suave);">Cadastre profissionais após estruturar secretarias e núcleos.</p>
-      </div>
-      <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:12px 24px; background-color:var(--gov-verde);">
-        + Criar Novo Usuário
-      </button>
+   <!-- 4. BOTÃO PARA EXPANDIR CRIAÇÃO DE USUÁRIO / PROFISSIONAL -->
+<div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 20px 24px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <h2 style="margin:0; font-size:16px;">Gestão de Profissionais e Usuários</h2>
+      <p style="margin:0; font-size:13px; color:var(--gov-texto-suave);">Cadastre profissionais após estruturar secretarias e núcleos.</p>
     </div>
+    <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:12px 24px; background-color:var(--gov-verde);">
+      + Criar Novo Usuário
+    </button>
+  </div>
+</div>
 
     <!-- CARTÃO FICHA CADASTRAL DO USUÁRIO (OCULTO POR PADRÃO) -->
     <div class="cartao oculto" id="cartaoCriarUsuario" style="border-top: 4px solid var(--gov-verde);">
@@ -819,14 +821,17 @@
   /* ---------------------------------------------------------------
      BLOCO JS 4 - PAINEL PRINCIPAL E ESTRUTURA ORGANIZACIONAL
      --------------------------------------------------------------- */
-  async function iniciarPainelPrincipal() {
+   async function iniciarPainelPrincipal() {
     const usuario = pegarUsuarioSalvo();
     mostrarTela('telaPrincipal');
+
+    // Força a página a rolar para o topo ao carregar o painel
+    window.scrollTo(0, 0);
 
     document.getElementById('nomeUsuarioLogado').textContent = usuario.nome;
     document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
 
-    // Garantia da Ordem do ADMIN (1. Secretaria -> 2. Subsecretaria -> 3. Núcleo -> 4. Usuários)
+    // Controle de exibição dos blocos por nível
     document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
     document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
     document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
