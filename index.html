@@ -3,203 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App SECC - Gestão de Secretarias</title>
+<title>App SECC - Governo do Estado do Rio de Janeiro</title>
+
+<!-- Tipografia Oficial de Apoio (Roboto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --cor-primaria: #1B3A5C;
-    --cor-primaria-clara: #2E5A8A;
-    --cor-fundo: #F2F4F7;
-    --cor-cartao: #FFFFFF;
-    --cor-texto: #1C1C1C;
-    --cor-texto-suave: #5A6472;
-    --cor-borda: #D9DEE4;
-    --cor-erro: #B3261E;
-    --cor-sucesso: #1E7B45;
-    --raio: 10px;
-    --fonte: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    /* Cores Oficiais do Manual de Identidade Visual GovRJ (Março 2025) */
+    --gov-azul: #005A92;
+    --gov-azul-escuro: #003F66;
+    --gov-azul-hover: #004A80;
+    --gov-verde: #427842;
+    --gov-dourado: #BC9D32;
+    --gov-cinza: #A0A0A0;
+    --gov-cinza-claro: #F4F6F9;
+    --gov-borda: #E2E8F0;
+    --gov-texto: #1E293B;
+    --gov-texto-suave: #64748B;
+    --gov-erro: #D32F2F;
+    --gov-sucesso: #2E7D32;
+    --raio-card: 12px;
+    --sombra-card: 0 4px 18px rgba(0, 90, 146, 0.06);
+    --fonte-oficial: 'Roboto', -apple-system, sans-serif;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    font-family: var(--fonte);
-    background: var(--cor-fundo);
-    color: var(--cor-texto);
+    font-family: var(--fonte-oficial);
+    background-color: var(--gov-cinza-claro);
+    color: var(--gov-texto);
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* ---- Tela de login ---- */
+  /* ---- TELA DE LOGIN ---- */
   .tela-login {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    background: linear-gradient(135deg, var(--gov-azul-escuro) 0%, var(--gov-azul) 100%);
+    position: relative;
   }
 
   .cartao-login {
-    background: var(--cor-cartao);
-    border-radius: var(--raio);
+    background: #FFFFFF;
+    border-radius: var(--raio-card);
     padding: 40px 32px;
     width: 100%;
-    max-width: 380px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    max-width: 420px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    border-top: 5px solid var(--gov-dourado);
   }
 
-  .cartao-login h1 {
-    font-size: 20px;
-    color: var(--cor-primaria);
-    margin: 0 0 4px;
+  .header-login {
+    text-align: center;
+    margin-bottom: 28px;
   }
 
-  .cartao-login p.subtitulo {
-    color: var(--cor-texto-suave);
-    font-size: 14px;
-    margin: 0 0 24px;
+  .header-login .logo-gov-text {
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--gov-azul);
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
   }
 
+  .header-login .subtitulo-login {
+    font-size: 13px;
+    color: var(--gov-texto-suave);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* Form Controls */
   label {
     display: block;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     margin: 16px 0 6px;
-    color: var(--cor-texto-suave);
+    color: var(--gov-texto);
   }
 
-  input[type="email"], input[type="password"], input[type="text"], input[type="date"], input[type="time"], select {
+  input[type="email"], 
+  input[type="password"], 
+  input[type="text"], 
+  input[type="date"], 
+  input[type="time"], 
+  select {
     width: 100%;
-    padding: 11px 12px;
-    border: 1px solid var(--cor-borda);
+    padding: 12px 14px;
+    border: 1px solid var(--gov-borda);
     border-radius: 8px;
     font-size: 14px;
-    font-family: var(--fonte);
+    font-family: var(--fonte-oficial);
+    background-color: #FFFFFF;
+    transition: all 0.2s ease;
   }
 
   input:focus, select:focus {
-    outline: 2px solid var(--cor-primaria-clara);
-    outline-offset: 1px;
+    outline: none;
+    border-color: var(--gov-azul);
+    box-shadow: 0 0 0 3px rgba(0, 90, 146, 0.15);
   }
 
   button {
     cursor: pointer;
-    font-family: var(--fonte);
-    font-weight: 600;
+    font-family: var(--fonte-oficial);
+    font-weight: 700;
     border: none;
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 12px 20px;
     font-size: 14px;
+    transition: all 0.2s ease;
   }
 
   .botao-principal {
-    background: var(--cor-primaria);
-    color: white;
+    background-color: var(--gov-azul);
+    color: #FFFFFF;
     width: 100%;
-    margin-top: 22px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0, 90, 146, 0.25);
   }
 
-  .botao-principal:hover { background: var(--cor-primaria-clara); }
+  .botao-principal:hover {
+    background-color: var(--gov-azul-hover);
+    transform: translateY(-1px);
+  }
 
   .link-discreto {
     background: none;
-    color: var(--cor-primaria);
+    color: var(--gov-azul);
     text-decoration: underline;
     padding: 0;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 13px;
-    margin-top: 14px;
+    margin-top: 16px;
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 
-  .mensagem-erro {
-    color: var(--cor-erro);
-    font-size: 13px;
-    margin-top: 12px;
-  }
-
-  .mensagem-sucesso {
-    color: var(--cor-sucesso);
-    font-size: 13px;
-    margin-top: 12px;
-  }
-
+  .mensagem-erro { color: var(--gov-erro); font-size: 13px; margin-top: 12px; font-weight: 500; }
+  .mensagem-sucesso { color: var(--gov-sucesso); font-size: 13px; margin-top: 12px; font-weight: 500; }
   .oculto { display: none !important; }
 
-  /* ---- Painel principal ---- */
+  /* ---- PAINEL PRINCIPAL ---- */
   .cabecalho-app {
-    background: var(--cor-primaria);
-    color: white;
-    padding: 16px 24px;
+    background: linear-gradient(90deg, var(--gov-azul-escuro) 0%, var(--gov-azul) 100%);
+    color: #FFFFFF;
+    padding: 16px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 4px solid var(--gov-verde);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 
-  .cabecalho-app .info-usuario { font-size: 13px; opacity: 0.9; }
+  .brand-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-title {
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+
+  .brand-sub {
+    font-size: 12px;
+    opacity: 0.8;
+    font-weight: 400;
+  }
+
+  .cabecalho-app .info-usuario { 
+    font-size: 13px; 
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .badge-nivel {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
 
   .botao-sair {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.12);
     color: white;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 16px;
+    border-radius: 6px;
   }
-  .botao-sair:hover { background: rgba(255,255,255,0.28); }
+  .botao-sair:hover { background: rgba(255,255,255,0.25); }
 
   .conteudo-app {
-    max-width: 960px;
+    max-width: 1040px;
     margin: 0 auto;
-    padding: 28px 20px;
+    padding: 32px 20px;
   }
 
+  /* Cartões Elegantes */
   .cartao {
-    background: var(--cor-cartao);
-    border: 1px solid var(--cor-borda);
-    border-radius: var(--raio);
-    padding: 24px;
-    margin-bottom: 20px;
+    background: #FFFFFF;
+    border-radius: var(--raio-card);
+    border: 1px solid var(--gov-borda);
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--sombra-card);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cartao::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--gov-azul);
   }
 
   .cartao h2 {
-    font-size: 16px;
-    margin: 0 0 4px;
-    color: var(--cor-primaria);
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--gov-azul-escuro);
   }
 
   .cartao p.descricao {
     font-size: 13px;
-    color: var(--cor-texto-suave);
-    margin: 0 0 18px;
+    color: var(--gov-texto-suave);
+    margin: 0 0 20px;
+    line-height: 1.5;
   }
 
   .linha-formulario {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: flex-end;
     flex-wrap: wrap;
   }
 
-  .linha-formulario > div { flex: 1; min-width: 160px; }
+  .linha-formulario > div { flex: 1; min-width: 180px; }
 
+  /* Lista de Estrutura Organizacional */
   .lista-estrutura ul { list-style: none; padding-left: 0; margin: 0; }
+  
   .lista-estrutura .item-secretaria {
-    padding: 10px 12px;
-    border-left: 3px solid var(--cor-primaria);
-    background: var(--cor-fundo);
-    border-radius: 6px;
-    margin-bottom: 8px;
-    font-size: 14px;
+    padding: 12px 16px;
+    border-left: 4px solid var(--gov-azul);
+    background: #FFFFFF;
+    border: 1px solid var(--gov-borda);
+    border-left-width: 4px;
+    border-left-color: var(--gov-azul);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--gov-azul-escuro);
   }
+
   .lista-estrutura .item-subsecretaria {
-    margin: 6px 0 6px 20px;
+    margin: 8px 0 8px 24px;
+    padding: 10px 14px;
+    border-left: 4px solid var(--gov-verde);
+    background: #F8FAFC;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--gov-texto);
+  }
+
+  .lista-estrutura .item-nucleo {
+    margin: 6px 0 6px 48px;
     padding: 8px 12px;
-    border-left: 3px solid var(--cor-primaria-clara);
-    background: #FAFBFC;
+    border-left: 3px solid var(--gov-dourado);
+    background: #FFFFFF;
     border-radius: 6px;
     font-size: 13px;
+    color: var(--gov-texto-suave);
   }
-  .lista-estrutura .item-nucleo {
-    margin: 4px 0 4px 40px;
-    padding: 6px 12px;
-    border-left: 3px solid var(--cor-borda);
-    font-size: 13px;
-    color: var(--cor-texto-suave);
+
+  .secao-titulo {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gov-azul);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--gov-cinza-claro);
   }
 </style>
 </head>
@@ -208,17 +317,19 @@
 <!-- TELA 1 - LOGIN -->
 <div class="tela-login" id="telaLogin">
   <div class="cartao-login">
-    <h1>App SECC</h1>
-    <p class="subtitulo">Gestão de secretarias, núcleos e equipes</p>
+    <div class="header-login">
+      <div class="logo-gov-text">GOVERNO DO ESTADO<br><span style="color:var(--gov-verde);">RIO DE JANEIRO</span></div>
+      <div class="subtitulo-login">App SECC — Gestão de Secretarias e Equipes</div>
+    </div>
 
     <form id="formularioLogin">
-      <label for="campoEmail">E-mail</label>
-      <input type="email" id="campoEmail" required autocomplete="username">
+      <label for="campoEmail">E-mail Corporativo</label>
+      <input type="email" id="campoEmail" required autocomplete="username" placeholder="seu.email@rio.rj.gov.br">
 
-      <label for="campoSenha">Senha</label>
-      <input type="password" id="campoSenha" required autocomplete="current-password">
+      <label for="campoSenha">Senha de Acesso</label>
+      <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
 
-      <button type="submit" class="botao-principal">Entrar</button>
+      <button type="submit" class="botao-principal">Entrar no Sistema</button>
     </form>
 
     <button type="button" class="link-discreto" id="botaoEsqueciSenha">Esqueci minha senha</button>
@@ -230,17 +341,19 @@
 <!-- TELA 2 - TROCA OBRIGATÓRIA DE SENHA -->
 <div class="tela-login oculto" id="telaTrocaSenha">
   <div class="cartao-login">
-    <h1>Primeiro acesso</h1>
-    <p class="subtitulo">Por segurança, crie uma senha nova antes de continuar.</p>
+    <div class="header-login">
+      <div class="logo-gov-text">PRIMEIRO ACESSO</div>
+      <div class="subtitulo-login">Por segurança, cadastre uma nova senha pessoal</div>
+    </div>
 
     <form id="formularioTrocaSenha">
-      <label for="senhaProvisoriaAtual">Senha provisória (recebida por e-mail)</label>
-      <input type="password" id="senhaProvisoriaAtual" required>
+      <label for="senhaProvisoriaAtual">Senha Provisória (recebida por e-mail)</label>
+      <input type="password" id="senhaProvisoriaAtual" required placeholder="Digite a senha provisória">
 
-      <label for="senhaNovaEscolhida">Nova senha</label>
-      <input type="password" id="senhaNovaEscolhida" required minlength="6">
+      <label for="senhaNovaEscolhida">Nova Senha Definitiva</label>
+      <input type="password" id="senhaNovaEscolhida" required minlength="6" placeholder="Mínimo de 6 caracteres">
 
-      <button type="submit" class="botao-principal">Salvar nova senha</button>
+      <button type="submit" class="botao-principal">Salvar Nova Senha</button>
     </form>
 
     <div id="mensagemTrocaSenha"></div>
@@ -250,11 +363,15 @@
 <!-- TELA 3 - PAINEL PRINCIPAL -->
 <div class="oculto" id="telaPrincipal">
   <div class="cabecalho-app">
-    <strong>App SECC</strong>
+    <div class="brand-area">
+      <div>
+        <div class="brand-title">GOVERNO DO ESTADO RIO DE JANEIRO</div>
+        <div class="brand-sub">Sistema de Gestão de Secretarias e Produção</div>
+      </div>
+    </div>
     <div class="info-usuario">
-      <span id="nomeUsuarioLogado"></span> ·
-      <span id="nivelUsuarioLogado"></span>
-      &nbsp;&nbsp;
+      <span id="nomeUsuarioLogado"></span>
+      <span class="badge-nivel" id="nivelUsuarioLogado"></span>
       <button class="botao-sair" id="botaoSair">Sair</button>
     </div>
   </div>
@@ -263,34 +380,34 @@
 
     <!-- CRIAR SECRETARIA -->
     <div class="cartao oculto" id="cartaoCriarSecretaria">
-      <h2>Criar secretaria</h2>
-      <p class="descricao">Somente o Administrador do sistema pode criar novas secretarias.</p>
+      <h2>Criar Secretaria</h2>
+      <p class="descricao">Somente o Administrador do sistema pode cadastrar novas Secretarias de Estado.</p>
       <form id="formularioCriarSecretaria" class="linha-formulario">
         <div>
-          <label for="nomeSecretaria">Nome da secretaria</label>
+          <label for="nomeSecretaria">Nome da Secretaria</label>
           <input type="text" id="nomeSecretaria" placeholder="Ex: Secretaria da Casa Civil" required>
         </div>
         <div>
-          <label for="siglaSecretaria">Sigla</label>
+          <label for="siglaSecretaria">Sigla Oficial</label>
           <input type="text" id="siglaSecretaria" placeholder="Ex: SECC" required>
         </div>
         <div style="flex: 0 0 auto;">
-          <button type="submit" class="botao-principal" style="margin-top:0;">Criar</button>
+          <button type="submit" class="botao-principal" style="margin-top:0;">Criar Secretaria</button>
         </div>
       </form>
     </div>
 
     <!-- CRIAR SUBSECRETARIA -->
     <div class="cartao oculto" id="cartaoCriarSubsecretaria">
-      <h2>Criar subsecretaria</h2>
-      <p class="descricao">Criada pelo Admin a pedido do(a) secretário(a), vinculada a uma secretaria já existente.</p>
+      <h2>Criar Subsecretaria</h2>
+      <p class="descricao">Cadastre uma Subsecretaria vinculada a uma Secretaria existente.</p>
       <form id="formularioCriarSubsecretaria" class="linha-formulario">
         <div>
-          <label for="secretariaDaSubsecretaria">Secretaria</label>
+          <label for="secretariaDaSubsecretaria">Secretaria Responsável</label>
           <select id="secretariaDaSubsecretaria" required></select>
         </div>
         <div>
-          <label for="nomeSubsecretaria">Nome da subsecretaria</label>
+          <label for="nomeSubsecretaria">Nome da Subsecretaria</label>
           <input type="text" id="nomeSubsecretaria" placeholder="Ex: Subsecretaria de Comunicação" required>
         </div>
         <div>
@@ -298,15 +415,15 @@
           <input type="text" id="siglaSubsecretaria" placeholder="Ex: SUBCOM" required>
         </div>
         <div style="flex: 0 0 auto;">
-          <button type="submit" class="botao-principal" style="margin-top:0;">Criar</button>
+          <button type="submit" class="botao-principal" style="margin-top:0;">Criar Subsecretaria</button>
         </div>
       </form>
     </div>
 
     <!-- CRIAR NÚCLEO -->
     <div class="cartao oculto" id="cartaoCriarNucleo">
-      <h2>Criar núcleo</h2>
-      <p class="descricao">Crie os núcleos vinculados a uma Secretaria ou Subsecretaria.</p>
+      <h2>Criar Núcleo Operacional</h2>
+      <p class="descricao">Cadastre núcleos vinculando-os à sua Secretaria ou Subsecretaria.</p>
       <form id="formularioCriarNucleo" class="linha-formulario">
         <div>
           <label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label>
@@ -315,12 +432,12 @@
           </select>
         </div>
         <div>
-          <label for="nomeNucleo">Nome do núcleo</label>
+          <label for="nomeNucleo">Nome do Núcleo</label>
           <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
         </div>
         <div>
-          <label for="agendaNucleo">URL da Agenda de Produção (Google Agenda)</label>
-          <input type="text" id="agendaNucleo" placeholder="ID ou URL da agenda" required>
+          <label for="agendaNucleo">E-mail / ID da Google Agenda de Produção</label>
+          <input type="text" id="agendaNucleo" placeholder="exemplo@gmail.com ou ID da Agenda" required>
         </div>
         <div style="flex: 0 0 auto;">
           <button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button>
@@ -329,36 +446,36 @@
     </div>
 
     <!-- BOTÃO PARA EXPANDIR CRIAÇÃO DE USUÁRIO -->
-    <div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
       <div>
-        <h2 style="margin:0; font-size:16px;">Gestão de Usuários</h2>
-        <p style="margin:0; font-size:13px; color:var(--cor-texto-suave);">Cadastre novos servidores e profissionais após estruturar as secretarias e núcleos.</p>
+        <h2 style="margin:0; font-size:16px;">Gestão de Usuários e Servidores</h2>
+        <p style="margin:0; font-size:13px; color:var(--gov-texto-suave);">Cadastre novos usuários após estruturar as secretarias e núcleos.</p>
       </div>
-      <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:10px 20px;">
+      <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:10px 24px; background-color:var(--gov-verde);">
         + Criar Novo Usuário
       </button>
     </div>
 
     <!-- CARTÃO FICHA CADASTRAL DO USUÁRIO (OCULTO POR PADRÃO) -->
-    <div class="cartao oculto" id="cartaoCriarUsuario">
+    <div class="cartao oculto" id="cartaoCriarUsuario" style="border-top: 4px solid var(--gov-verde);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h2 style="margin:0;">Criar usuário / Ficha cadastral</h2>
-        <button type="button" id="btnFecharFormUsuario" style="background:none; border:none; color:var(--cor-erro); font-weight:bold; cursor:pointer;">
-          ✕ Fechar / Cancelar
+        <h2 style="margin:0;">Ficha Cadastral / Novo Usuário</h2>
+        <button type="button" id="btnFecharFormUsuario" style="background:none; border:none; color:var(--gov-erro); font-weight:bold; cursor:pointer; font-size:13px;">
+          ✕ Fechar Formulário
         </button>
       </div>
-      <p class="descricao">Cadastre usuários vinculando-os à hierarquia e preenchendo os dados do perfil.</p>
+      <p class="descricao">Preencha os dados do servidor e atribua o nível de acesso e vínculo organizacional.</p>
       
       <form id="formularioCriarUsuario">
         <!-- SEÇÃO 1 -->
-        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:10px;">1. Acesso e Estrutura Organizacional</h3>
+        <div class="secao-titulo">1. Acesso e Estrutura Organizacional</div>
         <div class="linha-formulario">
           <div>
             <label for="nomeUsuarioNovo">Nome de Exibição*</label>
             <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
           </div>
           <div>
-            <label for="emailUsuarioNovo">E-mail</label>
+            <label for="emailUsuarioNovo">E-mail Corporativo</label>
             <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
           </div>
           <div>
@@ -389,18 +506,18 @@
         </div>
 
         <!-- SEÇÃO 2 -->
-        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">2. Dados Profissionais e Pessoais</h3>
+        <div class="secao-titulo">2. Dados Profissionais e Contratuais</div>
         <div class="linha-formulario">
           <div>
             <label for="nomeCompleto">Nome Completo</label>
             <input type="text" id="nomeCompleto" placeholder="Nome civil completo">
           </div>
           <div>
-            <label for="cargo">Cargo</label>
+            <label for="cargo">Cargo / Função</label>
             <input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor">
           </div>
           <div>
-            <label for="empregador">Empregador</label>
+            <label for="empregador">Empregador / Vínculo</label>
             <select id="empregador">
               <option value="NOMEADO">NOMEADO</option>
               <option value="FSB">FSB</option>
@@ -433,7 +550,7 @@
         </div>
 
         <!-- SEÇÃO 3 -->
-        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">3. Documentação</h3>
+        <div class="secao-titulo">3. Documentação</div>
         <div class="linha-formulario">
           <div>
             <label for="cpf">CPF</label>
@@ -473,7 +590,7 @@
         </div>
 
         <!-- SEÇÃO 4 -->
-        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">4. Endereço Residencial*</h3>
+        <div class="secao-titulo">4. Endereço Residencial*</div>
         <div class="linha-formulario">
           <div>
             <label for="cep">CEP*</label>
@@ -501,7 +618,7 @@
         </div>
 
         <!-- SEÇÃO 5 -->
-        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">5. Emergência, Saúde e Uniforme*</h3>
+        <div class="secao-titulo">5. Emergência, Saúde e Uniforme*</div>
         <div class="linha-formulario">
           <div>
             <label for="nomeContatoEmergencia">Contato de Emergência*</label>
@@ -553,18 +670,20 @@
           </div>
         </div>
 
-        <div style="margin-top: 24px; text-align: right;">
-          <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">Salvar e Cadastrar Usuário</button>
+        <div style="margin-top: 28px; text-align: right;">
+          <button type="submit" class="botao-principal" style="width: auto; padding: 12px 36px; background-color: var(--gov-verde);">
+            Salvar e Cadastrar Usuário
+          </button>
         </div>
       </form>
     </div>
 
     <!-- ESTRUTURA ORGANIZACIONAL -->
     <div class="cartao">
-      <h2>Estrutura organizacional</h2>
-      <p class="descricao">Secretarias, subsecretarias e núcleos visíveis para o seu nível de acesso.</p>
+      <h2>Estrutura Organizacional Cadastrada</h2>
+      <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
       <div class="lista-estrutura" id="listaEstrutura">
-        <p style="color: var(--cor-texto-suave); font-size: 13px;">Carregando...</p>
+        <p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p>
       </div>
     </div>
 
@@ -649,7 +768,7 @@
       return;
     }
 
-    divMensagem.innerHTML = `<p class="mensagem-sucesso">Senha alterada! Entrando...</p>`;
+    divMensagem.innerHTML = `<p class="mensagem-sucesso">Senha alterada com sucesso! Redirecionando...</p>`;
     setTimeout(iniciarPainelPrincipal, 800);
   });
 
@@ -687,7 +806,7 @@
     document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
     document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
     
-    // Mostra o botão + Criar Usuário para quem não for PROFISSIONAL
+    // Mostra a barra do botão + Criar Usuário para quem não for PROFISSIONAL
     const areaBtn = document.getElementById('areaBotaoNovoUsuario');
     if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
 
@@ -828,7 +947,7 @@
       nome: document.getElementById('nomeSecretaria').value,
       sigla: document.getElementById('siglaSecretaria').value
     });
-    alert(resposta.sucesso ? 'Secretaria criada!' : resposta.mensagem);
+    alert(resposta.sucesso ? 'Secretaria criada com sucesso!' : resposta.mensagem);
     if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
   });
 
@@ -840,7 +959,7 @@
       nome: document.getElementById('nomeSubsecretaria').value,
       sigla: document.getElementById('siglaSubsecretaria').value
     });
-    alert(resposta.sucesso ? 'Subsecretaria criada!' : resposta.mensagem);
+    alert(resposta.sucesso ? 'Subsecretaria criada com sucesso!' : resposta.mensagem);
     if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
   });
 
@@ -891,7 +1010,7 @@
     if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
   });
 
-  // Submissão Única e Completa do Formulário de Usuário
+  // Submissão do Formulário de Usuário
   document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (evento) => {
     evento.preventDefault();
     const usuario = pegarUsuarioSalvo();
