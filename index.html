@@ -5,15 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>App SECC - Gestão de Secretarias</title>
 
-<!-- =====================================================================
-     AQUI COMEÇA O CSS
-     Estilo institucional provisório (azul/cinza sóbrio). Quando você
-     mandar a logomarca e as cores oficiais do órgão, é só ajustar as
-     variáveis dentro de :root que o visual inteiro muda junto.
-     ===================================================================== -->
 <style>
   :root {
-    --cor-primaria: #1B3A5C;      /* azul institucional - trocar pela cor oficial depois */
+    --cor-primaria: #1B3A5C;
     --cor-primaria-clara: #2E5A8A;
     --cor-fundo: #F2F4F7;
     --cor-cartao: #FFFFFF;
@@ -73,7 +67,7 @@
     color: var(--cor-texto-suave);
   }
 
-  input[type="email"], input[type="password"], input[type="text"], select {
+  input[type="email"], input[type="password"], input[type="text"], input[type="date"], input[type="time"], select {
     width: 100%;
     padding: 11px 12px;
     border: 1px solid var(--cor-borda);
@@ -130,7 +124,7 @@
 
   .oculto { display: none !important; }
 
-  /* ---- Painel principal (depois do login) ---- */
+  /* ---- Painel principal ---- */
   .cabecalho-app {
     background: var(--cor-primaria);
     color: white;
@@ -211,10 +205,7 @@
 </head>
 <body>
 
-<!-- =====================================================================
-     TELA 1 - LOGIN
-     Primeira coisa que qualquer pessoa vê, do Admin ao Profissional.
-     ===================================================================== -->
+<!-- TELA 1 - LOGIN -->
 <div class="tela-login" id="telaLogin">
   <div class="cartao-login">
     <h1>App SECC</h1>
@@ -236,10 +227,7 @@
   </div>
 </div>
 
-<!-- =====================================================================
-     TELA 2 - TROCA OBRIGATÓRIA DE SENHA (primeiro acesso)
-     Aparece automaticamente quando o backend avisa "precisaTrocarSenha".
-     ===================================================================== -->
+<!-- TELA 2 - TROCA OBRIGATÓRIA DE SENHA -->
 <div class="tela-login oculto" id="telaTrocaSenha">
   <div class="cartao-login">
     <h1>Primeiro acesso</h1>
@@ -259,12 +247,7 @@
   </div>
 </div>
 
-<!-- =====================================================================
-     TELA 3 - PAINEL PRINCIPAL (pós-login)
-     Nesta primeira fase, mostramos aqui a estrutura organizacional.
-     Os módulos de Produção, Folgas, Relatório etc. entram depois,
-     como novos cartões dentro dessa mesma área de conteúdo.
-     ===================================================================== -->
+<!-- TELA 3 - PAINEL PRINCIPAL -->
 <div class="oculto" id="telaPrincipal">
   <div class="cabecalho-app">
     <strong>App SECC</strong>
@@ -278,7 +261,7 @@
 
   <div class="conteudo-app">
 
-    <!-- ESTE BLOCO ABRE A CRIAÇÃO DE SECRETARIA (só aparece para o Admin) -->
+    <!-- CRIAR SECRETARIA -->
     <div class="cartao oculto" id="cartaoCriarSecretaria">
       <h2>Criar secretaria</h2>
       <p class="descricao">Somente o Administrador do sistema pode criar novas secretarias.</p>
@@ -297,7 +280,7 @@
       </form>
     </div>
 
-    <!-- ESTE BLOCO ABRE A CRIAÇÃO DE SUBSECRETARIA (só aparece para o Admin) -->
+    <!-- CRIAR SUBSECRETARIA -->
     <div class="cartao oculto" id="cartaoCriarSubsecretaria">
       <h2>Criar subsecretaria</h2>
       <p class="descricao">Criada pelo Admin a pedido do(a) secretário(a), vinculada a uma secretaria já existente.</p>
@@ -320,7 +303,7 @@
       </form>
     </div>
 
-  <!-- ESTE BLOCO ABRE A CRIAÇÃO DE NÚCLEO -->
+    <!-- CRIAR NÚCLEO -->
     <div class="cartao oculto" id="cartaoCriarNucleo">
       <h2>Criar núcleo</h2>
       <p class="descricao">Crie os núcleos vinculados a uma Secretaria ou Subsecretaria.</p>
@@ -345,222 +328,238 @@
       </form>
     </div>
 
-<!-- ESTE BLOCO ABRE A CRIAÇÃO DE USUÁRIO COM TODOS OS CAMPOS DO BANCO -->
-<div class="cartao oculto" id="cartaoCriarUsuario">
-  <h2>Criar usuário / Ficha cadastral</h2>
-  <p class="descricao">Cadastre usuários vinculando-os à hierarquia e preenchendo os dados do perfil.</p>
-  
-  <form id="formularioCriarUsuario">
-    <!-- SEÇÃO 1: DADOS DE ACESSO E HIERARQUIA -->
-    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:10px;">1. Acesso e Estrutura Organizacional</h3>
-    <div class="linha-formulario">
+    <!-- BOTÃO PARA EXPANDIR CRIAÇÃO DE USUÁRIO -->
+    <div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
       <div>
-        <label for="nomeUsuarioNovo">Nome de Exibição*</label>
-        <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
+        <h2 style="margin:0; font-size:16px;">Gestão de Usuários</h2>
+        <p style="margin:0; font-size:13px; color:var(--cor-texto-suave);">Cadastre novos servidores e profissionais após estruturar as secretarias e núcleos.</p>
       </div>
-      <div>
-        <label for="emailUsuarioNovo">E-mail</label>
-        <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
-      </div>
-      <div>
-        <label for="nivelUsuarioNovo">Nível de Acesso</label>
-        <select id="nivelUsuarioNovo" required>
-          <option value="SECRETARIO">SECRETARIO</option>
-          <option value="SUBSECRETARIO">SUBSECRETARIO</option>
-          <option value="COORDENADOR">COORDENADOR</option>
-          <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
-          <option value="PROFISSIONAL">PROFISSIONAL</option>
-        </select>
-      </div>
+      <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:10px 20px;">
+        + Criar Novo Usuário
+      </button>
     </div>
 
-    <div class="linha-formulario" style="margin-top:10px;">
-      <div>
-        <label for="secretariaDoUsuario">Secretaria</label>
-        <select id="secretariaDoUsuario" required><option value="">Selecione...</option></select>
+    <!-- CARTÃO FICHA CADASTRAL DO USUÁRIO (OCULTO POR PADRÃO) -->
+    <div class="cartao oculto" id="cartaoCriarUsuario">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h2 style="margin:0;">Criar usuário / Ficha cadastral</h2>
+        <button type="button" id="btnFecharFormUsuario" style="background:none; border:none; color:var(--cor-erro); font-weight:bold; cursor:pointer;">
+          ✕ Fechar / Cancelar
+        </button>
       </div>
-      <div>
-        <label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label>
-        <select id="subsecretariaDoUsuario"><option value="">Nenhuma / Todas</option></select>
-      </div>
-      <div>
-        <label for="nucleoDoUsuario">Núcleo (opcional)</label>
-        <select id="nucleoDoUsuario"><option value="">Nenhum / Todos</option></select>
-      </div>
+      <p class="descricao">Cadastre usuários vinculando-os à hierarquia e preenchendo os dados do perfil.</p>
+      
+      <form id="formularioCriarUsuario">
+        <!-- SEÇÃO 1 -->
+        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:10px;">1. Acesso e Estrutura Organizacional</h3>
+        <div class="linha-formulario">
+          <div>
+            <label for="nomeUsuarioNovo">Nome de Exibição*</label>
+            <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
+          </div>
+          <div>
+            <label for="emailUsuarioNovo">E-mail</label>
+            <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
+          </div>
+          <div>
+            <label for="nivelUsuarioNovo">Nível de Acesso</label>
+            <select id="nivelUsuarioNovo" required>
+              <option value="SECRETARIO">SECRETARIO</option>
+              <option value="SUBSECRETARIO">SUBSECRETARIO</option>
+              <option value="COORDENADOR">COORDENADOR</option>
+              <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
+              <option value="PROFISSIONAL">PROFISSIONAL</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="linha-formulario" style="margin-top:10px;">
+          <div>
+            <label for="secretariaDoUsuario">Secretaria</label>
+            <select id="secretariaDoUsuario" required><option value="">Selecione...</option></select>
+          </div>
+          <div>
+            <label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label>
+            <select id="subsecretariaDoUsuario"><option value="">Nenhuma / Todas</option></select>
+          </div>
+          <div>
+            <label for="nucleoDoUsuario">Núcleo (opcional)</label>
+            <select id="nucleoDoUsuario"><option value="">Nenhum / Todos</option></select>
+          </div>
+        </div>
+
+        <!-- SEÇÃO 2 -->
+        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">2. Dados Profissionais e Pessoais</h3>
+        <div class="linha-formulario">
+          <div>
+            <label for="nomeCompleto">Nome Completo</label>
+            <input type="text" id="nomeCompleto" placeholder="Nome civil completo">
+          </div>
+          <div>
+            <label for="cargo">Cargo</label>
+            <input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor">
+          </div>
+          <div>
+            <label for="empregador">Empregador</label>
+            <select id="empregador">
+              <option value="NOMEADO">NOMEADO</option>
+              <option value="FSB">FSB</option>
+              <option value="INPACTO">INPACTO</option>
+            </select>
+          </div>
+          <div>
+            <label for="dataAdmissao">Data de Admissão</label>
+            <input type="date" id="dataAdmissao">
+          </div>
+        </div>
+
+        <div class="linha-formulario" style="margin-top:10px;">
+          <div>
+            <label for="horarioEntrada">Horário de Entrada*</label>
+            <input type="time" id="horarioEntrada">
+          </div>
+          <div>
+            <label for="horarioSaida">Horário de Saída*</label>
+            <input type="time" id="horarioSaida">
+          </div>
+          <div>
+            <label for="telefone">Telefone / WhatsApp*</label>
+            <input type="text" id="telefone" placeholder="(21) 99999-9999">
+          </div>
+          <div>
+            <label for="fotoUrl">Link da Foto de Perfil*</label>
+            <input type="text" id="fotoUrl" placeholder="URL da foto no Drive/Web">
+          </div>
+        </div>
+
+        <!-- SEÇÃO 3 -->
+        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">3. Documentação</h3>
+        <div class="linha-formulario">
+          <div>
+            <label for="cpf">CPF</label>
+            <input type="text" id="cpf" placeholder="000.000.000-00">
+          </div>
+          <div>
+            <label for="rg">RG</label>
+            <input type="text" id="rg">
+          </div>
+          <div>
+            <label for="orgaoEmissor">Órgão Emissor / UF</label>
+            <input type="text" id="orgaoEmissor" placeholder="Ex: DETRAN/RJ">
+          </div>
+          <div>
+            <label for="dataExpedicao">Data Expedição RG</label>
+            <input type="date" id="dataExpedicao">
+          </div>
+        </div>
+
+        <div class="linha-formulario" style="margin-top:10px;">
+          <div>
+            <label for="idFuncional">ID Funcional</label>
+            <input type="text" id="idFuncional">
+          </div>
+          <div>
+            <label for="dataNascimento">Data de Nascimento</label>
+            <input type="date" id="dataNascimento">
+          </div>
+          <div>
+            <label for="nomeMae">Nome da Mãe</label>
+            <input type="text" id="nomeMae">
+          </div>
+          <div>
+            <label for="registroProfissional">Registro Profissional (DRT/MTE)</label>
+            <input type="text" id="registroProfissional">
+          </div>
+        </div>
+
+        <!-- SEÇÃO 4 -->
+        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">4. Endereço Residencial*</h3>
+        <div class="linha-formulario">
+          <div>
+            <label for="cep">CEP*</label>
+            <input type="text" id="cep" placeholder="00000-000">
+          </div>
+          <div style="flex: 2;">
+            <label for="enderecoCompleto">Endereço Completo*</label>
+            <input type="text" id="enderecoCompleto" placeholder="Rua, número, complemento">
+          </div>
+        </div>
+
+        <div class="linha-formulario" style="margin-top:10px;">
+          <div>
+            <label for="bairro">Bairro*</label>
+            <input type="text" id="bairro">
+          </div>
+          <div>
+            <label for="cidade">Cidade*</label>
+            <input type="text" id="cidade" value="Rio de Janeiro">
+          </div>
+          <div>
+            <label for="uf">UF*</label>
+            <input type="text" id="uf" value="RJ" maxlength="2">
+          </div>
+        </div>
+
+        <!-- SEÇÃO 5 -->
+        <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">5. Emergência, Saúde e Uniforme*</h3>
+        <div class="linha-formulario">
+          <div>
+            <label for="nomeContatoEmergencia">Contato de Emergência*</label>
+            <input type="text" id="nomeContatoEmergencia">
+          </div>
+          <div>
+            <label for="grauParentesco">Grau de Parentesco*</label>
+            <input type="text" id="grauParentesco" placeholder="Ex: Mãe, Cônjuge">
+          </div>
+          <div>
+            <label for="telefoneEmergencia">Telefone de Emergência*</label>
+            <input type="text" id="telefoneEmergencia">
+          </div>
+        </div>
+
+        <div class="linha-formulario" style="margin-top:10px;">
+          <div>
+            <label for="planoSaude">Possui Plano de Saúde?*</label>
+            <select id="planoSaude">
+              <option value="NÃO">NÃO</option>
+              <option value="SIM">SIM</option>
+            </select>
+          </div>
+          <div id="boxAceitePlano" class="oculto">
+            <label for="aceitePlano">Hospitais / Clínicas que aceitam*</label>
+            <input type="text" id="aceitePlano" placeholder="Ex: Hospital Unimed, Barra D'Or">
+          </div>
+          <div>
+            <label for="alergia">Possui Alguma Alergia?*</label>
+            <select id="alergia">
+              <option value="NÃO">NÃO</option>
+              <option value="SIM">SIM</option>
+            </select>
+          </div>
+          <div id="boxTipoAlergia" class="oculto">
+            <label for="tipoAlergia">Especifique a Alergia*</label>
+            <input type="text" id="tipoAlergia" placeholder="Ex: Dipirona, Camarão">
+          </div>
+        </div>
+
+        <div class="linha-formulario" style="margin-top:10px;">
+          <div>
+            <label for="numeroSapato">Número do Calçado*</label>
+            <input type="text" id="numeroSapato" placeholder="Ex: 40">
+          </div>
+          <div>
+            <label for="manequim">Tamanho Manequim/Camisa*</label>
+            <input type="text" id="manequim" placeholder="Ex: M, G, 42">
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; text-align: right;">
+          <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">Salvar e Cadastrar Usuário</button>
+        </div>
+      </form>
     </div>
 
-    <!-- SEÇÃO 2: DADOS PROFISSIONAIS E CONTRATUAIS -->
-    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">2. Dados Profissionais e Pessoais</h3>
-    <div class="linha-formulario">
-      <div>
-        <label for="nomeCompleto">Nome Completo</label>
-        <input type="text" id="nomeCompleto" placeholder="Nome civil completo">
-      </div>
-      <div>
-        <label for="cargo">Cargo</label>
-        <input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor">
-      </div>
-      <div>
-        <label for="empregador">Empregador</label>
-        <select id="empregador">
-          <option value="NOMEADO">NOMEADO</option>
-          <option value="FSB">FSB</option>
-          <option value="INPACTO">INPACTO</option>
-        </select>
-      </div>
-      <div>
-        <label for="dataAdmissao">Data de Admissão</label>
-        <input type="date" id="dataAdmissao">
-      </div>
-    </div>
-
-    <div class="linha-formulario" style="margin-top:10px;">
-      <div>
-        <label for="horarioEntrada">Horário de Entrada*</label>
-        <input type="time" id="horarioEntrada">
-      </div>
-      <div>
-        <label for="horarioSaida">Horário de Saída*</label>
-        <input type="time" id="horarioSaida">
-      </div>
-      <div>
-        <label for="telefone">Telefone / WhatsApp*</label>
-        <input type="text" id="telefone" placeholder="(21) 99999-9999">
-      </div>
-      <div>
-        <label for="fotoUrl">Link da Foto de Perfil*</label>
-        <input type="text" id="fotoUrl" placeholder="URL da foto no Drive/Web">
-      </div>
-    </div>
-
-    <!-- SEÇÃO 3: DOCUMENTAÇÃO -->
-    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">3. Documentação</h3>
-    <div class="linha-formulario">
-      <div>
-        <label for="cpf">CPF</label>
-        <input type="text" id="cpf" placeholder="000.000.000-00">
-      </div>
-      <div>
-        <label for="rg">RG</label>
-        <input type="text" id="rg">
-      </div>
-      <div>
-        <label for="orgaoEmissor">Órgão Emissor / UF</label>
-        <input type="text" id="orgaoEmissor" placeholder="Ex: DETRAN/RJ">
-      </div>
-      <div>
-        <label for="dataExpedicao">Data Expedição RG</label>
-        <input type="date" id="dataExpedicao">
-      </div>
-    </div>
-
-    <div class="linha-formulario" style="margin-top:10px;">
-      <div>
-        <label for="idFuncional">ID Funcional</label>
-        <input type="text" id="idFuncional">
-      </div>
-      <div>
-        <label for="dataNascimento">Data de Nascimento</label>
-        <input type="date" id="dataNascimento">
-      </div>
-      <div>
-        <label for="nomeMae">Nome da Mãe</label>
-        <input type="text" id="nomeMae">
-      </div>
-      <div>
-        <label for="registroProfissional">Registro Profissional (DRT/MTE)</label>
-        <input type="text" id="registroProfissional">
-      </div>
-    </div>
-
-    <!-- SEÇÃO 4: ENDEREÇO -->
-    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">4. Endereço Residencial*</h3>
-    <div class="linha-formulario">
-      <div>
-        <label for="cep">CEP*</label>
-        <input type="text" id="cep" placeholder="00000-000">
-      </div>
-      <div style="flex: 2;">
-        <label for="enderecoCompleto">Endereço Completo*</label>
-        <input type="text" id="enderecoCompleto" placeholder="Rua, número, complemento">
-      </div>
-    </div>
-
-    <div class="linha-formulario" style="margin-top:10px;">
-      <div>
-        <label for="bairro">Bairro*</label>
-        <input type="text" id="bairro">
-      </div>
-      <div>
-        <label for="cidade">Cidade*</label>
-        <input type="text" id="cidade" value="Rio de Janeiro">
-      </div>
-      <div>
-        <label for="uf">UF*</label>
-        <input type="text" id="uf" value="RJ" maxlength="2">
-      </div>
-    </div>
-
-    <!-- SEÇÃO 5: CONTATO DE EMERGÊNCIA, SAÚDE E UNIFORME -->
-    <h3 style="font-size:14px; color:var(--cor-primaria); margin-top:20px;">5. Emergência, Saúde e Uniforme*</h3>
-    <div class="linha-formulario">
-      <div>
-        <label for="nomeContatoEmergencia">Contato de Emergência*</label>
-        <input type="text" id="nomeContatoEmergencia">
-      </div>
-      <div>
-        <label for="grauParentesco">Grau de Parentesco*</label>
-        <input type="text" id="grauParentesco" placeholder="Ex: Mãe, Cônjuge">
-      </div>
-      <div>
-        <label for="telefoneEmergencia">Telefone de Emergência*</label>
-        <input type="text" id="telefoneEmergencia">
-      </div>
-    </div>
-
-    <div class="linha-formulario" style="margin-top:10px;">
-      <div>
-        <label for="planoSaude">Possui Plano de Saúde?*</label>
-        <select id="planoSaude">
-          <option value="NÃO">NÃO</option>
-          <option value="SIM">SIM</option>
-        </select>
-      </div>
-      <div id="boxAceitePlano" class="oculto">
-        <label for="aceitePlano">Hospitais / Clínicas que aceitam*</label>
-        <input type="text" id="aceitePlano" placeholder="Ex: Hospital Unimed, Barra D'Or">
-      </div>
-      <div>
-        <label for="alergia">Possui Alguma Alergia?*</label>
-        <select id="alergia">
-          <option value="NÃO">NÃO</option>
-          <option value="SIM">SIM</option>
-        </select>
-      </div>
-      <div id="boxTipoAlergia" class="oculto">
-        <label for="tipoAlergia">Especifique a Alergia*</label>
-        <input type="text" id="tipoAlergia" placeholder="Ex: Dipirona, Camarão">
-      </div>
-    </div>
-
-    <div class="linha-formulario" style="margin-top:10px;">
-      <div>
-        <label for="numeroSapato">Número do Calçado*</label>
-        <input type="text" id="numeroSapato" placeholder="Ex: 40">
-      </div>
-      <div>
-        <label for="manequim">Tamanho Manequim/Camisa*</label>
-        <input type="text" id="manequim" placeholder="Ex: M, G, 42">
-      </div>
-    </div>
-
-    <div style="margin-top: 24px; text-align: right;">
-      <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">Cadastrar Usuário</button>
-    </div>
-  </form>
-</div>
-       
-    <!-- ESTE BLOCO MOSTRA A ÁRVORE ORGANIZACIONAL JÁ CRIADA -->
+    <!-- ESTRUTURA ORGANIZACIONAL -->
     <div class="cartao">
       <h2>Estrutura organizacional</h2>
       <p class="descricao">Secretarias, subsecretarias e núcleos visíveis para o seu nível de acesso.</p>
@@ -572,14 +571,7 @@
   </div>
 </div>
 
-
-<!-- =====================================================================
-     AQUI COMEÇA O JS
-     Toda a lógica de tela: chamar o backend (Apps Script), controlar
-     login/sessão e desenhar a estrutura organizacional na página.
-     ===================================================================== -->
 <script>
-
   /* ---------------------------------------------------------------
      BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
@@ -690,137 +682,141 @@
     document.getElementById('nomeUsuarioLogado').textContent = usuario.nome;
     document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
 
-    // Exibição dos cartões de acordo com o nível de acesso
+    // Exibição dos cartões de acordo com o nível
     document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
     document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
     document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
     
+    // Mostra o botão + Criar Usuário para quem não for PROFISSIONAL
+    const areaBtn = document.getElementById('areaBotaoNovoUsuario');
+    if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
+
+    // Mantém o formulário grande sempre oculto na abertura
     const cartaoUsu = document.getElementById('cartaoCriarUsuario');
-    if (cartaoUsu) cartaoUsu.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
+    if (cartaoUsu) cartaoUsu.classList.add('oculto');
 
     await carregarEstrutura();
   }
-// Ao clicar no botão, força popular o select antes de exibir
-document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
-  popularSelectSecretariaUsuario(); // Garante que a lista de secretarias seja inserida
-  document.getElementById('cartaoCriarUsuario')?.classList.remove('oculto');
-  document.getElementById('cartaoCriarUsuario')?.scrollIntoView({ behavior: 'smooth' });
-});
-  // Função que atualiza Subsecretarias e Núcleos em cascata estrita
-function atualizarDropdownsDependenteUsuario() {
-  if (!dadosEstruturaGlobal) return;
-  const secId = document.getElementById('secretariaDoUsuario')?.value;
-  const subSel = document.getElementById('subsecretariaDoUsuario');
-  const nucSel = document.getElementById('nucleoDoUsuario');
 
-  // 1. Filtra Subsecretarias pertencentes à Secretaria selecionada
-  if (subSel) {
-    const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
-    subSel.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
-      subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
+  // Ações do Botão + Criar Usuário (Expandir / Ocultar)
+  document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
+    popularSelectSecretariaUsuario();
+    document.getElementById('cartaoCriarUsuario')?.classList.remove('oculto');
+    document.getElementById('cartaoCriarUsuario')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('btnFecharFormUsuario')?.addEventListener('click', () => {
+    document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
+  });
+
+  // Funções de Cascata para Usuário
+  function atualizarDropdownsDependenteUsuario() {
+    if (!dadosEstruturaGlobal) return;
+    const secId = document.getElementById('secretariaDoUsuario')?.value;
+    const subSel = document.getElementById('subsecretariaDoUsuario');
+
+    if (subSel) {
+      const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
+      subSel.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
+        subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
+    }
+
+    filtrarNucleosDoUsuario();
   }
 
-  // 2. Atualiza a lista de Núcleos em função da Secretaria e Subsecretaria
-  filtrarNucleosDoUsuario();
-}
+  function filtrarNucleosDoUsuario() {
+    if (!dadosEstruturaGlobal) return;
+    const secId = document.getElementById('secretariaDoUsuario')?.value;
+    const subId = document.getElementById('subsecretariaDoUsuario')?.value;
+    const nucSel = document.getElementById('nucleoDoUsuario');
 
-// Filtra núcleos estritamente vinculados à Secretaria ou Subsecretaria escolhida
-function filtrarNucleosDoUsuario() {
-  if (!dadosEstruturaGlobal) return;
-  const secId = document.getElementById('secretariaDoUsuario')?.value;
-  const subId = document.getElementById('subsecretariaDoUsuario')?.value;
-  const nucSel = document.getElementById('nucleoDoUsuario');
+    if (!nucSel) return;
 
-  if (!nucSel) return;
+    let nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
 
-  let nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
+    if (subId) {
+      nucsFiltrados = nucsFiltrados.filter(n => n.SubsecretariaID === subId);
+    }
 
-  // Se uma subsecretaria específica foi escolhida, filtra só os núcleos dela
-  if (subId) {
-    nucsFiltrados = nucsFiltrados.filter(n => n.SubsecretariaID === subId);
+    nucSel.innerHTML = '<option value="">Nenhum / Todos</option>' + 
+      nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
   }
 
-  nucSel.innerHTML = '<option value="">Nenhum / Todos</option>' + 
-    nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
-}
-
-// Ouvintes para disparar a cascata assim que o usuário selecionar os dropdowns
-document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
-document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
+  document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
+  document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
 
   async function carregarEstrutura() {
-  const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
-  const container = document.getElementById('listaEstrutura');
+    const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
+    const container = document.getElementById('listaEstrutura');
 
-  if (!resposta.sucesso) {
-    if (container) container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-    return;
-  }
+    if (!resposta.sucesso) {
+      if (container) container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
+      return;
+    }
 
-  // Guarda os dados globalmente
-  dadosEstruturaGlobal = resposta;
+    dadosEstruturaGlobal = resposta;
 
-  // 1. Popula Seletor de Secretaria na criação de Subsecretaria
-  const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
-  if (seletorSecretariaSub && resposta.secretarias) {
-    seletorSecretariaSub.innerHTML = resposta.secretarias
-      .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-  }
+    // Popula Seletor de Secretaria para Subsecretaria
+    const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
+    if (seletorSecretariaSub && resposta.secretarias) {
+      seletorSecretariaSub.innerHTML = resposta.secretarias
+        .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+    }
 
-  // 2. Popula Seletor do Núcleo (Secretaria/Subsecretaria)
-  const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
-  if (seletorVinculoNucleo && resposta.secretarias) {
-    let htmlOptions = '<option value="">Selecione o local...</option>';
-    resposta.secretarias.forEach(sec => {
-      htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
-      const subs = (resposta.subsecretarias || []).filter(sub => sub.SecretariaID === sec.SecretariaID);
-      subs.forEach(sub => {
-        htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
+    // Popula Seletor do Núcleo
+    const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
+    if (seletorVinculoNucleo && resposta.secretarias) {
+      let htmlOptions = '<option value="">Selecione o local...</option>';
+      resposta.secretarias.forEach(sec => {
+        htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
+        const subs = (resposta.subsecretarias || []).filter(sub => sub.SecretariaID === sec.SecretariaID);
+        subs.forEach(sub => {
+          htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
+        });
       });
-    });
-    seletorVinculoNucleo.innerHTML = htmlOptions;
+      seletorVinculoNucleo.innerHTML = htmlOptions;
+    }
+
+    // Popula Seletor de Secretaria do Usuário
+    popularSelectSecretariaUsuario();
+
+    // Desenha árvore
+    if (container) {
+      let html = '<ul>';
+      (resposta.secretarias || []).forEach(secretaria => {
+        html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
+
+        (resposta.nucleos || [])
+          .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
+          .forEach(nucleo => {
+            html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
+          });
+
+        (resposta.subsecretarias || [])
+          .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
+          .forEach(sub => {
+            html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
+            
+            (resposta.nucleos || [])
+              .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
+              .forEach(nucleo => {
+                html += `<li class="item-nucleo" style="margin-left: 60px;">📌 Núcleo: ${nucleo.Nome}</li>`;
+              });
+          });
+      });
+      html += '</ul>';
+      container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
+    }
   }
 
-  // 3. Popula Seletor de Secretaria no formulário de USUÁRIO
-  popularSelectSecretariaUsuario();
-
-  // 4. Desenha a árvore visual no final da página
-  if (container) {
-    let html = '<ul>';
-    (resposta.secretarias || []).forEach(secretaria => {
-      html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
-
-      (resposta.nucleos || [])
-        .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
-        .forEach(nucleo => {
-          html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
-        });
-
-      (resposta.subsecretarias || [])
-        .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
-        .forEach(sub => {
-          html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
-          
-          (resposta.nucleos || [])
-            .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
-            .forEach(nucleo => {
-              html += `<li class="item-nucleo" style="margin-left: 60px;">📌 Núcleo: ${nucleo.Nome}</li>`;
-            });
-        });
-    });
-    html += '</ul>';
-    container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
+  function popularSelectSecretariaUsuario() {
+    const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
+    if (seletorSecretariaUsu && dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) {
+      seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
+        dadosEstruturaGlobal.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+    }
   }
-}
 
-// Função dedicada a preencher a lista de Secretarias do Usuário
-function popularSelectSecretariaUsuario() {
-  const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
-  if (seletorSecretariaUsu && dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) {
-    seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
-      dadosEstruturaGlobal.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-  }
-}
 
   /* ---------------------------------------------------------------
      BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO
@@ -884,99 +880,75 @@ function popularSelectSecretariaUsuario() {
     }
   });
 
-  const formUsu = document.getElementById('formularioCriarUsuario');
-  if (formUsu) {
-    formUsu.addEventListener('submit', async (evento) => {
-      evento.preventDefault();
-      const usuario = pegarUsuarioSalvo();
+  // Campos condicionais SIM/NÃO
+  document.getElementById('planoSaude')?.addEventListener('change', (e) => {
+    const box = document.getElementById('boxAceitePlano');
+    if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
+  });
 
-      const secSel = document.getElementById('secretariaDoUsuario')?.value || '';
-      const subSel = document.getElementById('subsecretariaDoUsuario')?.value || '';
-      const nucSel = document.getElementById('nucleoDoUsuario')?.value || '';
+  document.getElementById('alergia')?.addEventListener('change', (e) => {
+    const box = document.getElementById('boxTipoAlergia');
+    if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
+  });
 
-      const resposta = await chamarBackend('criarUsuario', {
-        token: pegarTokenSalvo(),
-        nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
-        email: document.getElementById('emailUsuarioNovo').value,
-        nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
-        secretariaId: secSel || usuario.secretariaId || '',
-        subsecretariaId: subSel || usuario.subsecretariaId || '',
-        nucleoId: nucSel || usuario.nucleoId || ''
-      });
+  // Submissão Única e Completa do Formulário de Usuário
+  document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const usuario = pegarUsuarioSalvo();
 
-      alert(resposta.sucesso ? 'Usuário criado com sucesso! Senha enviada por e-mail.' : resposta.mensagem);
-      if (resposta.sucesso) { evento.target.reset(); }
-    });
-  }
-// Controle dos campos condicionais SIM/NÃO
-document.getElementById('planoSaude')?.addEventListener('change', (e) => {
-  const box = document.getElementById('boxAceitePlano');
-  if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
-});
+    const dadosPayload = {
+      token: pegarTokenSalvo(),
+      nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
+      email: document.getElementById('emailUsuarioNovo').value,
+      nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
+      secretariaId: document.getElementById('secretariaDoUsuario').value || usuario.secretariaId || '',
+      subsecretariaId: document.getElementById('subsecretariaDoUsuario').value || usuario.subsecretariaId || '',
+      nucleoId: document.getElementById('nucleoDoUsuario').value || usuario.nucleoId || '',
+      
+      nomeCompleto: document.getElementById('nomeCompleto').value,
+      cargo: document.getElementById('cargo').value,
+      empregador: document.getElementById('empregador').value,
+      dataAdmissao: document.getElementById('dataAdmissao').value,
+      horarioEntrada: document.getElementById('horarioEntrada').value,
+      horarioSaida: document.getElementById('horarioSaida').value,
+      telefone: document.getElementById('telefone').value,
+      foto: document.getElementById('fotoUrl').value,
 
-document.getElementById('alergia')?.addEventListener('change', (e) => {
-  const box = document.getElementById('boxTipoAlergia');
-  if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
-});
+      cpf: document.getElementById('cpf').value,
+      rg: document.getElementById('rg').value,
+      orgaoEmissor: document.getElementById('orgaoEmissor').value,
+      dataExpedicao: document.getElementById('dataExpedicao').value,
+      idFuncional: document.getElementById('idFuncional').value,
+      dataNascimento: document.getElementById('dataNascimento').value,
+      nomeMae: document.getElementById('nomeMae').value,
+      registroProfissional: document.getElementById('registroProfissional').value,
 
-// Listener atualizado para salvar todas as informações no Apps Script
-document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (evento) => {
-  evento.preventDefault();
-  const usuario = pegarUsuarioSalvo();
+      cep: document.getElementById('cep').value,
+      enderecoCompleto: document.getElementById('enderecoCompleto').value,
+      bairro: document.getElementById('bairro').value,
+      cidade: document.getElementById('cidade').value,
+      uf: document.getElementById('uf').value,
 
-  const dadosPayload = {
-    token: pegarTokenSalvo(),
-    nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
-    email: document.getElementById('emailUsuarioNovo').value,
-    nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
-    secretariaId: document.getElementById('secretariaDoUsuario').value || usuario.secretariaId || '',
-    subsecretariaId: document.getElementById('subsecretariaDoUsuario').value || usuario.subsecretariaId || '',
-    nucleoId: document.getElementById('nucleoDoUsuario').value || usuario.nucleoId || '',
-    
-    // Dados Pessoais / Contratuais
-    nomeCompleto: document.getElementById('nomeCompleto').value,
-    cargo: document.getElementById('cargo').value,
-    empregador: document.getElementById('empregador').value,
-    dataAdmissao: document.getElementById('dataAdmissao').value,
-    horarioEntrada: document.getElementById('horarioEntrada').value,
-    horarioSaida: document.getElementById('horarioSaida').value,
-    telefone: document.getElementById('telefone').value,
-    foto: document.getElementById('fotoUrl').value,
+      nomeContatoEmergencia: document.getElementById('nomeContatoEmergencia').value,
+      grauParentesco: document.getElementById('grauParentesco').value,
+      telefoneEmergencia: document.getElementById('telefoneEmergencia').value,
+      planoSaude: document.getElementById('planoSaude').value,
+      aceitePlano: document.getElementById('aceitePlano').value,
+      numeroSapato: document.getElementById('numeroSapato').value,
+      manequim: document.getElementById('manequim').value,
+      alergia: document.getElementById('alergia').value,
+      tipoAlergia: document.getElementById('tipoAlergia').value
+    };
 
-    // Documentação
-    cpf: document.getElementById('cpf').value,
-    rg: document.getElementById('rg').value,
-    orgaoEmissor: document.getElementById('orgaoEmissor').value,
-    dataExpedicao: document.getElementById('dataExpedicao').value,
-    idFuncional: document.getElementById('idFuncional').value,
-    dataNascimento: document.getElementById('dataNascimento').value,
-    nomeMae: document.getElementById('nomeMae').value,
-    registroProfissional: document.getElementById('registroProfissional').value,
+    const resposta = await chamarBackend('criarUsuario', dadosPayload);
 
-    // Endereço
-    cep: document.getElementById('cep').value,
-    enderecoCompleto: document.getElementById('enderecoCompleto').value,
-    bairro: document.getElementById('bairro').value,
-    cidade: document.getElementById('cidade').value,
-    uf: document.getElementById('uf').value,
+    alert(resposta.sucesso ? 'Usuário cadastrado com sucesso! Acesso provisório enviado por e-mail.' : resposta.mensagem);
+    if (resposta.sucesso) { 
+      evento.target.reset(); 
+      document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
+    }
+  });
 
-    // Emergência, Saúde e Uniforme
-    nomeContatoEmergencia: document.getElementById('nomeContatoEmergencia').value,
-    grauParentesco: document.getElementById('grauParentesco').value,
-    telefoneEmergencia: document.getElementById('telefoneEmergencia').value,
-    planoSaude: document.getElementById('planoSaude').value,
-    aceitePlano: document.getElementById('aceitePlano').value,
-    numeroSapato: document.getElementById('numeroSapato').value,
-    manequim: document.getElementById('manequim').value,
-    alergia: document.getElementById('alergia').value,
-    tipoAlergia: document.getElementById('tipoAlergia').value
-  };
-
-  const resposta = await chamarBackend('criarUsuario', dadosPayload);
-
-  alert(resposta.sucesso ? 'Usuário cadastrado com sucesso! Acesso provisório enviado por e-mail.' : resposta.mensagem);
-  if (resposta.sucesso) { evento.target.reset(); }
-});
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
@@ -988,7 +960,6 @@ document.getElementById('formularioCriarUsuario')?.addEventListener('submit', as
       mostrarTela('telaLogin');
     }
   })();
-
 </script>
 </body>
 </html>
