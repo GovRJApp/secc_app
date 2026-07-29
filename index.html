@@ -1097,7 +1097,51 @@
       document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
     }
   });
+<!-- Form simples sem conversão Base64 -->
+<form id="formFotoPerfil" style="margin-top: 15px;">
+  <input type="hidden" name="token" id="tokenFotoSessao" value="" />
+  
+  <div style="margin-bottom: 10px;">
+    <label for="campoFoto"><strong>Foto de Perfil:</strong></label><br>
+    <input type="file" name="arquivoFoto" id="campoFoto" accept="image/jpeg,image/png" required />
+  </div>
 
+  <button type="submit" id="btnSalvarFoto">Salvar Foto de Perfil</button>
+</form>
+
+<script>
+  document.getElementById('formFotoPerfil').addEventListener('submit', function (evento) {
+    evento.preventDefault();
+
+    // Seta o token salvo no campo oculto
+    document.getElementById('tokenFotoSessao').value = pegarTokenSalvo();
+
+    const botao = document.getElementById('btnSalvarFoto');
+    botao.disabled = true;
+    botao.textContent = 'Enviando foto...';
+
+    // Dispara para o backend via upload nativo de formulário (FormData)
+    google.script.run
+      .withSuccessHandler(function (resposta) {
+        botao.disabled = false;
+        botao.textContent = 'Salvar Foto de Perfil';
+
+        if (resposta.sucesso) {
+          alert(resposta.mensagem);
+          // Se tiver um elemento <img> na tela exibindo a foto, atualiza o src:
+          const imgElemento = document.getElementById('imgFotoExibicao');
+          if (imgElemento) imgElemento.src = resposta.urlFoto;
+        } else {
+          alert(resposta.mensagem);
+        }
+      })
+      .withFailureHandler(function (erro) {
+        botao.disabled = false;
+        botao.textContent = 'Salvar Foto de Perfil';
+        alert('Falha na requisição: ' + erro.message);
+      })
+      .uploadFotoPerfil(this);
+  });
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
@@ -1109,6 +1153,8 @@
       mostrarTela('telaLogin');
     }
   })();
+
+  
 </script>
 </body>
 </html>
