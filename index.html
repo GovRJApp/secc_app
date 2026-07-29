@@ -700,7 +700,12 @@
 
     await carregarEstrutura();
   }
-
+// Ao clicar no botão, força popular o select antes de exibir
+document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
+  popularSelectSecretariaUsuario(); // Garante que a lista de secretarias seja inserida
+  document.getElementById('cartaoCriarUsuario')?.classList.remove('oculto');
+  document.getElementById('cartaoCriarUsuario')?.scrollIntoView({ behavior: 'smooth' });
+});
   // Função que atualiza Subsecretarias e Núcleos em cascata estrita
 function atualizarDropdownsDependenteUsuario() {
   if (!dadosEstruturaGlobal) return;
@@ -744,63 +749,59 @@ document.getElementById('secretariaDoUsuario')?.addEventListener('change', atual
 document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
 
   async function carregarEstrutura() {
-    const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
-    const container = document.getElementById('listaEstrutura');
+  const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
+  const container = document.getElementById('listaEstrutura');
 
-    if (!resposta.sucesso) {
-      container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-      return;
-    }
+  if (!resposta.sucesso) {
+    if (container) container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
+    return;
+  }
 
-    dadosEstruturaGlobal = resposta;
+  // Guarda os dados globalmente
+  dadosEstruturaGlobal = resposta;
 
-    // Seletor de Secretaria na criação de Subsecretaria
-    const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
-    if (seletorSecretariaSub) {
-      seletorSecretariaSub.innerHTML = resposta.secretarias
-        .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-    }
+  // 1. Popula Seletor de Secretaria na criação de Subsecretaria
+  const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
+  if (seletorSecretariaSub && resposta.secretarias) {
+    seletorSecretariaSub.innerHTML = resposta.secretarias
+      .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+  }
 
-    // Seletor hierárquico na criação de Núcleo
-   const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
-    if (seletorVinculoNucleo) {
-      let htmlOptions = '<option value="">Selecione o local...</option>';
-      resposta.secretarias.forEach(sec => {
-        htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
-        const subs = resposta.subsecretarias.filter(sub => sub.SecretariaID === sec.SecretariaID);
-        subs.forEach(sub => {
-          htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
-        });
+  // 2. Popula Seletor do Núcleo (Secretaria/Subsecretaria)
+  const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
+  if (seletorVinculoNucleo && resposta.secretarias) {
+    let htmlOptions = '<option value="">Selecione o local...</option>';
+    resposta.secretarias.forEach(sec => {
+      htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
+      const subs = (resposta.subsecretarias || []).filter(sub => sub.SecretariaID === sec.SecretariaID);
+      subs.forEach(sub => {
+        htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
       });
-      seletorVinculoNucleo.innerHTML = htmlOptions;
-    }
+    });
+    seletorVinculoNucleo.innerHTML = htmlOptions;
+  }
 
-    // Seletor de Secretaria na criação de Usuário
-    const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
-    if (seletorSecretariaUsu) {
-      seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
-        resposta.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-    }
+  // 3. Popula Seletor de Secretaria no formulário de USUÁRIO
+  popularSelectSecretariaUsuario();
 
-    atualizarDropdownsDependenteUsuario();
-
-    // Desenha a árvore na tela
+  // 4. Desenha a árvore visual no final da página
+  if (container) {
     let html = '<ul>';
-    resposta.secretarias.forEach(secretaria => {
+    (resposta.secretarias || []).forEach(secretaria => {
       html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
 
-      resposta.nucleos
+      (resposta.nucleos || [])
         .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
         .forEach(nucleo => {
           html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
         });
 
-      resposta.subsecretarias
+      (resposta.subsecretarias || [])
         .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
         .forEach(sub => {
           html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
           
-          resposta.nucleos
+          (resposta.nucleos || [])
             .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
             .forEach(nucleo => {
               html += `<li class="item-nucleo" style="margin-left: 60px;">📌 Núcleo: ${nucleo.Nome}</li>`;
@@ -808,13 +809,18 @@ document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', fi
         });
     });
     html += '</ul>';
-
     container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
   }
+}
 
-  // Evento de escuta para filtrar subsecretarias/núcleos na criação de usuário
-  document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
-
+// Função dedicada a preencher a lista de Secretarias do Usuário
+function popularSelectSecretariaUsuario() {
+  const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
+  if (seletorSecretariaUsu && dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) {
+    seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
+      dadosEstruturaGlobal.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
+  }
+}
 
   /* ---------------------------------------------------------------
      BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO
