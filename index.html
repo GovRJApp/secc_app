@@ -965,7 +965,11 @@
         dadosEstruturaGlobal.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
     }
   }
-
+  
+// Dentro da sua lógica ao iniciar a tela principal:
+if (usuarioLogado.Foto) {
+  document.getElementById('imgAvatarHeader').src = usuarioLogado.Foto;
+}
 
   /* ---------------------------------------------------------------
      BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO
@@ -1097,7 +1101,8 @@
       document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
     }
   });
-<!-- Form simples sem conversão Base64 -->
+  
+// Form simples sem conversão Base64
 <form id="formFotoPerfil" style="margin-top: 15px;">
   <input type="hidden" name="token" id="tokenFotoSessao" value="" />
   
@@ -1142,6 +1147,50 @@
       })
       .uploadFotoPerfil(this);
   });
+
+  // Função para abrir o modal de perfil
+function abrirModalPerfil() {
+  document.getElementById('modalPerfil').classList.remove('oculto');
+  document.getElementById('modalPerfil').style.display = 'flex';
+}
+
+// Função para fechar o modal
+function fecharModalPerfil() {
+  document.getElementById('modalPerfil').classList.add('oculto');
+  document.getElementById('modalPerfil').style.display = 'none';
+}
+
+// Evento de submit do formulário de foto
+document.getElementById('formFotoPerfil').addEventListener('submit', function (evento) {
+  evento.preventDefault();
+
+  document.getElementById('tokenFotoSessao').value = pegarTokenSalvo();
+
+  const botao = document.getElementById('btnSalvarFoto');
+  botao.disabled = true;
+  botao.textContent = 'Enviando...';
+
+  google.script.run
+    .withSuccessHandler(function (resposta) {
+      botao.disabled = false;
+      botao.textContent = 'Salvar Foto';
+
+      if (resposta.sucesso) {
+        alert(resposta.mensagem);
+        // Atualiza a imagem do avatar no topo
+        document.getElementById('imgAvatarHeader').src = resposta.urlFoto;
+        fecharModalPerfil();
+      } else {
+        alert(resposta.mensagem);
+      }
+    })
+    .withFailureHandler(function (erro) {
+      botao.disabled = false;
+      botao.textContent = 'Salvar Foto';
+      alert('Erro: ' + erro.message);
+    })
+    .uploadFotoPerfil(this);
+});
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
