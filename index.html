@@ -285,6 +285,166 @@
       width: 100% !important;
       margin-top: 10px !important;
     }
+    .card-painel {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 850px;
+    margin: 20px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid #005696;
+    font-family: Arial, sans-serif;
+}
+
+.card-header-perfil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.card-header-perfil h2 {
+    margin: 0;
+    color: #005696;
+    font-size: 1.4rem;
+}
+
+.card-body-perfil {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.area-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 160px;
+}
+
+.avatar-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #005696;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn-foto-upload {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    border: 1px solid #005696;
+    background: #eef6ff;
+    color: #005696;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-foto-upload:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #eee;
+    border-color: #ccc;
+    color: #777;
+}
+
+.dica-foto {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 6px;
+    text-align: center;
+}
+
+.form-grid-perfil {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    min-width: 280px;
+}
+
+.campo-full {
+    grid-column: 1 / -1;
+}
+
+.campo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.campo-form label {
+    font-weight: bold;
+    font-size: 0.88rem;
+    color: #333;
+}
+
+.campo-form input, .campo-form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.campo-form input:disabled, .campo-form select:disabled {
+    background-color: #f4f6f8;
+    color: #555;
+}
+
+.tag-vinculo {
+    background-color: #eef6ff;
+    border: 1px solid #b3d7ff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: #004085;
+}
+
+.btn-acao-secundario {
+    padding: 8px 16px;
+    background-color: #005696;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.acoes-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-salvar-perfil {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-cancelar-perfil {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
   }
 </style>
 </head>
@@ -636,6 +796,77 @@
         </div>
       </form>
     </div>
+    
+    <!-- TELA DE PERFIL DO PROFISSIONAL -->
+<div id="secao-perfil-profissional" class="card-painel">
+    <div class="card-header-perfil">
+        <h2><i class="fas fa-user-circle"></i> Perfil do Profissional</h2>
+        <button id="btn-editar-perfil" onclick="habilitarEdicaoPerfil()" class="btn-acao-secundario">
+            ✏️ Editar Perfil
+        </button>
+    </div>
+
+    <div class="card-body-perfil">
+        <!-- BLOCO DA FOTO / AVATAR -->
+        <div class="area-avatar">
+            <div class="avatar-wrapper">
+                <img id="img-avatar-preview" src="https://via.placeholder.com/130?text=Sem+Foto" alt="Foto do Profissional">
+            </div>
+            <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
+            <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>
+                📷 Alterar Foto
+            </button>
+            <small class="dica-foto">Formatos: JPG ou PNG (Máx 2MB)</small>
+        </div>
+
+        <!-- FORMULÁRIO DE DADOS DO PROFISSIONAL -->
+        <form id="form-perfil-dados" class="form-grid-perfil">
+            <div class="campo-form">
+                <label for="prof-nome">Nome de Exibição / Completo:</label>
+                <input type="text" id="prof-nome" value="PAMPLONA" disabled required>
+            </div>
+
+            <div class="campo-form">
+                <label for="prof-email">E-mail de Acesso:</label>
+                <input type="email" id="prof-email" value="pamplona@gov.rj.gov.br" disabled required>
+            </div>
+
+            <div class="campo-form">
+                <label for="prof-cargo">Cargo / Função Principal:</label>
+                <select id="prof-cargo" disabled required>
+                    <option value="Cinegrafista" selected>Cinegrafista</option>
+                    <option value="Fotógrafo">Fotógrafo</option>
+                    <option value="Editor de Vídeo">Editor de Vídeo</option>
+                    <option value="Social Mídia">Social Mídia</option>
+                    <option value="Assessor de Imprensa">Assessor de Imprensa</option>
+                    <option value="Produtor">Produtor</option>
+                    <option value="Motorista">Motorista</option>
+                </select>
+            </div>
+
+            <div class="campo-form">
+                <label for="prof-telefone">Telefone / WhatsApp:</label>
+                <input type="tel" id="prof-telefone" value="(21) 99999-9999" disabled placeholder="(21) 99999-9999">
+            </div>
+
+            <!-- DADOS INSTITUCIONAIS (Somente Leitura - definidos pelo Admin/Estrutura) -->
+            <div class="campo-form campo-full">
+                <label>Vínculo Institucional Atual:</label>
+                <div class="tag-vinculo">
+                    <span><strong>Secretaria:</strong> Casa Civil (SECC)</span> | 
+                    <span><strong>Subsecretaria:</strong> SUBCOM</span> | 
+                    <span><strong>Núcleo:</strong> Vídeo</span>
+                </div>
+            </div>
+
+            <!-- BOTOES DE AÇÃO DA EDIÇÃO -->
+            <div id="botoes-edicao-perfil" class="campo-full acoes-form" style="display: none;">
+                <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar Alterações</button>
+                <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <!-- ESTRUTURA ORGANIZACIONAL -->
     <div class="cartao">
@@ -986,6 +1217,85 @@
       document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
     }
   });
+
+  // Variável temporária para guardar os dados anteriores em caso de cancelamento
+let dadosPerfilOriginal = {};
+
+function habilitarEdicaoPerfil() {
+    // Salva estado original
+    dadosPerfilOriginal = {
+        nome: document.getElementById('prof-nome').value,
+        cargo: document.getElementById('prof-cargo').value,
+        telefone: document.getElementById('prof-telefone').value,
+        fotoSrc: document.getElementById('img-avatar-preview').src
+    };
+
+    // Habilita os campos editáveis
+    document.getElementById('prof-nome').disabled = false;
+    document.getElementById('prof-cargo').disabled = false;
+    document.getElementById('prof-telefone').disabled = false;
+    document.getElementById('btn-alterar-foto').disabled = false;
+
+    // Ajusta os botões
+    document.getElementById('botoes-edicao-perfil').style.display = 'flex';
+    document.getElementById('btn-editar-perfil').style.display = 'none';
+}
+
+function cancelarEdicaoPerfil() {
+    // Restaura valores originais
+    document.getElementById('prof-nome').value = dadosPerfilOriginal.nome;
+    document.getElementById('prof-cargo').value = dadosPerfilOriginal.cargo;
+    document.getElementById('prof-telefone').value = dadosPerfilOriginal.telefone;
+    document.getElementById('img-avatar-preview').src = dadosPerfilOriginal.fotoSrc;
+
+    // Desabilita os campos novamente
+    document.getElementById('prof-nome').disabled = true;
+    document.getElementById('prof-cargo').disabled = true;
+    document.getElementById('prof-telefone').disabled = true;
+    document.getElementById('btn-alterar-foto').disabled = true;
+
+    // Reseta exibição dos botões
+    document.getElementById('botoes-edicao-perfil').style.display = 'none';
+    document.getElementById('btn-editar-perfil').style.display = 'inline-block';
+}
+
+function carregarPreviewFoto(event) {
+    const file = event.target.files[0];
+    if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+            alert("A foto selecionada deve ter no máximo 2MB.");
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('img-avatar-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function salvarPerfilProfissional() {
+    const nomeExibicao = document.getElementById('prof-nome').value; // Ex: "PAMPLONA"
+    const fotoBase64 = document.getElementById('img-avatar-preview').src;
+
+    if (!nomeExibicao) {
+        alert("O Nome de Exibição é obrigatório.");
+        return;
+    }
+
+    // Chama a função do Google Apps Script
+    google.script.run
+        .withSuccessHandler(function(resposta) {
+            if (resposta.status === "sucesso") {
+                alert(resposta.mensagem);
+                // Trava os campos do formulário de perfil novamente
+                cancelarEdicaoPerfil();
+            } else {
+                alert("Erro ao salvar a foto: " + resposta.mensagem);
+            }
+        })
+        .salvarFotoPerfilSubstituindo(fotoBase64, nomeExibicao);
+}
 
   /* ---------------------------------------------------------------
      BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
