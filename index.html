@@ -896,24 +896,32 @@
   /* ---------------------------------------------------------------
      BLOCO JS 2 - COMUNICAÇÃO COM O BACKEND
      --------------------------------------------------------------- */
-function chamarBackend(payload) {
-    return fetch(URL_WEB_APP, {
-        method: "POST",
-        mode: "cors",
-        redirect: "follow",
-        headers: {
-            "Content-Type": "text/plain;charset=utf-8" // <--- ESSENCIAL para evitar o bloqueio de CORS no Google
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Erro na resposta do servidor: " + response.status);
-        }
-        return response.json();
-    });
-}
+async function chamarBackend(acao, parametros = {}) {
+  // Une a propriedade 'action' esperada pelo backend com os outros parâmetros (email, senha, etc)
+  const payload = {
+    action: acao,
+    ...parametros
+  };
 
+  try {
+    const resposta = await fetch(URL_BACKEND, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Erro de rede: " + resposta.status);
+    }
+
+    return await resposta.json();
+  } catch (erro) {
+    console.error("Erro na chamada do backend:", erro);
+    return { sucesso: false, mensagem: "Erro ao se conectar com o servidor." };
+  }
+}
   function salvarSessao(token, usuario) {
     localStorage.setItem('secc_token', token);
     localStorage.setItem('secc_usuario', JSON.stringify(usuario));
