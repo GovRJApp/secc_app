@@ -896,14 +896,23 @@
   /* ---------------------------------------------------------------
      BLOCO JS 2 - COMUNICAÇÃO COM O BACKEND
      --------------------------------------------------------------- */
-  async function chamarBackend(acao, dadosExtras = {}) {
-    const corpo = Object.assign({ action: acao }, dadosExtras);
-    const resposta = await fetch(URL_BACKEND, {
-      method: 'POST',
-      body: JSON.stringify(corpo)
+function chamarBackend(payload) {
+    return fetch(URL_WEB_APP, {
+        method: "POST",
+        mode: "cors",
+        redirect: "follow",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8" // <--- ESSENCIAL para evitar o bloqueio de CORS no Google
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erro na resposta do servidor: " + response.status);
+        }
+        return response.json();
     });
-    return resposta.json();
-  }
+}
 
   function salvarSessao(token, usuario) {
     localStorage.setItem('secc_token', token);
