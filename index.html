@@ -810,7 +810,14 @@
         <!-- BLOCO DA FOTO / AVATAR -->
         <div class="area-avatar">
             <div class="avatar-wrapper">
-                <img id="img-avatar-preview" src="https://via.placeholder.com/130?text=Sem+Foto" alt="Foto do Profissional">
+                <!-- Troque isso:
+<img id="img-avatar-preview" src="https://via.placeholder.com/130?text=Sem+Foto" alt="Foto do Profissional"> 
+-->
+
+<!-- Por isto (SVG embutido direto no código): -->
+<img id="img-avatar-preview" 
+     src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>" 
+     alt="Foto do Profissional">
             </div>
             <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
             <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>
