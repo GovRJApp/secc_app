@@ -939,6 +939,46 @@ async function chamarBackend(acao, parametros = {}) {
     localStorage.removeItem('secc_usuario');
   }
 
+  function enviarFormulario() {
+    // 1. Pega o arquivo de foto do formulário
+    var inputFoto = document.getElementById("inputFoto").files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      // Converte a imagem para Base64
+      var fotoBase64 = e.target.result.split(',')[1];
+
+      // Monta o objeto com os dados
+      var dados = {
+        nome: document.getElementById("inputNome").value,
+        email: document.getElementById("inputEmail").value,
+        fotoBase64: fotoBase64,
+        mimeType: inputFoto.type,
+        nomeFoto: inputFoto.name
+      };
+
+      // 2. Chama a função que está no código.gs
+      google.script.run
+        .withSuccessHandler(function(resposta) {
+          if (resposta.status === "sucesso") {
+            alert("Perfil e foto salvos com sucesso!");
+          } else {
+            alert("Erro do servidor: " + resposta.mensagem);
+          }
+        })
+        .withFailureHandler(function(erro) {
+          alert("Falha na chamada: " + erro);
+        })
+        .salvarPerfil(dados);
+    };
+
+    if (inputFoto) {
+      reader.readAsDataURL(inputFoto);
+    } else {
+      alert("Por favor, selecione uma foto.");
+    }
+  }
+
   /* ---------------------------------------------------------------
      BLOCO JS 3 - LOGIN E TROCA DE SENHA
      --------------------------------------------------------------- */
