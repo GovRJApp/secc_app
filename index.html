@@ -1302,7 +1302,7 @@ function carregarPreviewFoto(event) {
 // Insira aqui a URL gerada na publicação do seu Google Apps Script
 const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbytPBf843O6gK6oy-Qv0Xbi856cW2aaDRA6JltC1oOg4Hps0YRWxu3nO2SBZD6NeFHa/exec";
 
-function salvarPerfilProfissional() {
+async function salvarPerfilProfissional() {
     const nomeExibicao = document.getElementById('prof-nome').value;
     const fotoBase64 = document.getElementById('img-avatar-preview').src;
     const cargo = document.getElementById('prof-cargo').value;
@@ -1313,48 +1313,30 @@ function salvarPerfilProfissional() {
         return;
     }
 
-    // Feedback visual para o usuário
-    const btnSalvar = document.querySelector('.btn-salvar-perfil') || document.activeElement;
-    btnSalvar.disabled = true;
-    btnSalvar.innerText = "Salvando...";
+    const btnSalvar = document.querySelector('.btn-salvar-perfil');
+    if (btnSalvar) {
+      btnSalvar.disabled = true;
+      btnSalvar.innerText = "Salvando...";
+    }
 
-    const payload = {
-        acao: "salvarPerfil",
+    const resposta = await chamarBackend('salvarPerfil', {
         nomeExibicao: nomeExibicao,
         fotoBase64: fotoBase64,
         cargo: cargo,
         telefone: telefone
-    };
-
-    fetch(URL_WEB_APP, {
-  method: "POST",
-  body: JSON.stringify({
-    acao: "login", // <-- Deve bater exatamente com o nome esperado
-    email: emailInput,
-    senha: senhaInput
-  })
-})
-.then(res => res.json())
-.then(dados => console.log(dados));
-  
-    .then(response => response.json())
-    .then(resposta => {
-        btnSalvar.disabled = false;
-        btnSalvar.innerText = "💾 Salvar Alterações";
-
-        if (resposta.status === "sucesso") {
-            alert(resposta.mensagem);
-            cancelarEdicaoPerfil(); // Trava os campos após salvar
-        } else {
-            alert("Erro ao salvar: " + resposta.mensagem);
-        }
-    })
-    .catch(error => {
-        btnSalvar.disabled = false;
-        btnSalvar.innerText = "💾 Salvar Alterações";
-        console.error("Erro na requisição:", error);
-        alert("Erro de conexão ao salvar os dados.");
     });
+
+    if (btnSalvar) {
+      btnSalvar.disabled = false;
+      btnSalvar.innerText = "💾 Salvar Alterações";
+    }
+
+    if (resposta.sucesso || resposta.status === "sucesso") {
+        alert(resposta.mensagem || "Perfil salvo com sucesso!");
+        cancelarEdicaoPerfil();
+    } else {
+        alert("Erro ao salvar: " + (resposta.mensagem || "Falha na comunicação"));
+    }
 }
 
   /* ---------------------------------------------------------------
