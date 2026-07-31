@@ -890,7 +890,7 @@
   /* ---------------------------------------------------------------
      BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
-  const URL_BACKEND = 'https://script.google.com/macros/s/AKfycbz0E6VaA51fZRUd2LSQ0aSmQXXFYOqx7fuOkZFpcpiCmUqCk8DUN2HFEaw1vwWsZ1XV/exec';
+  const URL_BACKEND = 'https://script.google.com/macros/s/AKfycbySmBkLpOuIKNk2Gp9oCZib-2R5hj5FQlm4Pjns8T5aJrNOiINw0GExK_zG7tAKJAMK/exec';
   let dadosEstruturaGlobal = null;
 
   /* ---------------------------------------------------------------
@@ -957,28 +957,13 @@ async function chamarBackend(acao, parametros = {}) {
         nomeFoto: inputFoto.name
       };
 
-      // 2. Chama a função que está no código.gs
-      google.script.run
-        .withSuccessHandler(function(resposta) {
-          if (resposta.status === "sucesso") {
-            alert("Perfil e foto salvos com sucesso!");
-          } else {
-            alert("Erro do servidor: " + resposta.mensagem);
-          }
-        })
-        .withFailureHandler(function(erro) {
-          alert("Falha na chamada: " + erro);
-        })
-        .salvarPerfil(dados);
-    };
-
-    if (inputFoto) {
-      reader.readAsDataURL(inputFoto);
-    } else {
-      alert("Por favor, selecione uma foto.");
-    }
-  }
-
+   const resposta = await chamarBackend('salvarPerfil', {
+    token: pegarTokenSalvo(),   // ← faltava essa linha
+    nomeExibicao: nomeExibicao,
+    fotoBase64: fotoBase64,
+    cargo: cargo,
+    telefone: telefone
+});
   /* ---------------------------------------------------------------
      BLOCO JS 3 - LOGIN E TROCA DE SENHA
      --------------------------------------------------------------- */
@@ -1340,7 +1325,7 @@ function carregarPreviewFoto(event) {
 }
 
 // Insira aqui a URL gerada na publicação do seu Google Apps Script
-const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbz0E6VaA51fZRUd2LSQ0aSmQXXFYOqx7fuOkZFpcpiCmUqCk8DUN2HFEaw1vwWsZ1XV/exec";
+const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbySmBkLpOuIKNk2Gp9oCZib-2R5hj5FQlm4Pjns8T5aJrNOiINw0GExK_zG7tAKJAMK/exec";
 
 async function salvarPerfilProfissional() {
     const nomeExibicao = document.getElementById('prof-nome').value;
