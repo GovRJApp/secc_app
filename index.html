@@ -830,7 +830,7 @@
         <form id="form-perfil-dados" class="form-grid-perfil">
             <div class="campo-form">
                 <label for="prof-nome">Nome de Exibição / Completo:</label>
-                <input type="text" id="prof-nome" value="PAMPLONA" disabled required>
+                <input type="text" id="prof-nome" disabled required>
             </div>
 
             <div class="campo-form">
@@ -851,9 +851,9 @@
                 </select>
             </div>
 
-            <div class="campo-form">
+           <div class="campo-form">
                 <label for="prof-telefone">Telefone / WhatsApp:</label>
-                <input type="tel" id="prof-telefone" value="(21) 99999-9999" disabled placeholder="(21) 99999-9999">
+                <input type="tel" id="prof-telefone" disabled placeholder="(21) 99999-9999">
             </div>
 
             <!-- DADOS INSTITUCIONAIS (Somente Leitura - definidos pelo Admin/Estrutura) -->
@@ -1018,6 +1018,7 @@ async function chamarBackend(acao, parametros = {}) {
     if (cartaoUsu) cartaoUsu.classList.add('oculto');
     
     await carregarEstrutura();
+    await carregarPerfilNaTela();
   }
 
   document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
