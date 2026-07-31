@@ -939,31 +939,6 @@ async function chamarBackend(acao, parametros = {}) {
     localStorage.removeItem('secc_usuario');
   }
 
-  function enviarFormulario() {
-    // 1. Pega o arquivo de foto do formulário
-    var inputFoto = document.getElementById("inputFoto").files[0];
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-      // Converte a imagem para Base64
-      var fotoBase64 = e.target.result.split(',')[1];
-
-      // Monta o objeto com os dados
-      var dados = {
-        nome: document.getElementById("inputNome").value,
-        email: document.getElementById("inputEmail").value,
-        fotoBase64: fotoBase64,
-        mimeType: inputFoto.type,
-        nomeFoto: inputFoto.name
-      };
-
-   const resposta = await chamarBackend('salvarPerfil', {
-    token: pegarTokenSalvo(),   // ← faltava essa linha
-    nomeExibicao: nomeExibicao,
-    fotoBase64: fotoBase64,
-    cargo: cargo,
-    telefone: telefone
-});
   /* ---------------------------------------------------------------
      BLOCO JS 3 - LOGIN E TROCA DE SENHA
      --------------------------------------------------------------- */
@@ -1345,6 +1320,7 @@ async function salvarPerfilProfissional() {
     }
 
     const resposta = await chamarBackend('salvarPerfil', {
+        token: pegarTokenSalvo(),
         nomeExibicao: nomeExibicao,
         fotoBase64: fotoBase64,
         cargo: cargo,
