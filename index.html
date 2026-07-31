@@ -1303,6 +1303,22 @@ function carregarPreviewFoto(event) {
 // Insira aqui a URL gerada na publicação do seu Google Apps Script
 const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbySmBkLpOuIKNk2Gp9oCZib-2R5hj5FQlm4Pjns8T5aJrNOiINw0GExK_zG7tAKJAMK/exec";
 
+// ESTE BLOCO CARREGA OS DADOS DO PERFIL DO PROFISSIONAL LOGADO NA TELA
+async function carregarPerfilNaTela() {
+  const resposta = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
+  if (!resposta.sucesso) return;
+
+  const p = resposta.perfil;
+  document.getElementById('prof-nome').value = p.nome || '';
+  document.getElementById('prof-email').value = p.email || '';
+  document.getElementById('prof-cargo').value = p.cargo || '';
+  document.getElementById('prof-telefone').value = p.telefone || '';
+  if (p.foto) document.getElementById('img-avatar-preview').src = p.foto;
+
+  // guarda pra usar no "Cancelar" da edição
+  window.dadosPerfilOriginal = { nome: p.nome, cargo: p.cargo, telefone: p.telefone };
+}
+
 async function salvarPerfilProfissional() {
     const nomeExibicao = document.getElementById('prof-nome').value;
     const fotoBase64 = document.getElementById('img-avatar-preview').src;
