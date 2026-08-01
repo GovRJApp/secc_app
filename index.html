@@ -446,6 +446,221 @@
     cursor: pointer;
 }
   }
+  /* ---- PERFIL CARTEIRA FUNCIONAL ---- */
+.perfil-carteira {
+    border-top: 5px solid var(--gov-azul);
+}
+
+.perfil-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.perfil-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.perfil-avatar .avatar-wrapper {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--gov-azul);
+    background: #f0f2f5;
+}
+
+.perfil-avatar .avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.perfil-titulo {
+    flex: 1;
+    min-width: 200px;
+}
+
+.perfil-nome {
+    font-size: 1.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--gov-azul-escuro);
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.perfil-cargo {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--gov-texto-suave);
+    margin-top: 4px;
+}
+
+.perfil-divisor {
+    border: none;
+    border-top: 4px solid var(--gov-azul);
+    margin: 16px 0 20px 0;
+}
+
+.perfil-corpo {
+    margin-top: 4px;
+}
+
+.perfil-campos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 30px;
+}
+
+.campo-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.campo-group label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--gov-texto-suave);
+}
+
+.campo-valor {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gov-texto);
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--gov-borda);
+}
+
+.campo-group.editavel input,
+.campo-group.editavel select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--gov-borda);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: #fff;
+    transition: border 0.2s;
+}
+
+.campo-group.editavel input:disabled,
+.campo-group.editavel select:disabled {
+    background: #f4f6f8;
+    color: #555;
+}
+
+.campo-group.editavel input:not(:disabled):focus,
+.campo-group.editavel select:not(:disabled):focus {
+    outline: none;
+    border-color: var(--gov-azul);
+    box-shadow: 0 0 0 3px rgba(0, 90, 146, 0.15);
+}
+
+.btn-acao-secundario {
+    background: var(--gov-azul);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-self: flex-start;
+    margin-left: auto;
+}
+
+.btn-acao-secundario:hover {
+    background: var(--gov-azul-hover);
+}
+
+.btn-salvar-perfil {
+    background: var(--gov-sucesso);
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-right: 12px;
+}
+
+.btn-salvar-perfil:hover {
+    background: #1e6b1e;
+}
+
+.btn-cancelar-perfil {
+    background: var(--gov-erro);
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-cancelar-perfil:hover {
+    background: #b71c1c;
+}
+
+.btn-foto-upload {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    border: 1px solid var(--gov-azul);
+    background: #eef6ff;
+    color: var(--gov-azul);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-foto-upload:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #eee;
+    border-color: #ccc;
+    color: #777;
+}
+
+.dica-foto {
+    font-size: 0.65rem;
+    color: #888;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+    .perfil-cabecalho {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .perfil-titulo {
+        text-align: center;
+    }
+    .perfil-nome {
+        font-size: 1.3rem;
+    }
+    .btn-acao-secundario {
+        align-self: center;
+        margin-left: 0;
+    }
+    .perfil-campos-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .perfil-avatar .avatar-wrapper {
+        width: 90px;
+        height: 90px;
+    }
+}
 </style>
 </head>
 <body>
@@ -797,81 +1012,86 @@
       </form>
     </div>
     
-    <!-- TELA DE PERFIL DO PROFISSIONAL -->
-<div id="secao-perfil-profissional" class="card-painel">
-    <div class="card-header-perfil">
-        <h2><i class="fas fa-user-circle"></i> Perfil do Profissional</h2>
-        <button id="btn-editar-perfil" onclick="habilitarEdicaoPerfil()" class="btn-acao-secundario">
-            ✏️ Editar Perfil
-        </button>
-    </div>
-
-    <div class="card-body-perfil">
-        <!-- BLOCO DA FOTO / AVATAR -->
-        <div class="area-avatar">
+<!-- TELA DE PERFIL DO PROFISSIONAL (CARTEIRA FUNCIONAL) -->
+<div id="secao-perfil-profissional" class="card-painel perfil-carteira">
+    <!-- Cabeçalho com foto, nome e cargo -->
+    <div class="perfil-cabecalho">
+        <div class="perfil-avatar">
             <div class="avatar-wrapper">
-                <!-- Troque isso:
-<img id="img-avatar-preview" src="https://via.placeholder.com/130?text=Sem+Foto" alt="Foto do Profissional"> 
--->
-
-<!-- Por isto (SVG embutido direto no código): -->
-<img id="img-avatar-preview" 
-     src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>" 
-     alt="Foto do Profissional">
+                <img id="img-avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>" alt="Foto do Profissional">
             </div>
             <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
             <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>
                 📷 Alterar Foto
             </button>
-            <small class="dica-foto">Formatos: JPG ou PNG (Máx 2MB)</small>
+            <small class="dica-foto">JPG/PNG até 2MB</small>
         </div>
+        <div class="perfil-titulo">
+            <div class="perfil-nome" id="perfil-nome-exibicao">NOME DE EXIBIÇÃO</div>
+            <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
+        </div>
+        <button id="btn-editar-perfil" class="btn-acao-secundario" onclick="habilitarEdicaoPerfil()">✏️ Editar</button>
+    </div>
 
-        <!-- FORMULÁRIO DE DADOS DO PROFISSIONAL -->
-        <form id="form-perfil-dados" class="form-grid-perfil">
-            <div class="campo-form">
-                <label for="prof-nome">Nome de Exibição / Completo:</label>
-                <input type="text" id="prof-nome" disabled required>
+    <!-- Linha divisória azul -->
+    <hr class="perfil-divisor">
+
+    <!-- Corpo com os campos -->
+    <div class="perfil-corpo">
+        <div class="perfil-campos-grid">
+            <!-- CAMPOS NÃO EDITÁVEIS (exibição em texto) -->
+            <div class="campo-group">
+                <label>Nome Completo</label>
+                <span class="campo-valor" id="perfil-nome-completo">---</span>
+            </div>
+            <div class="campo-group">
+                <label>ID Funcional</label>
+                <span class="campo-valor" id="perfil-id-funcional">---</span>
+            </div>
+            <div class="campo-group">
+                <label>RG</label>
+                <span class="campo-valor" id="perfil-rg">---</span>
+            </div>
+            <div class="campo-group">
+                <label>CPF</label>
+                <span class="campo-valor" id="perfil-cpf">---</span>
             </div>
 
-            <div class="campo-form">
-                <label for="prof-email">E-mail de Acesso:</label>
-                <input type="email" id="prof-email" value="pamplona@gov.rj.gov.br" disabled required>
+            <!-- CAMPOS EDITÁVEIS (inputs/select) -->
+            <div class="campo-group editavel">
+                <label for="perfil-contato-emergencia">Contato de Emergência</label>
+                <input type="text" id="perfil-contato-emergencia" disabled>
             </div>
-
-            <div class="campo-form">
-                <label for="prof-cargo">Cargo / Função Principal:</label>
-                <select id="prof-cargo" disabled required>
-                    <option value="Cinegrafista" selected>Cinegrafista</option>
-                    <option value="Fotógrafo">Fotógrafo</option>
-                    <option value="Editor de Vídeo">Editor de Vídeo</option>
-                    <option value="Social Mídia">Social Mídia</option>
-                    <option value="Assessor de Imprensa">Assessor de Imprensa</option>
-                    <option value="Produtor">Produtor</option>
-                    <option value="Motorista">Motorista</option>
+            <div class="campo-group editavel">
+                <label for="perfil-telefone-emergencia">Telefone do Contato</label>
+                <input type="text" id="perfil-telefone-emergencia" disabled>
+            </div>
+            <div class="campo-group editavel">
+                <label for="perfil-plano-saude">Plano de Saúde</label>
+                <select id="perfil-plano-saude" disabled>
+                    <option value="NÃO">NÃO</option>
+                    <option value="SIM">SIM</option>
                 </select>
             </div>
-
-           <div class="campo-form">
-                <label for="prof-telefone">Telefone / WhatsApp:</label>
-                <input type="tel" id="prof-telefone" disabled placeholder="(21) 99999-9999">
+            <div class="campo-group editavel">
+                <label for="perfil-aceite-plano">Local de Atendimento</label>
+                <input type="text" id="perfil-aceite-plano" disabled placeholder="Ex: Hospital Unimed">
             </div>
-
-            <!-- DADOS INSTITUCIONAIS (Somente Leitura - definidos pelo Admin/Estrutura) -->
-            <div class="campo-form campo-full">
-                <label>Vínculo Institucional Atual:</label>
-                <div class="tag-vinculo">
-                    <span><strong>Secretaria:</strong> Casa Civil (SECC)</span> | 
-                    <span><strong>Subsecretaria:</strong> SUBCOM</span> | 
-                    <span><strong>Núcleo:</strong> Vídeo</span>
-                </div>
+            <div class="campo-group editavel">
+                <label for="perfil-numero-sapato">Nº do Calçado</label>
+                <input type="text" id="perfil-numero-sapato" disabled>
             </div>
-
-            <!-- BOTOES DE AÇÃO DA EDIÇÃO -->
-            <div id="botoes-edicao-perfil" class="campo-full acoes-form" style="display: none;">
-                <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar Alterações</button>
-                <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
+            <div class="campo-group editavel">
+                <label for="perfil-manequim">Manequim</label>
+                <input type="text" id="perfil-manequim" disabled>
             </div>
-        </form>
+        </div>
+
+        <!-- Botões de ação da edição -->
+        <div id="botoes-edicao-perfil" style="display: none; margin-top: 24px;">
+            <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar</button>
+            <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
+        </div>
     </div>
 </div>
 
@@ -1243,44 +1463,55 @@ async function chamarBackend(acao, parametros = {}) {
     }
   });
 
-  // Variável temporária para guardar os dados anteriores em caso de cancelamento
+  // Variável para guardar dados originais (cancelamento)
 let dadosPerfilOriginal = {};
 
 function habilitarEdicaoPerfil() {
-    // Salva estado original
+    // Salva estado atual dos campos editáveis e da foto
     dadosPerfilOriginal = {
-        nome: document.getElementById('prof-nome').value,
-        cargo: document.getElementById('prof-cargo').value,
-        telefone: document.getElementById('prof-telefone').value,
-        fotoSrc: document.getElementById('img-avatar-preview').src
+        fotoSrc: document.getElementById('img-avatar-preview').src,
+        contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
+        telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
+        planoSaude: document.getElementById('perfil-plano-saude').value,
+        aceitePlano: document.getElementById('perfil-aceite-plano').value,
+        numeroSapato: document.getElementById('perfil-numero-sapato').value,
+        manequim: document.getElementById('perfil-manequim').value
     };
 
-    // Habilita os campos editáveis
-    document.getElementById('prof-nome').disabled = false;
-    document.getElementById('prof-cargo').disabled = false;
-    document.getElementById('prof-telefone').disabled = false;
+    // Habilita campos editáveis
+    document.getElementById('perfil-contato-emergencia').disabled = false;
+    document.getElementById('perfil-telefone-emergencia').disabled = false;
+    document.getElementById('perfil-plano-saude').disabled = false;
+    document.getElementById('perfil-aceite-plano').disabled = false;
+    document.getElementById('perfil-numero-sapato').disabled = false;
+    document.getElementById('perfil-manequim').disabled = false;
     document.getElementById('btn-alterar-foto').disabled = false;
 
-    // Ajusta os botões
+    // Mostra botões de ação, esconde botão editar
     document.getElementById('botoes-edicao-perfil').style.display = 'flex';
     document.getElementById('btn-editar-perfil').style.display = 'none';
 }
 
-const FOTO_PADRAO_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
-
 function cancelarEdicaoPerfil() {
-    document.getElementById('prof-nome').value = dadosPerfilOriginal.nome || 'PAMPLONA';
-    document.getElementById('prof-cargo').value = dadosPerfilOriginal.cargo || 'Cinegrafista';
-    document.getElementById('prof-telefone').value = dadosPerfilOriginal.telefone || '';
-    
-    // Se não tiver foto anterior salva, usa o SVG limpo em vez do placeholder externo
+    // Restaura valores originais
     document.getElementById('img-avatar-preview').src = dadosPerfilOriginal.fotoSrc || FOTO_PADRAO_SVG;
+    document.getElementById('perfil-contato-emergencia').value = dadosPerfilOriginal.contatoEmergencia || '';
+    document.getElementById('perfil-telefone-emergencia').value = dadosPerfilOriginal.telefoneEmergencia || '';
+    document.getElementById('perfil-plano-saude').value = dadosPerfilOriginal.planoSaude || 'NÃO';
+    document.getElementById('perfil-aceite-plano').value = dadosPerfilOriginal.aceitePlano || '';
+    document.getElementById('perfil-numero-sapato').value = dadosPerfilOriginal.numeroSapato || '';
+    document.getElementById('perfil-manequim').value = dadosPerfilOriginal.manequim || '';
 
-    document.getElementById('prof-nome').disabled = true;
-    document.getElementById('prof-cargo').disabled = true;
-    document.getElementById('prof-telefone').disabled = true;
+    // Desabilita campos
+    document.getElementById('perfil-contato-emergencia').disabled = true;
+    document.getElementById('perfil-telefone-emergencia').disabled = true;
+    document.getElementById('perfil-plano-saude').disabled = true;
+    document.getElementById('perfil-aceite-plano').disabled = true;
+    document.getElementById('perfil-numero-sapato').disabled = true;
+    document.getElementById('perfil-manequim').disabled = true;
     document.getElementById('btn-alterar-foto').disabled = true;
 
+    // Esconde botões de ação, mostra botão editar
     document.getElementById('botoes-edicao-perfil').style.display = 'none';
     document.getElementById('btn-editar-perfil').style.display = 'inline-block';
 }
@@ -1289,7 +1520,7 @@ function carregarPreviewFoto(event) {
     const file = event.target.files[0];
     if (file) {
         if (file.size > 2 * 1024 * 1024) {
-            alert("A foto selecionada deve ter no máximo 2MB.");
+            alert("A foto deve ter no máximo 2MB.");
             return;
         }
         const reader = new FileReader();
@@ -1300,58 +1531,84 @@ function carregarPreviewFoto(event) {
     }
 }
 
-// Insira aqui a URL gerada na publicação do seu Google Apps Script
-const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxlZ434flQD_yTaLxZqgFXrHVtNHWdW6tfYEnXKl8ANOpuFR95WdFOdiRnl2bEVq-bi/exec";
+// Constante para foto padrão SVG (evita erro de imagem quebrada)
+const FOTO_PADRAO_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
 
-// ESTE BLOCO CARREGA OS DADOS DO PERFIL DO PROFISSIONAL LOGADO NA TELA
 async function carregarPerfilNaTela() {
-  const resposta = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
-  if (!resposta.sucesso) return;
+    const resposta = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
+    if (!resposta.sucesso) return;
 
-  const p = resposta.perfil;
-  document.getElementById('prof-nome').value = p.nome || '';
-  document.getElementById('prof-email').value = p.email || '';
-  document.getElementById('prof-cargo').value = p.cargo || '';
-  document.getElementById('prof-telefone').value = p.telefone || '';
-  if (p.foto) document.getElementById('img-avatar-preview').src = p.foto;
+    const p = resposta.perfil;
 
-  // guarda pra usar no "Cancelar" da edição
-  window.dadosPerfilOriginal = { nome: p.nome, cargo: p.cargo, telefone: p.telefone };
+    // Cabeçalho
+    document.getElementById('perfil-nome-exibicao').textContent = p.nome || 'NOME';
+    document.getElementById('perfil-cargo-exibicao').textContent = p.cargo || 'Cargo';
+    if (p.foto) document.getElementById('img-avatar-preview').src = p.foto;
+
+    // Campos não editáveis
+    document.getElementById('perfil-nome-completo').textContent = p.nomeCompleto || '---';
+    document.getElementById('perfil-id-funcional').textContent = p.idFuncional || '---';
+    document.getElementById('perfil-rg').textContent = p.rg || '---';
+    document.getElementById('perfil-cpf').textContent = p.cpf || '---';
+
+    // Campos editáveis
+    document.getElementById('perfil-contato-emergencia').value = p.contatoEmergencia || '';
+    document.getElementById('perfil-telefone-emergencia').value = p.telefoneEmergencia || '';
+    document.getElementById('perfil-plano-saude').value = p.planoSaude || 'NÃO';
+    document.getElementById('perfil-aceite-plano').value = p.aceitePlano || '';
+    document.getElementById('perfil-numero-sapato').value = p.numeroSapato || '';
+    document.getElementById('perfil-manequim').value = p.manequim || '';
+
+    // Guarda cópia para cancelamento
+    dadosPerfilOriginal = {
+        fotoSrc: document.getElementById('img-avatar-preview').src,
+        contatoEmergencia: p.contatoEmergencia || '',
+        telefoneEmergencia: p.telefoneEmergencia || '',
+        planoSaude: p.planoSaude || 'NÃO',
+        aceitePlano: p.aceitePlano || '',
+        numeroSapato: p.numeroSapato || '',
+        manequim: p.manequim || ''
+    };
 }
 
 async function salvarPerfilProfissional() {
-    const nomeExibicao = document.getElementById('prof-nome').value;
-    const fotoBase64 = document.getElementById('img-avatar-preview').src;
-    const cargo = document.getElementById('prof-cargo').value;
-    const telefone = document.getElementById('prof-telefone').value;
+    const fotoSrc = document.getElementById('img-avatar-preview').src;
+    // Se for o SVG padrão, não enviar (ou enviar vazio)
+    const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
 
-    if (!nomeExibicao) {
-        alert("O Nome de Exibição é obrigatório.");
-        return;
-    }
+    const payload = {
+        token: pegarTokenSalvo(),
+        fotoBase64: fotoBase64,
+        contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
+        telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
+        planoSaude: document.getElementById('perfil-plano-saude').value,
+        aceitePlano: document.getElementById('perfil-aceite-plano').value,
+        numeroSapato: document.getElementById('perfil-numero-sapato').value,
+        manequim: document.getElementById('perfil-manequim').value
+    };
 
     const btnSalvar = document.querySelector('.btn-salvar-perfil');
     if (btnSalvar) {
-      btnSalvar.disabled = true;
-      btnSalvar.innerText = "Salvando...";
+        btnSalvar.disabled = true;
+        btnSalvar.innerText = "Salvando...";
     }
 
-    const resposta = await chamarBackend('salvarPerfil', {
-        token: pegarTokenSalvo(),
-        nomeExibicao: nomeExibicao,
-        fotoBase64: fotoBase64,
-        cargo: cargo,
-        telefone: telefone
-    });
+    const resposta = await chamarBackend('salvarPerfil', payload);
 
     if (btnSalvar) {
-      btnSalvar.disabled = false;
-      btnSalvar.innerText = "💾 Salvar Alterações";
+        btnSalvar.disabled = false;
+        btnSalvar.innerText = "💾 Salvar";
     }
 
-    if (resposta.sucesso || resposta.status === "sucesso") {
-        alert(resposta.mensagem || "Perfil salvo com sucesso!");
-        cancelarEdicaoPerfil();
+    if (resposta.sucesso) {
+        alert(resposta.mensagem || "Perfil salvo!");
+        // Se a foto foi atualizada, mantém a nova URL
+        if (resposta.url) {
+            document.getElementById('img-avatar-preview').src = resposta.url;
+        }
+        // Recarrega os dados para sincronizar
+        await carregarPerfilNaTela();
+        cancelarEdicaoPerfil(); // desabilita edição
     } else {
         alert("Erro ao salvar: " + (resposta.mensagem || "Falha na comunicação"));
     }
