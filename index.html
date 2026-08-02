@@ -1091,6 +1091,19 @@
         <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
       </div>
 
+      <!-- ESTE BLOCO ABRE A CAIXINHA DE REGISTRO DO RETORNO DA EQUIPE (aciona o cálculo de diária) -->
+      <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none;">
+        <h3>Registrar Retorno da Equipe</h3>
+        <div class="grid-form-pauta">
+          <div class="campo-group"><label for="retorno-data">Data de Retorno*</label><input type="date" id="retorno-data" required></div>
+          <div class="campo-group"><label for="retorno-hora">Horário de Retorno*</label><input type="time" id="retorno-hora" required></div>
+        </div>
+        <div style="text-align:right; margin-top:14px;">
+          <button type="button" onclick="fecharRegistroRetorno()" class="btn-cancelar-perfil">Cancelar</button>
+          <button type="button" onclick="confirmarRegistroRetorno()" class="botao-principal" style="width:auto; padding:10px 24px;">Salvar Retorno</button>
+        </div>
+      </div>
+
       <!-- ESTE BLOCO ABRE O FORMULÁRIO DE CRIAR PAUTA (rolagem única, seções condicionais) -->
       <div id="formCriarPautaWrapper" style="display: none; margin-top: 20px; border-top: 3px solid var(--gov-azul); padding-top: 20px;">
         <h2 style="margin:0 0 16px; color: var(--gov-azul-escuro);">Nova Pauta</h2>
@@ -1322,7 +1335,7 @@
   /* ---------------------------------------------------------------
      BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
-  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbw_YqdtMWU3-Ughr0LJ9n6CP4RlCOIoxXozU1Q6vJHOVyVFVqQ-hYtDw_CrKwvaDiJm/exec";
+  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxDRT7eJAmTA8JqHBC0yh6BSatWkuDN2aD39Q-fmNQzbSWOUGw9RRbNE3iA0Oyp2DyV/exec";
   let dadosEstruturaGlobal = null;
 
   /* ---------------------------------------------------------------
@@ -1904,7 +1917,8 @@ async function carregarPautas() {
       <td style="padding: 8px;"><span style="background: ${cor}; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold;">${label}</span></td>
       <td style="padding: 8px;">
         <button onclick="verPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; margin-right: 4px;">Ver</button>
-        <button onclick="editarPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; background: var(--gov-azul-hover);">Editar</button>
+        <button onclick="editarPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; background: var(--gov-azul-hover); margin-right: 4px;">Editar</button>
+        <button onclick="abrirRegistroRetorno('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; background: var(--gov-verde);">🕐 Retorno</button>
       </td>
     </tr>`;
   });
@@ -1956,6 +1970,44 @@ function verPauta(id) {
 }
 function editarPauta(id) {
   alert('Editar pauta ' + id + ' (próxima etapa)');
+}
+
+/* =====================================================================
+   ESTE BLOCO CONTROLA A CAIXINHA "REGISTRAR RETORNO DA EQUIPE"
+   Ao salvar, chama editarPauta no backend, que já recalcula sozinho
+   Pernoite/Quant_Pernoites/Valor_Pernoite/Quant_Refeicao/Valor_Refeicao.
+   ===================================================================== */
+let _pautaIdRetornoAtual = null;
+
+function abrirRegistroRetorno(pautaId) {
+  _pautaIdRetornoAtual = pautaId;
+  document.getElementById('caixaRegistroRetorno').style.display = 'block';
+  document.getElementById('caixaRegistroRetorno').scrollIntoView({ behavior: 'smooth' });
+}
+
+function fecharRegistroRetorno() {
+  _pautaIdRetornoAtual = null;
+  document.getElementById('caixaRegistroRetorno').style.display = 'none';
+  document.getElementById('retorno-data').value = '';
+  document.getElementById('retorno-hora').value = '';
+}
+
+async function confirmarRegistroRetorno() {
+  const data = document.getElementById('retorno-data').value;
+  const hora = document.getElementById('retorno-hora').value;
+  if (!data || !hora) { alert('Preencha data e horário de retorno.'); return; }
+
+  const resposta = await chamarBackend('editarPauta', {
+    token: pegarTokenSalvo(),
+    pautaId: _pautaIdRetornoAtual,
+    Data_Retorno_Equipe: data,
+    Hora_Retorno_Equipe: hora
+  });
+
+  if (!resposta.sucesso) { alert('Erro: ' + resposta.mensagem); return; }
+  alert('Retorno registrado! Diária/pernoite recalculados.');
+  fecharRegistroRetorno();
+  carregarPautas();
 }
 
 /* =====================================================================
