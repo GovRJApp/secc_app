@@ -1032,7 +1032,25 @@
         </div>
         <button id="btn-editar-perfil" class="btn-acao-secundario" onclick="habilitarEdicaoPerfil()">✏️ Editar</button>
     </div>
+  
+<div class="info-usuario">
+  <span id="nomeUsuarioLogado"></span>
+  <span class="badge-nivel" id="nivelUsuarioLogado"></span>
+  <button id="btnTogglePerfil" class="botao-sair" style="background: rgba(255,255,255,0.2);">📋 Pautas</button>
+  <button class="botao-sair" id="botaoSair">Sair</button>
+</div>
 
+  <!-- SEÇÃO DE PAUTAS (recolhível) -->
+<div id="secaoPautas" class="card-painel" style="display: none; margin-top: 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
+    <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);">+ Nova Pauta</button>
+  </div>
+  <div id="listaPautasContainer">
+    <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
+  </div>
+</div>
+  
     <!-- Linha divisória azul -->
     <hr class="perfil-divisor">
 
@@ -1110,7 +1128,7 @@
   /* ---------------------------------------------------------------
      BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
-  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbx0BhOABEwlQfEkXojIQ21ok-DY8Xeig_L-nlAUJOJ0NSQhDUVJUkvsJ1VnEH7DGcVG/exec";
+  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxDRT7eJAmTA8JqHBC0yh6BSatWkuDN2aD39Q-fmNQzbSWOUGw9RRbNE3iA0Oyp2DyV/exec";
   let dadosEstruturaGlobal = null;
 
   /* ---------------------------------------------------------------
@@ -1235,7 +1253,17 @@ async function chamarBackend(acao, parametros = {}) {
     if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
     
     const cartaoUsu = document.getElementById('cartaoCriarUsuario');
+    
     if (cartaoUsu) cartaoUsu.classList.add('oculto');
+    // Ocultar estrutura organizacional para profissionais e alguns níveis
+const cartaoEstrutura = document.querySelector('.cartao:has(#listaEstrutura)');
+// Melhor: dar um ID para o cartão
+// Vou adicionar id="cartaoEstrutura" no HTML
+if (document.getElementById('cartaoEstrutura')) {
+  const niveisQueVeem = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'];
+  const visivel = niveisQueVeem.includes(usuario.nivel);
+  document.getElementById('cartaoEstrutura').style.display = visivel ? 'block' : 'none';
+}
     
     await carregarEstrutura();
     await carregarPerfilNaTela();
@@ -1624,6 +1652,126 @@ async function salvarPerfilProfissional() {
       mostrarTela('telaLogin');
     }
   })();
+// Toggle perfil/pautas
+document.getElementById('btnTogglePerfil').addEventListener('click', function() {
+  const perfilSecao = document.getElementById('secao-perfil-profissional');
+  const pautasSecao = document.getElementById('secaoPautas');
+  const btn = this;
+
+  if (pautasSecao.style.display === 'none') {
+    // Recolher perfil, mostrar pautas
+    perfilSecao.style.display = 'none';
+    pautasSecao.style.display = 'block';
+    btn.textContent = '📋 Perfil';
+    carregarPautas(); // carrega a lista
+  } else {
+    // Mostrar perfil, recolher pautas
+    perfilSecao.style.display = 'block';
+    pautasSecao.style.display = 'none';
+    btn.textContent = '📋 Pautas';
+  }
+});
+
+// Função para carregar pautas
+async function carregarPautas() {
+  const container = document.getElementById('listaPautasContainer');
+  container.innerHTML = 'Carregando...';
+
+  const resposta = await chamarBackend('listarPautas', { token: pegarTokenSalvo() });
+  if (!resposta.sucesso) {
+    container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
+    return;
+  }
+
+  const pautas = resposta.pautas || [];
+  if (pautas.length === 0) {
+    container.innerHTML = '<p style="color: var(--gov-texto-suave);">Nenhuma pauta encontrada.</p>';
+    return;
+  }
+
+  // Montar tabela
+  let html = `<table style="width:100%; border-collapse: collapse; font-size: 0.9rem;">
+    <thead>
+      <tr style="background: var(--gov-cinza-claro);">
+        <th style="padding: 8px; text-align:left;">Título</th>
+        <th style="padding: 8px; text-align:left;">Data</th>
+        <th style="padding: 8px; text-align:left;">Status</th>
+        <th style="padding: 8px; text-align:left;">Ações</th>
+      </tr>
+    </thead>
+    <tbody>`;
+
+  pautas.forEach(p => {
+    const status = determinarStatus(p);
+    const cor = status.cor;
+    const label = status.label;
+
+    html += `<tr style="border-bottom: 1px solid var(--gov-borda);">
+      <td style="padding: 8px;">${p.Titulo_Producao_Email || 'Sem título'}</td>
+      <td style="padding: 8px;">${p.Data_Saida || ''}</td>
+      <td style="padding: 8px;"><span style="background: ${cor}; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold;">${label}</span></td>
+      <td style="padding: 8px;">
+        <button onclick="verPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; margin-right: 4px;">Ver</button>
+        <button onclick="editarPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; background: var(--gov-azul-hover);">Editar</button>
+      </td>
+    </tr>`;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+// Função para determinar status e cor
+function determinarStatus(pauta) {
+  const agora = new Date();
+  const dataSaida = new Date(pauta.Data_Saida + 'T' + (pauta.Horario_Saida_Equipe || '00:00'));
+  
+  // 1. Se Producao_Realizada == "NÃO" -> Vermelho
+  if (pauta.Producao_Realizada === 'NÃO') {
+    return { cor: '#D32F2F', label: 'Cancelada' };
+  }
+
+  // 2. Se data/hora de saída já passou -> Azul (em andamento)
+  if (dataSaida <= agora && pauta.Producao_Realizada !== 'SIM') {
+    return { cor: '#1976D2', label: 'Em andamento' };
+  }
+
+  // 3. Se Producao_Realizada == "SIM" e faltam links -> Amarelo
+  if (pauta.Producao_Realizada === 'SIM') {
+    // Verificar links obrigatórios
+    const temVideo = pauta.Tem_Video === 'SIM';
+    const temFoto = pauta.Tem_Foto === 'SIM';
+    const temDigital = pauta.Tem_Digital === 'SIM';
+    
+    const linkVideoOk = !temVideo || (pauta.Link_Video_Drive && pauta.Link_Video_Drive.trim() !== '');
+    const linkFotoOk = !temFoto || (pauta.Link_Foto_GooglePhotos && pauta.Link_Foto_GooglePhotos.trim() !== '');
+    const linkDigitalOk = !temDigital || (pauta.Link_Digital_RedeSocial && pauta.Link_Digital_RedeSocial.trim() !== '');
+
+    if (!linkVideoOk || !linkFotoOk || !linkDigitalOk) {
+      return { cor: '#F9A825', label: 'Aguardando links' };
+    } else {
+      return { cor: '#2E7D32', label: 'Aprovada' };
+    }
+  }
+
+  // 4. Padrão: Laranja (pauta marcada, aguardando)
+  return { cor: '#EF6C00', label: 'Marcada' };
+}
+
+// Funções para ver/editar pauta (abrir modal)
+function verPauta(id) {
+  alert('Visualizar pauta ' + id + ' (função em desenvolvimento)');
+}
+
+function editarPauta(id) {
+  alert('Editar pauta ' + id + ' (função em desenvolvimento)');
+}
+
+// Botão Criar Pauta
+document.getElementById('btnCriarPauta').addEventListener('click', function() {
+  alert('Formulário de criação de pauta (em desenvolvimento)');
+});
+  
 </script>
 </body>
 </html>
