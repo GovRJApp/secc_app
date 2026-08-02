@@ -225,6 +225,13 @@
   }
   .linha-formulario > div { flex: 1; min-width: 220px; }
   .lista-estrutura ul { list-style: none; padding-left: 0; margin: 0; }
+  /* ESTE BLOCO ESTILIZA O ACORDEÃO DA ESTRUTURA ORGANIZACIONAL (clicável) */
+  .acordeao-cabecalho { cursor: pointer; user-select: none; }
+  .acordeao-cabecalho:hover { filter: brightness(0.97); }
+  .acordeao-seta { display: inline-block; width: 14px; font-size: 11px; color: var(--gov-texto-suave); }
+  .acordeao-filhos { padding-left: 8px; }
+  .acordeao-filhos.oculto { display: none; }
+  .acordeao-subsecretaria { margin-left: 8px; }
   .lista-estrutura .item-secretaria {
     padding: 12px;
     background: #FFFFFF;
@@ -705,6 +712,16 @@
         height: 90px;
     }
 }
+/* ESTE BLOCO ESTILIZA O CAMPO DE SENHA COM BOTÃO "OLHO" E O CHECKBOX "MANTER CONECTADO" */
+.campo-senha-wrapper { position: relative; }
+.campo-senha-wrapper input { padding-right: 44px; }
+.botao-mostrar-senha {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; padding: 6px; cursor: pointer; font-size: 16px; line-height: 1;
+}
+.linha-manter-conectado { display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; font-size: 13px; }
+.linha-manter-conectado input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
+.linha-manter-conectado label { margin: 0; font-weight: 400; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -721,7 +738,14 @@
       <label for="campoEmail">E-mail Cadastrado</label>
       <input type="email" id="campoEmail" required autocomplete="username" placeholder="seu.email@rio.rj.gov.br">
       <label for="campoSenha">Senha de Acesso</label>
-      <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
+      <div class="campo-senha-wrapper">
+        <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
+        <button type="button" class="botao-mostrar-senha" id="botaoMostrarSenha" aria-label="Mostrar senha" tabindex="-1">👁</button>
+      </div>
+      <div class="linha-manter-conectado">
+        <input type="checkbox" id="campoManterConectado" checked>
+        <label for="campoManterConectado">Manter conectado neste dispositivo</label>
+      </div>
       <button type="submit" class="botao-principal">Entrar no Sistema</button>
     </form>
     <button type="button" class="link-discreto" id="botaoEsqueciSenha">Esqueci minha senha</button>
@@ -761,6 +785,272 @@
     </div>
   </div>
   <div class="conteudo-app">
+
+<div id="secao-perfil-profissional" class="card-painel perfil-carteira">
+    <!-- Cabeçalho com foto, nome e cargo -->
+    <div class="perfil-cabecalho">
+        <div class="perfil-avatar">
+            <div class="avatar-wrapper">
+                <img id="img-avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>" alt="Foto do Profissional">
+            </div>
+            <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
+            <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>
+                📷 Alterar Foto
+            </button>
+            <small class="dica-foto">JPG/PNG até 2MB</small>
+        </div>
+        <div class="perfil-titulo">
+            <div class="perfil-nome" id="perfil-nome-exibicao">NOME DE EXIBIÇÃO</div>
+            <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
+        </div>
+        <button id="btn-editar-perfil" class="btn-acao-secundario" onclick="habilitarEdicaoPerfil()">✏️ Editar</button>
+        <button id="btnTogglePerfil" class="btn-toggle-perfil">📋 Pautas</button>
+    </div>
+
+    <!-- Linha divisória azul -->
+    <hr class="perfil-divisor">
+
+    <!-- SEÇÃO DE PAUTAS (recolhível) -->
+    <div id="secaoPautas" class="card-painel" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
+        <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);">+ Nova Pauta</button>
+      </div>
+      <div id="listaPautasContainer">
+        <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
+      </div>
+
+      <!-- ESTE BLOCO ABRE A CAIXINHA DE REGISTRO DO RETORNO DA EQUIPE (aciona o cálculo de diária) -->
+      <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none;">
+        <h3>Registrar Retorno da Equipe</h3>
+        <div class="grid-form-pauta">
+          <div class="campo-group"><label for="retorno-data">Data de Retorno*</label><input type="date" id="retorno-data" required></div>
+          <div class="campo-group"><label for="retorno-hora">Horário de Retorno*</label><input type="time" id="retorno-hora" required></div>
+        </div>
+        <div style="text-align:right; margin-top:14px;">
+          <button type="button" onclick="fecharRegistroRetorno()" class="btn-cancelar-perfil">Cancelar</button>
+          <button type="button" onclick="confirmarRegistroRetorno()" class="botao-principal" style="width:auto; padding:10px 24px;">Salvar Retorno</button>
+        </div>
+      </div>
+
+      <!-- ESTE BLOCO ABRE O FORMULÁRIO DE CRIAR PAUTA (rolagem única, seções condicionais) -->
+      <div id="formCriarPautaWrapper" style="display: none; margin-top: 20px; border-top: 3px solid var(--gov-azul); padding-top: 20px;">
+        <h2 style="margin:0 0 16px; color: var(--gov-azul-escuro);">Nova Pauta</h2>
+        <form id="formCriarPauta">
+
+          <!-- SEÇÃO: DADOS DA DEMANDA -->
+          <div class="secao-form-pauta">
+            <h3>Dados da Demanda</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group">
+                <label for="pauta-tipo-producao">Tipo de Produção*</label>
+                <select id="pauta-tipo-producao" required>
+                  <option value="">Selecione...</option>
+                  <option>AGENDA GOVERNADOR</option>
+                  <option>PAUTA SUGERIDA</option>
+                  <option>REDE SOCIAL GOVRJ</option>
+                  <option>PEÇA PUBLICITÁRIA</option>
+                  <option>INSTITUCIONAL</option>
+                  <option>GOVCAST</option>
+                  <option>CAMPANHAS E SERVIÇOS DO ESTADO</option>
+                  <option>EDIÇÃO DE IMAGENS CEDIDAS POR OUTRAS SECRETARIAS</option>
+                  <option>CESSÃO DE IMAGENS PARA TERCEIROS</option>
+                </select>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-tipo-video">Tipo de Vídeo*</label>
+                <select id="pauta-tipo-video" required>
+                  <option value="">Selecione...</option>
+                  <option>VÍDEO RELEASE</option>
+                  <option>VIDEO INSTITUCIONAL</option>
+                  <option>DIGITAL GOVRJ</option>
+                  <option>PUBLICIDADE DO ESTADO</option>
+                  <option>EDUCATIVO/INFORMATIVO</option>
+                  <option>EDIÇÃO DE IMAGENS CEDIDAS PARA VEICULAR</option>
+                </select>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-setor-solicitante">Setor Solicitante*</label>
+                <input type="text" id="pauta-setor-solicitante" required>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-secretaria-envolvida">Secretaria Envolvida*</label>
+                <input type="text" id="pauta-secretaria-envolvida" placeholder="Ex: Secretaria de Segurança Pública" required>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-titulo-email">Título da Pauta (igual ao e-mail)*</label>
+                <input type="text" id="pauta-titulo-email" required>
+                <small id="avisoTituloDuplicado" style="color:#B3261E; display:none;">⚠️ Essa pauta já foi criada.</small>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-titulo-final">Título Final da Produção</label>
+                <input type="text" id="pauta-titulo-final" placeholder="Preencher depois, se ainda não tiver">
+              </div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: SAÍDA E EVENTO -->
+          <div class="secao-form-pauta">
+            <h3>Saída da Equipe e Evento</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group"><label for="pauta-data-saida">Data de Saída*</label><input type="date" id="pauta-data-saida" required></div>
+              <div class="campo-group"><label for="pauta-horario-saida">Horário de Saída*</label><input type="time" id="pauta-horario-saida" required></div>
+              <div class="campo-group">
+                <label for="pauta-motorista">Motorista</label>
+                <select id="pauta-motorista">
+                  <option value="">Selecione...</option>
+                  <option>DA SILVA</option><option>EDSON</option><option>HIGOR</option>
+                  <option>UBER FSB</option><option>UBER INPACTO</option>
+                </select>
+              </div>
+              <div class="campo-group"><label for="pauta-data-producao">Data do Evento*</label><input type="date" id="pauta-data-producao" required></div>
+              <div class="campo-group"><label for="pauta-horario-evento">Horário do Evento*</label><input type="time" id="pauta-horario-evento" required></div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: LOCAL (com busca de endereço via Nominatim/OpenStreetMap) -->
+          <div class="secao-form-pauta">
+            <h3>Local da Produção</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group" style="grid-column: 1 / -1; position: relative;">
+                <label for="pauta-endereco">Endereço*</label>
+                <input type="text" id="pauta-endereco" placeholder="Digite o endereço e escolha uma sugestão..." autocomplete="off" required>
+                <div id="sugestoesEndereco" class="lista-sugestoes-endereco"></div>
+              </div>
+              <div class="campo-group"><label>Cidade</label><input type="text" id="pauta-cidade" disabled></div>
+              <div class="campo-group"><label>Bairro</label><input type="text" id="pauta-bairro" disabled></div>
+              <div class="campo-group"><label>UF</label><input type="text" id="pauta-uf" disabled></div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: EQUIPE (campos condicionais SIM/NÃO) -->
+          <div class="secao-form-pauta">
+            <h3>Equipe Escalada</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group">
+                <label for="pauta-tem-assessor">Tem Assessor de Imprensa?</label>
+                <select id="pauta-tem-assessor" onchange="alternarCampoCondicional('pauta-tem-assessor','bloco-assessor')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-assessor" style="display:none;">
+                <label for="pauta-assessor">Assessor</label>
+                <input type="text" id="pauta-assessor" placeholder="Nome do assessor">
+              </div>
+
+              <div class="campo-group">
+                <label for="pauta-tem-video">Tem Vídeo?</label>
+                <select id="pauta-tem-video" onchange="alternarCampoCondicional('pauta-tem-video','bloco-video')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-video" style="display:none;">
+                <label for="pauta-cinegrafista">Cinegrafista</label>
+                <input type="text" id="pauta-cinegrafista" placeholder="Nome do cinegrafista">
+              </div>
+              <div class="campo-group" id="bloco-video-edicao" style="display:none;">
+                <label for="pauta-edicao">Editor de Imagens</label>
+                <input type="text" id="pauta-edicao" placeholder="Nome de quem vai editar">
+              </div>
+
+              <div class="campo-group">
+                <label for="pauta-tem-foto">Tem Fotografia?</label>
+                <select id="pauta-tem-foto" onchange="alternarCampoCondicional('pauta-tem-foto','bloco-foto')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-foto" style="display:none;">
+                <label for="pauta-fotografo">Fotógrafo</label>
+                <input type="text" id="pauta-fotografo" placeholder="Nome do fotógrafo">
+              </div>
+
+              <div class="campo-group">
+                <label for="pauta-tem-digital">Tem Digital?</label>
+                <select id="pauta-tem-digital" onchange="alternarCampoCondicional('pauta-tem-digital','bloco-digital')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-digital" style="display:none;">
+                <label for="pauta-digital">Profissional Digital</label>
+                <input type="text" id="pauta-digital" placeholder="Nome do profissional de digital">
+              </div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: EQUIPAMENTO E OBSERVAÇÕES -->
+          <div class="secao-form-pauta">
+            <h3>Equipamento e Observações</h3>
+            <div class="campo-group" style="margin-bottom: 16px;">
+              <label>Equipamento Usado (marque todos que forem levados)</label>
+              <div class="grade-checkbox-equipamento" id="gradeEquipamento">
+                <!-- preenchido via JS a partir da lista EQUIPAMENTOS_VIDEO -->
+              </div>
+            </div>
+            <div class="campo-group">
+              <label for="pauta-observacoes">Observações</label>
+              <textarea id="pauta-observacoes" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div style="text-align: right; margin-top: 20px;">
+            <button type="button" onclick="fecharFormCriarPauta()" class="btn-cancelar-perfil">Cancelar</button>
+            <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Salvar Pauta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Corpo com os campos -->
+    <div class="perfil-corpo" id="perfilCorpo">
+        <div class="perfil-campos-grid">
+            <!-- CAMPOS NÃO EDITÁVEIS (exibição em texto) -->
+            <div class="campo-group">
+                <label>Nome Completo</label>
+                <span class="campo-valor" id="perfil-nome-completo">---</span>
+            </div>
+            <div class="campo-group">
+                <label>ID Funcional</label>
+                <span class="campo-valor" id="perfil-id-funcional">---</span>
+            </div>
+            <div class="campo-group">
+                <label>RG</label>
+                <span class="campo-valor" id="perfil-rg">---</span>
+            </div>
+            <div class="campo-group">
+                <label>CPF</label>
+                <span class="campo-valor" id="perfil-cpf">---</span>
+            </div>
+
+            <!-- CAMPOS EDITÁVEIS (inputs/select) -->
+            <div class="campo-group editavel">
+                <label for="perfil-contato-emergencia">Contato de Emergência</label>
+                <input type="text" id="perfil-contato-emergencia" disabled>
+            </div>
+            <div class="campo-group editavel">
+                <label for="perfil-telefone-emergencia">Telefone do Contato</label>
+                <input type="text" id="perfil-telefone-emergencia" disabled>
+            </div>
+            <div class="campo-group editavel">
+                <label for="perfil-plano-saude">Plano de Saúde</label>
+                <select id="perfil-plano-saude" disabled>
+                    <option value="NÃO">NÃO</option>
+                    <option value="SIM">SIM</option>
+                </select>
+            </div>
+            <div class="campo-group editavel">
+                <label for="perfil-aceite-plano">Local de Atendimento</label>
+                <input type="text" id="perfil-aceite-plano" disabled placeholder="Ex: Hospital Unimed">
+            </div>
+            <div class="campo-group editavel">
+                <label for="perfil-numero-sapato">Nº do Calçado</label>
+                <input type="text" id="perfil-numero-sapato" disabled>
+            </div>
+            <div class="campo-group editavel">
+                <label for="perfil-manequim">Manequim</label>
+                <input type="text" id="perfil-manequim" disabled>
+            </div>
+        </div>
+
+        <!-- Botões de ação da edição -->
+        <div id="botoes-edicao-perfil" style="display: none; margin-top: 24px;">
+            <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar</button>
+            <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
+        </div>
+    </div>
+</div>
+
     <!-- 1. CRIAR SECRETARIA -->
     <div class="cartao oculto" id="cartaoCriarSecretaria">
       <h2>1. Criar Secretaria</h2>
@@ -1057,270 +1347,6 @@
     </div>
     
 <!-- TELA DE PERFIL DO PROFISSIONAL (CARTEIRA FUNCIONAL) -->
-<div id="secao-perfil-profissional" class="card-painel perfil-carteira">
-    <!-- Cabeçalho com foto, nome e cargo -->
-    <div class="perfil-cabecalho">
-        <div class="perfil-avatar">
-            <div class="avatar-wrapper">
-                <img id="img-avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>" alt="Foto do Profissional">
-            </div>
-            <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
-            <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>
-                📷 Alterar Foto
-            </button>
-            <small class="dica-foto">JPG/PNG até 2MB</small>
-        </div>
-        <div class="perfil-titulo">
-            <div class="perfil-nome" id="perfil-nome-exibicao">NOME DE EXIBIÇÃO</div>
-            <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
-        </div>
-        <button id="btn-editar-perfil" class="btn-acao-secundario" onclick="habilitarEdicaoPerfil()">✏️ Editar</button>
-        <button id="btnTogglePerfil" class="btn-toggle-perfil">📋 Pautas</button>
-    </div>
-
-    <!-- Linha divisória azul -->
-    <hr class="perfil-divisor">
-
-    <!-- SEÇÃO DE PAUTAS (recolhível) -->
-    <div id="secaoPautas" class="card-painel" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
-        <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);">+ Nova Pauta</button>
-      </div>
-      <div id="listaPautasContainer">
-        <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
-      </div>
-
-      <!-- ESTE BLOCO ABRE A CAIXINHA DE REGISTRO DO RETORNO DA EQUIPE (aciona o cálculo de diária) -->
-      <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none;">
-        <h3>Registrar Retorno da Equipe</h3>
-        <div class="grid-form-pauta">
-          <div class="campo-group"><label for="retorno-data">Data de Retorno*</label><input type="date" id="retorno-data" required></div>
-          <div class="campo-group"><label for="retorno-hora">Horário de Retorno*</label><input type="time" id="retorno-hora" required></div>
-        </div>
-        <div style="text-align:right; margin-top:14px;">
-          <button type="button" onclick="fecharRegistroRetorno()" class="btn-cancelar-perfil">Cancelar</button>
-          <button type="button" onclick="confirmarRegistroRetorno()" class="botao-principal" style="width:auto; padding:10px 24px;">Salvar Retorno</button>
-        </div>
-      </div>
-
-      <!-- ESTE BLOCO ABRE O FORMULÁRIO DE CRIAR PAUTA (rolagem única, seções condicionais) -->
-      <div id="formCriarPautaWrapper" style="display: none; margin-top: 20px; border-top: 3px solid var(--gov-azul); padding-top: 20px;">
-        <h2 style="margin:0 0 16px; color: var(--gov-azul-escuro);">Nova Pauta</h2>
-        <form id="formCriarPauta">
-
-          <!-- SEÇÃO: DADOS DA DEMANDA -->
-          <div class="secao-form-pauta">
-            <h3>Dados da Demanda</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group">
-                <label for="pauta-tipo-producao">Tipo de Produção*</label>
-                <select id="pauta-tipo-producao" required>
-                  <option value="">Selecione...</option>
-                  <option>AGENDA GOVERNADOR</option>
-                  <option>PAUTA SUGERIDA</option>
-                  <option>REDE SOCIAL GOVRJ</option>
-                  <option>PEÇA PUBLICITÁRIA</option>
-                  <option>INSTITUCIONAL</option>
-                  <option>GOVCAST</option>
-                  <option>CAMPANHAS E SERVIÇOS DO ESTADO</option>
-                  <option>EDIÇÃO DE IMAGENS CEDIDAS POR OUTRAS SECRETARIAS</option>
-                  <option>CESSÃO DE IMAGENS PARA TERCEIROS</option>
-                </select>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-tipo-video">Tipo de Vídeo*</label>
-                <select id="pauta-tipo-video" required>
-                  <option value="">Selecione...</option>
-                  <option>VÍDEO RELEASE</option>
-                  <option>VIDEO INSTITUCIONAL</option>
-                  <option>DIGITAL GOVRJ</option>
-                  <option>PUBLICIDADE DO ESTADO</option>
-                  <option>EDUCATIVO/INFORMATIVO</option>
-                  <option>EDIÇÃO DE IMAGENS CEDIDAS PARA VEICULAR</option>
-                </select>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-setor-solicitante">Setor Solicitante*</label>
-                <input type="text" id="pauta-setor-solicitante" required>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-secretaria-envolvida">Secretaria Envolvida*</label>
-                <input type="text" id="pauta-secretaria-envolvida" placeholder="Ex: Secretaria de Segurança Pública" required>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-titulo-email">Título da Pauta (igual ao e-mail)*</label>
-                <input type="text" id="pauta-titulo-email" required>
-                <small id="avisoTituloDuplicado" style="color:#B3261E; display:none;">⚠️ Essa pauta já foi criada.</small>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-titulo-final">Título Final da Produção</label>
-                <input type="text" id="pauta-titulo-final" placeholder="Preencher depois, se ainda não tiver">
-              </div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: SAÍDA E EVENTO -->
-          <div class="secao-form-pauta">
-            <h3>Saída da Equipe e Evento</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group"><label for="pauta-data-saida">Data de Saída*</label><input type="date" id="pauta-data-saida" required></div>
-              <div class="campo-group"><label for="pauta-horario-saida">Horário de Saída*</label><input type="time" id="pauta-horario-saida" required></div>
-              <div class="campo-group">
-                <label for="pauta-motorista">Motorista</label>
-                <select id="pauta-motorista">
-                  <option value="">Selecione...</option>
-                  <option>DA SILVA</option><option>EDSON</option><option>HIGOR</option>
-                  <option>UBER FSB</option><option>UBER INPACTO</option>
-                </select>
-              </div>
-              <div class="campo-group"><label for="pauta-data-producao">Data do Evento*</label><input type="date" id="pauta-data-producao" required></div>
-              <div class="campo-group"><label for="pauta-horario-evento">Horário do Evento*</label><input type="time" id="pauta-horario-evento" required></div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: LOCAL (com busca de endereço via Nominatim/OpenStreetMap) -->
-          <div class="secao-form-pauta">
-            <h3>Local da Produção</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group" style="grid-column: 1 / -1; position: relative;">
-                <label for="pauta-endereco">Endereço*</label>
-                <input type="text" id="pauta-endereco" placeholder="Digite o endereço e escolha uma sugestão..." autocomplete="off" required>
-                <div id="sugestoesEndereco" class="lista-sugestoes-endereco"></div>
-              </div>
-              <div class="campo-group"><label>Cidade</label><input type="text" id="pauta-cidade" disabled></div>
-              <div class="campo-group"><label>Bairro</label><input type="text" id="pauta-bairro" disabled></div>
-              <div class="campo-group"><label>UF</label><input type="text" id="pauta-uf" disabled></div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: EQUIPE (campos condicionais SIM/NÃO) -->
-          <div class="secao-form-pauta">
-            <h3>Equipe Escalada</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group">
-                <label for="pauta-tem-assessor">Tem Assessor de Imprensa?</label>
-                <select id="pauta-tem-assessor" onchange="alternarCampoCondicional('pauta-tem-assessor','bloco-assessor')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-assessor" style="display:none;">
-                <label for="pauta-assessor">Assessor</label>
-                <input type="text" id="pauta-assessor" placeholder="Nome do assessor">
-              </div>
-
-              <div class="campo-group">
-                <label for="pauta-tem-video">Tem Vídeo?</label>
-                <select id="pauta-tem-video" onchange="alternarCampoCondicional('pauta-tem-video','bloco-video')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-video" style="display:none;">
-                <label for="pauta-cinegrafista">Cinegrafista</label>
-                <input type="text" id="pauta-cinegrafista" placeholder="Nome do cinegrafista">
-              </div>
-              <div class="campo-group" id="bloco-video-edicao" style="display:none;">
-                <label for="pauta-edicao">Editor de Imagens</label>
-                <input type="text" id="pauta-edicao" placeholder="Nome de quem vai editar">
-              </div>
-
-              <div class="campo-group">
-                <label for="pauta-tem-foto">Tem Fotografia?</label>
-                <select id="pauta-tem-foto" onchange="alternarCampoCondicional('pauta-tem-foto','bloco-foto')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-foto" style="display:none;">
-                <label for="pauta-fotografo">Fotógrafo</label>
-                <input type="text" id="pauta-fotografo" placeholder="Nome do fotógrafo">
-              </div>
-
-              <div class="campo-group">
-                <label for="pauta-tem-digital">Tem Digital?</label>
-                <select id="pauta-tem-digital" onchange="alternarCampoCondicional('pauta-tem-digital','bloco-digital')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-digital" style="display:none;">
-                <label for="pauta-digital">Profissional Digital</label>
-                <input type="text" id="pauta-digital" placeholder="Nome do profissional de digital">
-              </div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: EQUIPAMENTO E OBSERVAÇÕES -->
-          <div class="secao-form-pauta">
-            <h3>Equipamento e Observações</h3>
-            <div class="campo-group" style="margin-bottom: 16px;">
-              <label>Equipamento Usado (marque todos que forem levados)</label>
-              <div class="grade-checkbox-equipamento" id="gradeEquipamento">
-                <!-- preenchido via JS a partir da lista EQUIPAMENTOS_VIDEO -->
-              </div>
-            </div>
-            <div class="campo-group">
-              <label for="pauta-observacoes">Observações</label>
-              <textarea id="pauta-observacoes" rows="3"></textarea>
-            </div>
-          </div>
-
-          <div style="text-align: right; margin-top: 20px;">
-            <button type="button" onclick="fecharFormCriarPauta()" class="btn-cancelar-perfil">Cancelar</button>
-            <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Salvar Pauta</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Corpo com os campos -->
-    <div class="perfil-corpo" id="perfilCorpo">
-        <div class="perfil-campos-grid">
-            <!-- CAMPOS NÃO EDITÁVEIS (exibição em texto) -->
-            <div class="campo-group">
-                <label>Nome Completo</label>
-                <span class="campo-valor" id="perfil-nome-completo">---</span>
-            </div>
-            <div class="campo-group">
-                <label>ID Funcional</label>
-                <span class="campo-valor" id="perfil-id-funcional">---</span>
-            </div>
-            <div class="campo-group">
-                <label>RG</label>
-                <span class="campo-valor" id="perfil-rg">---</span>
-            </div>
-            <div class="campo-group">
-                <label>CPF</label>
-                <span class="campo-valor" id="perfil-cpf">---</span>
-            </div>
-
-            <!-- CAMPOS EDITÁVEIS (inputs/select) -->
-            <div class="campo-group editavel">
-                <label for="perfil-contato-emergencia">Contato de Emergência</label>
-                <input type="text" id="perfil-contato-emergencia" disabled>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-telefone-emergencia">Telefone do Contato</label>
-                <input type="text" id="perfil-telefone-emergencia" disabled>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-plano-saude">Plano de Saúde</label>
-                <select id="perfil-plano-saude" disabled>
-                    <option value="NÃO">NÃO</option>
-                    <option value="SIM">SIM</option>
-                </select>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-aceite-plano">Local de Atendimento</label>
-                <input type="text" id="perfil-aceite-plano" disabled placeholder="Ex: Hospital Unimed">
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-numero-sapato">Nº do Calçado</label>
-                <input type="text" id="perfil-numero-sapato" disabled>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-manequim">Manequim</label>
-                <input type="text" id="perfil-manequim" disabled>
-            </div>
-        </div>
-
-        <!-- Botões de ação da edição -->
-        <div id="botoes-edicao-perfil" style="display: none; margin-top: 24px;">
-            <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar</button>
-            <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
-        </div>
-    </div>
-</div>
 
     <!-- ESTRUTURA ORGANIZACIONAL -->
 <div class="cartao" id="cartaoEstrutura">
@@ -1335,7 +1361,7 @@
   /* ---------------------------------------------------------------
      BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
-  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbyPWrbWmBNf6coVUnhnt3uTFxs0A0kZKhbKUZj17ExOMP_QCD6tG8xC_yOalGAA_YQ/exec";
+  const URL_BACKEND = "https://script.google.com/macros/s/AKfycby4R2OLGUWYpMc1pO7UoWAQRkSDLkfCOaF7DW3Fv7wvaC5pvKqc3mvhsHyZXJub9W5N/exec";
   let dadosEstruturaGlobal = null;
 
   /* ---------------------------------------------------------------
@@ -1367,22 +1393,38 @@ async function chamarBackend(acao, parametros = {}) {
     return { sucesso: false, mensagem: "Erro ao se conectar com o servidor." };
   }
 }
-  function salvarSessao(token, usuario) {
-    localStorage.setItem('secc_token', token);
-    localStorage.setItem('secc_usuario', JSON.stringify(usuario));
+  function salvarSessao(token, usuario, manterConectado) {
+    const area = manterConectado ? localStorage : sessionStorage;
+    area.setItem('secc_token', token);
+    area.setItem('secc_usuario', JSON.stringify(usuario));
+    const outraArea = manterConectado ? sessionStorage : localStorage;
+    outraArea.removeItem('secc_token');
+    outraArea.removeItem('secc_usuario');
   }
 
-  function pegarTokenSalvo() { return localStorage.getItem('secc_token'); }
+  function pegarTokenSalvo() {
+    return localStorage.getItem('secc_token') || sessionStorage.getItem('secc_token');
+  }
 
   function pegarUsuarioSalvo() {
-    const bruto = localStorage.getItem('secc_usuario');
+    const bruto = localStorage.getItem('secc_usuario') || sessionStorage.getItem('secc_usuario');
     return bruto ? JSON.parse(bruto) : null;
   }
 
   function limparSessao() {
     localStorage.removeItem('secc_token');
     localStorage.removeItem('secc_usuario');
+    sessionStorage.removeItem('secc_token');
+    sessionStorage.removeItem('secc_usuario');
   }
+
+  document.getElementById('botaoMostrarSenha').addEventListener('click', () => {
+    const campo = document.getElementById('campoSenha');
+    const botao = document.getElementById('botaoMostrarSenha');
+    const vaiMostrar = campo.type === 'password';
+    campo.type = vaiMostrar ? 'text' : 'password';
+    botao.textContent = vaiMostrar ? '🙈' : '👁';
+  });
 
   /* ---------------------------------------------------------------
      BLOCO JS 3 - LOGIN E TROCA DE SENHA
@@ -1398,7 +1440,8 @@ async function chamarBackend(acao, parametros = {}) {
       divMensagem.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
       return;
     }
-    salvarSessao(resposta.token, resposta.usuario);
+    const manterConectado = document.getElementById('campoManterConectado').checked;
+    salvarSessao(resposta.token, resposta.usuario, manterConectado);
     if (resposta.precisaTrocarSenha) {
       mostrarTela('telaTrocaSenha');
     } else {
@@ -1455,6 +1498,15 @@ async function chamarBackend(acao, parametros = {}) {
   document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
   document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
   document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
+
+  // ESTE BLOCO deixa o cabeçalho do perfil do Admin recolhido por padrão
+  // (só foto + nome + cargo aparecem). O botão de alternar é o mesmo de
+  // sempre, mas pro Admin ele só mostra/esconde o corpo (sem seção de Pautas).
+  if (usuario.nivel === 'ADMIN') {
+    document.getElementById('perfilCorpo').style.display = 'none';
+    const botaoToggle = document.getElementById('btnTogglePerfil');
+    if (botaoToggle) botaoToggle.textContent = '👤 Ver Perfil';
+  }
   
   const areaBtn = document.getElementById('areaBotaoNovoUsuario');
   if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
@@ -1543,29 +1595,55 @@ async function chamarBackend(acao, parametros = {}) {
     popularSelectSecretariaUsuario();
 
     if (container) {
-      let html = '<ul>';
-      (resposta.secretarias || []).forEach(secretaria => {
-        html += `<li class="item-secretaria"><strong>${secretaria.Nome}</strong> (${secretaria.Sigla})</li>`;
-        (resposta.nucleos || [])
-          .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID)
-          .forEach(nucleo => {
-            html += `<li class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</li>`;
+      if (!(resposta.secretarias || []).length) {
+        container.innerHTML = '<p>Nenhuma secretaria cadastrada ainda.</p>';
+        return;
+      }
+
+      let html = '';
+      resposta.secretarias.forEach((secretaria, iSec) => {
+        const nucleosDiretos = (resposta.nucleos || [])
+          .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID);
+        const subsecretarias = (resposta.subsecretarias || [])
+          .filter(sub => sub.SecretariaID === secretaria.SecretariaID);
+
+        html += `<div class="acordeao-secretaria">
+          <div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao('filhos-sec-${iSec}', this)">
+            <span class="acordeao-seta">▶</span> <strong>${secretaria.Nome}</strong> (${secretaria.Sigla})
+          </div>
+          <div class="acordeao-filhos oculto" id="filhos-sec-${iSec}">`;
+
+        nucleosDiretos.forEach(nucleo => {
+          html += `<div class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</div>`;
+        });
+
+        subsecretarias.forEach((sub, iSub) => {
+          const nucleosDaSub = (resposta.nucleos || []).filter(n => n.SubsecretariaID === sub.SubsecretariaID);
+          html += `<div class="acordeao-subsecretaria">
+            <div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao('filhos-sub-${iSec}-${iSub}', this)">
+              <span class="acordeao-seta">▶</span> 📂 ${sub.Nome} (${sub.Sigla})
+            </div>
+            <div class="acordeao-filhos oculto" id="filhos-sub-${iSec}-${iSub}">`;
+          nucleosDaSub.forEach(nucleo => {
+            html += `<div class="item-nucleo" style="margin-left: 24px;">📌 Núcleo: ${nucleo.Nome}</div>`;
           });
-        (resposta.subsecretarias || [])
-          .filter(sub => sub.SecretariaID === secretaria.SecretariaID)
-          .forEach(sub => {
-            html += `<li class="item-subsecretaria">📂 ${sub.Nome} (${sub.Sigla})</li>`;
-            
-            (resposta.nucleos || [])
-              .filter(nucleo => nucleo.SubsecretariaID === sub.SubsecretariaID)
-              .forEach(nucleo => {
-                html += `<li class="item-nucleo" style="margin-left: 48px;">📌 Núcleo: ${nucleo.Nome}</li>`;
-              });
-          });
+          if (!nucleosDaSub.length) html += `<div class="item-nucleo" style="margin-left:24px; color: var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>`;
+          html += `</div></div>`;
+        });
+
+        html += `</div></div>`;
       });
-      html += '</ul>';
-      container.innerHTML = html || '<p>Nenhuma secretaria cadastrada ainda.</p>';
+      container.innerHTML = html;
     }
+  }
+
+  // ESTE BLOCO ABRE/FECHA CADA NÍVEL DO ACORDEÃO DA ESTRUTURA ORGANIZACIONAL
+  function alternarAcordeao(idFilhos, cabecalhoClicado) {
+    const filhos = document.getElementById(idFilhos);
+    const seta = cabecalhoClicado.querySelector('.acordeao-seta');
+    const abrir = filhos.classList.contains('oculto');
+    filhos.classList.toggle('oculto', !abrir);
+    if (seta) seta.textContent = abrir ? '▼' : '▶';
   }
 
   function popularSelectSecretariaUsuario() {
@@ -1856,12 +1934,23 @@ async function salvarPerfilProfissional() {
       mostrarTela('telaLogin');
     }
   })();
-// Toggle perfil/pautas — o cabeçalho nunca é escondido, só alternamos corpo x pautas.
+// Toggle perfil — o cabeçalho nunca é escondido.
+// Admin: só mostra/esconde o próprio perfil (não tem seção de Pautas).
+// Demais níveis: alternam entre o corpo do perfil e a seção de Pautas.
 document.getElementById('btnTogglePerfil').addEventListener('click', function() {
+  const usuarioAtual = pegarUsuarioSalvo();
   const corpoSecao = document.getElementById('perfilCorpo');
+  const btn = this;
+
+  if (usuarioAtual && usuarioAtual.nivel === 'ADMIN') {
+    const recolhido = corpoSecao.style.display === 'none';
+    corpoSecao.style.display = recolhido ? 'block' : 'none';
+    btn.textContent = recolhido ? '🔼 Recolher' : '👤 Ver Perfil';
+    return;
+  }
+
   const pautasSecao = document.getElementById('secaoPautas');
   const botaoEditar = document.getElementById('btn-editar-perfil');
-  const btn = this;
 
   if (pautasSecao.style.display === 'none') {
     corpoSecao.style.display = 'none';
