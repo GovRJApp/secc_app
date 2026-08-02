@@ -458,23 +458,50 @@
     flex-wrap: wrap;
     margin-bottom: 8px;
     position: relative;
-    padding-right: 90px; /* espaço reservado pro botão de recolher/expandir */
+    padding-right: 90px;
 }
 
 .btn-toggle-perfil {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    background: var(--gov-azul);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
+    position: absolute; right: 0; bottom: 0;
+    background: var(--gov-azul); color: white; border: none;
+    border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
 }
 .btn-toggle-perfil:hover { opacity: 0.85; }
+
+/* ESTE BLOCO ESTILIZA O FORMULÁRIO DE CRIAR PAUTA */
+.secao-form-pauta {
+    border: 1px solid var(--gov-borda, #ddd);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    background: #fafbfc;
+}
+.secao-form-pauta h3 {
+    margin: 0 0 14px;
+    font-size: 0.95rem;
+    color: var(--gov-azul-escuro);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.grid-form-pauta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px 20px;
+}
+.lista-sugestoes-endereco {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 20;
+    background: white; border: 1px solid var(--gov-borda, #ddd); border-top: none;
+    border-radius: 0 0 8px 8px; max-height: 220px; overflow-y: auto;
+}
+.lista-sugestoes-endereco div {
+    padding: 8px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid #f0f0f0;
+}
+.lista-sugestoes-endereco div:hover { background: var(--gov-azul); color: white; }
+.grade-checkbox-equipamento {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px 16px; font-size: 13px;
+}
+.grade-checkbox-equipamento label { display: flex; align-items: center; gap: 6px; font-weight: 400; cursor: pointer; }
 
 .perfil-avatar {
     display: flex;
@@ -678,16 +705,6 @@
         height: 90px;
     }
 }
-/* ESTE BLOCO ESTILIZA O CAMPO DE SENHA COM BOTÃO "OLHO" E O CHECKBOX "MANTER CONECTADO" */
-.campo-senha-wrapper { position: relative; }
-.campo-senha-wrapper input { padding-right: 44px; }
-.botao-mostrar-senha {
-  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; padding: 6px; cursor: pointer; font-size: 16px; line-height: 1;
-}
-.linha-manter-conectado { display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; font-size: 13px; }
-.linha-manter-conectado input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
-.linha-manter-conectado label { margin: 0; font-weight: 400; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -704,14 +721,7 @@
       <label for="campoEmail">E-mail Cadastrado</label>
       <input type="email" id="campoEmail" required autocomplete="username" placeholder="seu.email@rio.rj.gov.br">
       <label for="campoSenha">Senha de Acesso</label>
-      <div class="campo-senha-wrapper">
-        <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
-        <button type="button" class="botao-mostrar-senha" id="botaoMostrarSenha" aria-label="Mostrar senha" tabindex="-1">👁</button>
-      </div>
-      <div class="linha-manter-conectado">
-        <input type="checkbox" id="campoManterConectado" checked>
-        <label for="campoManterConectado">Manter conectado neste dispositivo</label>
-      </div>
+      <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
       <button type="submit" class="botao-principal">Entrar no Sistema</button>
     </form>
     <button type="button" class="link-discreto" id="botaoEsqueciSenha">Esqueci minha senha</button>
@@ -1080,6 +1090,164 @@
       <div id="listaPautasContainer">
         <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
       </div>
+
+      <!-- ESTE BLOCO ABRE O FORMULÁRIO DE CRIAR PAUTA (rolagem única, seções condicionais) -->
+      <div id="formCriarPautaWrapper" style="display: none; margin-top: 20px; border-top: 3px solid var(--gov-azul); padding-top: 20px;">
+        <h2 style="margin:0 0 16px; color: var(--gov-azul-escuro);">Nova Pauta</h2>
+        <form id="formCriarPauta">
+
+          <!-- SEÇÃO: DADOS DA DEMANDA -->
+          <div class="secao-form-pauta">
+            <h3>Dados da Demanda</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group">
+                <label for="pauta-tipo-producao">Tipo de Produção*</label>
+                <select id="pauta-tipo-producao" required>
+                  <option value="">Selecione...</option>
+                  <option>AGENDA GOVERNADOR</option>
+                  <option>PAUTA SUGERIDA</option>
+                  <option>REDE SOCIAL GOVRJ</option>
+                  <option>PEÇA PUBLICITÁRIA</option>
+                  <option>INSTITUCIONAL</option>
+                  <option>GOVCAST</option>
+                  <option>CAMPANHAS E SERVIÇOS DO ESTADO</option>
+                  <option>EDIÇÃO DE IMAGENS CEDIDAS POR OUTRAS SECRETARIAS</option>
+                  <option>CESSÃO DE IMAGENS PARA TERCEIROS</option>
+                </select>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-tipo-video">Tipo de Vídeo*</label>
+                <select id="pauta-tipo-video" required>
+                  <option value="">Selecione...</option>
+                  <option>VÍDEO RELEASE</option>
+                  <option>VIDEO INSTITUCIONAL</option>
+                  <option>DIGITAL GOVRJ</option>
+                  <option>PUBLICIDADE DO ESTADO</option>
+                  <option>EDUCATIVO/INFORMATIVO</option>
+                  <option>EDIÇÃO DE IMAGENS CEDIDAS PARA VEICULAR</option>
+                </select>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-setor-solicitante">Setor Solicitante*</label>
+                <input type="text" id="pauta-setor-solicitante" required>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-secretaria-envolvida">Secretaria Envolvida*</label>
+                <input type="text" id="pauta-secretaria-envolvida" placeholder="Ex: Secretaria de Segurança Pública" required>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-titulo-email">Título da Pauta (igual ao e-mail)*</label>
+                <input type="text" id="pauta-titulo-email" required>
+                <small id="avisoTituloDuplicado" style="color:#B3261E; display:none;">⚠️ Essa pauta já foi criada.</small>
+              </div>
+              <div class="campo-group">
+                <label for="pauta-titulo-final">Título Final da Produção</label>
+                <input type="text" id="pauta-titulo-final" placeholder="Preencher depois, se ainda não tiver">
+              </div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: SAÍDA E EVENTO -->
+          <div class="secao-form-pauta">
+            <h3>Saída da Equipe e Evento</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group"><label for="pauta-data-saida">Data de Saída*</label><input type="date" id="pauta-data-saida" required></div>
+              <div class="campo-group"><label for="pauta-horario-saida">Horário de Saída*</label><input type="time" id="pauta-horario-saida" required></div>
+              <div class="campo-group">
+                <label for="pauta-motorista">Motorista</label>
+                <select id="pauta-motorista">
+                  <option value="">Selecione...</option>
+                  <option>DA SILVA</option><option>EDSON</option><option>HIGOR</option>
+                  <option>UBER FSB</option><option>UBER INPACTO</option>
+                </select>
+              </div>
+              <div class="campo-group"><label for="pauta-data-producao">Data do Evento*</label><input type="date" id="pauta-data-producao" required></div>
+              <div class="campo-group"><label for="pauta-horario-evento">Horário do Evento*</label><input type="time" id="pauta-horario-evento" required></div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: LOCAL (com busca de endereço via Nominatim/OpenStreetMap) -->
+          <div class="secao-form-pauta">
+            <h3>Local da Produção</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group" style="grid-column: 1 / -1; position: relative;">
+                <label for="pauta-endereco">Endereço*</label>
+                <input type="text" id="pauta-endereco" placeholder="Digite o endereço e escolha uma sugestão..." autocomplete="off" required>
+                <div id="sugestoesEndereco" class="lista-sugestoes-endereco"></div>
+              </div>
+              <div class="campo-group"><label>Cidade</label><input type="text" id="pauta-cidade" disabled></div>
+              <div class="campo-group"><label>Bairro</label><input type="text" id="pauta-bairro" disabled></div>
+              <div class="campo-group"><label>UF</label><input type="text" id="pauta-uf" disabled></div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: EQUIPE (campos condicionais SIM/NÃO) -->
+          <div class="secao-form-pauta">
+            <h3>Equipe Escalada</h3>
+            <div class="grid-form-pauta">
+              <div class="campo-group">
+                <label for="pauta-tem-assessor">Tem Assessor de Imprensa?</label>
+                <select id="pauta-tem-assessor" onchange="alternarCampoCondicional('pauta-tem-assessor','bloco-assessor')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-assessor" style="display:none;">
+                <label for="pauta-assessor">Assessor</label>
+                <input type="text" id="pauta-assessor" placeholder="Nome do assessor">
+              </div>
+
+              <div class="campo-group">
+                <label for="pauta-tem-video">Tem Vídeo?</label>
+                <select id="pauta-tem-video" onchange="alternarCampoCondicional('pauta-tem-video','bloco-video')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-video" style="display:none;">
+                <label for="pauta-cinegrafista">Cinegrafista</label>
+                <input type="text" id="pauta-cinegrafista" placeholder="Nome do cinegrafista">
+              </div>
+              <div class="campo-group" id="bloco-video-edicao" style="display:none;">
+                <label for="pauta-edicao">Editor de Imagens</label>
+                <input type="text" id="pauta-edicao" placeholder="Nome de quem vai editar">
+              </div>
+
+              <div class="campo-group">
+                <label for="pauta-tem-foto">Tem Fotografia?</label>
+                <select id="pauta-tem-foto" onchange="alternarCampoCondicional('pauta-tem-foto','bloco-foto')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-foto" style="display:none;">
+                <label for="pauta-fotografo">Fotógrafo</label>
+                <input type="text" id="pauta-fotografo" placeholder="Nome do fotógrafo">
+              </div>
+
+              <div class="campo-group">
+                <label for="pauta-tem-digital">Tem Digital?</label>
+                <select id="pauta-tem-digital" onchange="alternarCampoCondicional('pauta-tem-digital','bloco-digital')"><option>NÃO</option><option>SIM</option></select>
+              </div>
+              <div class="campo-group" id="bloco-digital" style="display:none;">
+                <label for="pauta-digital">Profissional Digital</label>
+                <input type="text" id="pauta-digital" placeholder="Nome do profissional de digital">
+              </div>
+            </div>
+          </div>
+
+          <!-- SEÇÃO: EQUIPAMENTO E OBSERVAÇÕES -->
+          <div class="secao-form-pauta">
+            <h3>Equipamento e Observações</h3>
+            <div class="campo-group" style="margin-bottom: 16px;">
+              <label>Equipamento Usado (marque todos que forem levados)</label>
+              <div class="grade-checkbox-equipamento" id="gradeEquipamento">
+                <!-- preenchido via JS a partir da lista EQUIPAMENTOS_VIDEO -->
+              </div>
+            </div>
+            <div class="campo-group">
+              <label for="pauta-observacoes">Observações</label>
+              <textarea id="pauta-observacoes" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div style="text-align: right; margin-top: 20px;">
+            <button type="button" onclick="fecharFormCriarPauta()" class="btn-cancelar-perfil">Cancelar</button>
+            <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Salvar Pauta</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Corpo com os campos -->
@@ -1186,38 +1354,22 @@ async function chamarBackend(acao, parametros = {}) {
     return { sucesso: false, mensagem: "Erro ao se conectar com o servidor." };
   }
 }
-  function salvarSessao(token, usuario, manterConectado) {
-    const area = manterConectado ? localStorage : sessionStorage;
-    area.setItem('secc_token', token);
-    area.setItem('secc_usuario', JSON.stringify(usuario));
-    const outraArea = manterConectado ? sessionStorage : localStorage;
-    outraArea.removeItem('secc_token');
-    outraArea.removeItem('secc_usuario');
+  function salvarSessao(token, usuario) {
+    localStorage.setItem('secc_token', token);
+    localStorage.setItem('secc_usuario', JSON.stringify(usuario));
   }
 
-  function pegarTokenSalvo() {
-    return localStorage.getItem('secc_token') || sessionStorage.getItem('secc_token');
-  }
+  function pegarTokenSalvo() { return localStorage.getItem('secc_token'); }
 
   function pegarUsuarioSalvo() {
-    const bruto = localStorage.getItem('secc_usuario') || sessionStorage.getItem('secc_usuario');
+    const bruto = localStorage.getItem('secc_usuario');
     return bruto ? JSON.parse(bruto) : null;
   }
 
   function limparSessao() {
     localStorage.removeItem('secc_token');
     localStorage.removeItem('secc_usuario');
-    sessionStorage.removeItem('secc_token');
-    sessionStorage.removeItem('secc_usuario');
   }
-
-  document.getElementById('botaoMostrarSenha').addEventListener('click', () => {
-    const campo = document.getElementById('campoSenha');
-    const botao = document.getElementById('botaoMostrarSenha');
-    const vaiMostrar = campo.type === 'password';
-    campo.type = vaiMostrar ? 'text' : 'password';
-    botao.textContent = vaiMostrar ? '🙈' : '👁';
-  });
 
   /* ---------------------------------------------------------------
      BLOCO JS 3 - LOGIN E TROCA DE SENHA
@@ -1233,8 +1385,7 @@ async function chamarBackend(acao, parametros = {}) {
       divMensagem.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
       return;
     }
-    const manterConectado = document.getElementById('campoManterConectado').checked;
-    salvarSessao(resposta.token, resposta.usuario, manterConectado);
+    salvarSessao(resposta.token, resposta.usuario);
     if (resposta.precisaTrocarSenha) {
       mostrarTela('telaTrocaSenha');
     } else {
@@ -1692,8 +1843,7 @@ async function salvarPerfilProfissional() {
       mostrarTela('telaLogin');
     }
   })();
-// Toggle perfil/pautas — o cabeçalho (foto, nome, cargo) NUNCA é escondido.
-// Só alternamos entre o corpo de campos e a seção de pautas.
+// Toggle perfil/pautas — o cabeçalho nunca é escondido, só alternamos corpo x pautas.
 document.getElementById('btnTogglePerfil').addEventListener('click', function() {
   const corpoSecao = document.getElementById('perfilCorpo');
   const pautasSecao = document.getElementById('secaoPautas');
@@ -1701,14 +1851,12 @@ document.getElementById('btnTogglePerfil').addEventListener('click', function() 
   const btn = this;
 
   if (pautasSecao.style.display === 'none') {
-    // Recolher perfil (esconde só o corpo), mostrar pautas
     corpoSecao.style.display = 'none';
     pautasSecao.style.display = 'block';
     if (botaoEditar) botaoEditar.style.display = 'none';
     btn.textContent = '👤 Perfil';
-    carregarPautas(); // carrega a lista
+    carregarPautas();
   } else {
-    // Mostrar perfil de novo, recolher pautas
     corpoSecao.style.display = 'block';
     pautasSecao.style.display = 'none';
     if (botaoEditar) botaoEditar.style.display = 'inline-block';
@@ -1802,18 +1950,151 @@ function determinarStatus(pauta) {
   return { cor: '#EF6C00', label: 'Marcada' };
 }
 
-// Funções para ver/editar pauta (abrir modal)
+// Funções para ver/editar pauta — edição completa fica pra próxima etapa
 function verPauta(id) {
-  alert('Visualizar pauta ' + id + ' (função em desenvolvimento)');
+  alert('Visualizar pauta ' + id + ' (próxima etapa)');
 }
-
 function editarPauta(id) {
-  alert('Editar pauta ' + id + ' (função em desenvolvimento)');
+  alert('Editar pauta ' + id + ' (próxima etapa)');
 }
 
-// Botão Criar Pauta
+/* =====================================================================
+   ESTE BLOCO ABRE/FECHA O FORMULÁRIO DE CRIAR PAUTA
+   ===================================================================== */
 document.getElementById('btnCriarPauta').addEventListener('click', function() {
-  alert('Formulário de criação de pauta (em desenvolvimento)');
+  document.getElementById('listaPautasContainer').style.display = 'none';
+  this.style.display = 'none';
+  document.getElementById('formCriarPautaWrapper').style.display = 'block';
+});
+
+function fecharFormCriarPauta() {
+  document.getElementById('formCriarPauta').reset();
+  document.getElementById('formCriarPautaWrapper').style.display = 'none';
+  document.getElementById('listaPautasContainer').style.display = 'block';
+  document.getElementById('btnCriarPauta').style.display = 'inline-block';
+  ['bloco-assessor','bloco-video','bloco-video-edicao','bloco-foto','bloco-digital'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+}
+
+// ESTE BLOCO MOSTRA/ESCONDE OS CAMPOS QUE SÓ APARECEM SE A RESPOSTA FOR "SIM"
+function alternarCampoCondicional(idSelect, idBloco) {
+  const valor = document.getElementById(idSelect).value;
+  document.getElementById(idBloco).style.display = (valor === 'SIM') ? 'block' : 'none';
+  if (idBloco === 'bloco-video') {
+    document.getElementById('bloco-video-edicao').style.display = (valor === 'SIM') ? 'block' : 'none';
+  }
+}
+
+// ESTE BLOCO MONTA OS CHECKBOXES DE EQUIPAMENTO A PARTIR DA LISTA FIXA
+const EQUIPAMENTOS_VIDEO = [
+  'Osmo FSB - 1', 'Osmo FSB - 2', 'Osmo FSB - 3', 'Drone FSB - 1', 'Drone FSB - 2',
+  'Mac Grafite', 'Mac Pérola', 'Maczinho', 'HDzinho A', 'HDzinho B', 'HDzinho C',
+  'Luz 1', 'Luz 2', 'Rebatedor mini 1', 'Rebatedor mini 2'
+];
+(function montarGradeEquipamento() {
+  const grade = document.getElementById('gradeEquipamento');
+  if (!grade) return;
+  grade.innerHTML = EQUIPAMENTOS_VIDEO.map(nome =>
+    `<label><input type="checkbox" value="${nome}" class="chk-equipamento"> ${nome}</label>`
+  ).join('');
+})();
+
+// ESTE BLOCO FAZ A BUSCA DE ENDEREÇO PELO NOMINATIM (OpenStreetMap, gratuito)
+let timeoutBuscaEndereco = null;
+document.getElementById('pauta-endereco').addEventListener('input', function() {
+  clearTimeout(timeoutBuscaEndereco);
+  const texto = this.value;
+  const caixaSugestoes = document.getElementById('sugestoesEndereco');
+  if (texto.length < 5) { caixaSugestoes.innerHTML = ''; return; }
+
+  // Aguarda meio segundo sem digitar antes de buscar (evita estourar o limite de 1 req/seg do Nominatim)
+  timeoutBuscaEndereco = setTimeout(async () => {
+    try {
+      const url = 'https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=br&limit=5&q=' + encodeURIComponent(texto + ', Rio de Janeiro');
+      const resposta = await fetch(url, { headers: { 'Accept-Language': 'pt-BR' } });
+      const resultados = await resposta.json();
+
+      if (!resultados.length) { caixaSugestoes.innerHTML = '<div>Nenhum endereço encontrado</div>'; return; }
+
+      caixaSugestoes.innerHTML = resultados.map((r, i) =>
+        `<div onclick="selecionarEndereco(${i})">${r.display_name}</div>`
+      ).join('');
+      window._sugestoesEnderecoAtuais = resultados; // guarda pra selecionarEndereco() usar
+    } catch (erro) {
+      caixaSugestoes.innerHTML = '<div>Erro ao buscar endereço</div>';
+    }
+  }, 500);
+});
+
+function selecionarEndereco(indice) {
+  const r = window._sugestoesEnderecoAtuais[indice];
+  const end = r.address || {};
+  document.getElementById('pauta-endereco').value = r.display_name;
+  document.getElementById('pauta-cidade').value = end.city || end.town || end.municipality || end.village || '';
+  document.getElementById('pauta-bairro').value = end.suburb || end.neighbourhood || '';
+  document.getElementById('pauta-uf').value = end.state || 'Rio de Janeiro';
+  document.getElementById('sugestoesEndereco').innerHTML = '';
+}
+
+// ESTE BLOCO CONFERE, ASSIM QUE O USUÁRIO SAI DO CAMPO DE TÍTULO, SE JÁ EXISTE PAUTA IGUAL
+document.getElementById('pauta-titulo-email').addEventListener('blur', async function() {
+  const titulo = this.value.trim();
+  const aviso = document.getElementById('avisoTituloDuplicado');
+  if (!titulo) { aviso.style.display = 'none'; return; }
+
+  const resposta = await chamarBackend('verificarTituloPauta', { token: pegarTokenSalvo(), titulo });
+  aviso.style.display = (resposta.sucesso && resposta.duplicado) ? 'block' : 'none';
+  if (resposta.duplicado) {
+    aviso.textContent = '⚠️ Essa pauta já foi criada por ' + resposta.criadoPor + '.';
+  }
+});
+
+// ESTE BLOCO ABRE O ENVIO DA PAUTA PRA PLANILHA
+document.getElementById('formCriarPauta').addEventListener('submit', async function(evento) {
+  evento.preventDefault();
+
+  const equipamentosMarcados = Array.from(document.querySelectorAll('.chk-equipamento:checked')).map(c => c.value).join(', ');
+
+  const dadosPauta = {
+    token: pegarTokenSalvo(),
+    Tipo_Producao: document.getElementById('pauta-tipo-producao').value,
+    Tipo_Video: document.getElementById('pauta-tipo-video').value,
+    Setor_Solicitante: document.getElementById('pauta-setor-solicitante').value,
+    Secretaria_Envolvida: document.getElementById('pauta-secretaria-envolvida').value,
+    Titulo_Producao_Email: document.getElementById('pauta-titulo-email').value.trim(),
+    Titulo_Final_Producao: document.getElementById('pauta-titulo-final').value,
+    Data_Saida: document.getElementById('pauta-data-saida').value,
+    Horario_Saida_Equipe: document.getElementById('pauta-horario-saida').value,
+    Motorista: document.getElementById('pauta-motorista').value,
+    Data_Producao: document.getElementById('pauta-data-producao').value,
+    Horario_Evento: document.getElementById('pauta-horario-evento').value,
+    Endereco_Producao: document.getElementById('pauta-endereco').value,
+    Cidade: document.getElementById('pauta-cidade').value,
+    Bairro: document.getElementById('pauta-bairro').value,
+    UF: document.getElementById('pauta-uf').value,
+    Tem_Assessor: document.getElementById('pauta-tem-assessor').value,
+    Assessor: document.getElementById('pauta-assessor').value,
+    Tem_Video: document.getElementById('pauta-tem-video').value,
+    Cinegrafista: document.getElementById('pauta-cinegrafista').value,
+    Edicao: document.getElementById('pauta-edicao').value,
+    Tem_Foto: document.getElementById('pauta-tem-foto').value,
+    Fotografo: document.getElementById('pauta-fotografo').value,
+    Tem_Digital: document.getElementById('pauta-tem-digital').value,
+    Digital: document.getElementById('pauta-digital').value,
+    Equipamento_Usado_Video: equipamentosMarcados,
+    Observacoes: document.getElementById('pauta-observacoes').value,
+    Producao_Realizada: ''
+  };
+
+  const resposta = await chamarBackend('criarPauta', dadosPauta);
+  if (!resposta.sucesso) {
+    alert('Erro ao criar pauta: ' + resposta.mensagem);
+    return;
+  }
+  alert('Pauta criada com sucesso!');
+  fecharFormCriarPauta();
+  carregarPautas();
 });
   
 </script>
