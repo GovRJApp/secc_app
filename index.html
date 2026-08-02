@@ -232,6 +232,13 @@
   .acordeao-filhos { padding-left: 8px; }
   .acordeao-filhos.oculto { display: none; }
   .acordeao-subsecretaria { margin-left: 8px; }
+  .item-profissional-clicavel {
+    padding: 6px 12px 6px 32px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .item-profissional-clicavel:hover { background: #EAF1FA; }
   .lista-estrutura .item-secretaria {
     padding: 12px;
     background: #FFFFFF;
@@ -994,23 +1001,31 @@
 
     <!-- Corpo com os campos -->
     <div class="perfil-corpo" id="perfilCorpo">
+        <div id="avisoPerfilDeOutro" class="oculto" style="background:#FFF4E5; border:1px solid #F0B84C; border-radius:8px; padding:10px 14px; margin-bottom:16px; font-size:13px; display:flex; justify-content:space-between; align-items:center;">
+          <span>👁️ Você está vendo o perfil de <strong id="nomePerfilDeOutro"></strong> (modo Admin)</span>
+          <button type="button" onclick="carregarPerfilNaTela()" class="link-discreto" style="margin:0;">🔙 Voltar ao meu perfil</button>
+        </div>
         <div class="perfil-campos-grid">
-            <!-- CAMPOS NÃO EDITÁVEIS (exibição em texto) -->
+            <!-- CAMPOS NÃO EDITÁVEIS PARA O PRÓPRIO PROFISSIONAL (o Admin pode liberar) -->
             <div class="campo-group">
-                <label>Nome Completo</label>
-                <span class="campo-valor" id="perfil-nome-completo">---</span>
+                <label for="perfil-nome-completo">Nome Completo</label>
+                <input type="text" id="perfil-nome-completo" disabled>
             </div>
             <div class="campo-group">
-                <label>ID Funcional</label>
-                <span class="campo-valor" id="perfil-id-funcional">---</span>
+                <label for="perfil-id-funcional">ID Funcional</label>
+                <input type="text" id="perfil-id-funcional" disabled>
             </div>
             <div class="campo-group">
-                <label>RG</label>
-                <span class="campo-valor" id="perfil-rg">---</span>
+                <label for="perfil-rg">RG</label>
+                <input type="text" id="perfil-rg" disabled>
             </div>
             <div class="campo-group">
-                <label>CPF</label>
-                <span class="campo-valor" id="perfil-cpf">---</span>
+                <label for="perfil-cpf">CPF</label>
+                <input type="text" id="perfil-cpf" disabled>
+            </div>
+            <div class="campo-group">
+                <label for="perfil-cargo-campo">Cargo</label>
+                <input type="text" id="perfil-cargo-campo" disabled>
             </div>
 
             <!-- CAMPOS EDITÁVEIS (inputs/select) -->
@@ -1361,7 +1376,7 @@
   /* ---------------------------------------------------------------
      BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
      --------------------------------------------------------------- */
-  const URL_BACKEND = "https://script.google.com/macros/s/AKfycby4R2OLGUWYpMc1pO7UoWAQRkSDLkfCOaF7DW3Fv7wvaC5pvKqc3mvhsHyZXJub9W5N/exec";
+  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbyInuN1-uCBRqXAUrgUM5bHXvdjENpGT4QW8G3a6nf0NROkWyMPijwji0XQx0KHBDmS/exec";
   let dadosEstruturaGlobal = null;
 
   /* ---------------------------------------------------------------
@@ -1614,7 +1629,7 @@ async function chamarBackend(acao, parametros = {}) {
           <div class="acordeao-filhos oculto" id="filhos-sec-${iSec}">`;
 
         nucleosDiretos.forEach(nucleo => {
-          html += `<div class="item-nucleo">📌 Núcleo: ${nucleo.Nome}</div>`;
+          html += renderizarItemNucleo(nucleo);
         });
 
         subsecretarias.forEach((sub, iSub) => {
@@ -1625,7 +1640,7 @@ async function chamarBackend(acao, parametros = {}) {
             </div>
             <div class="acordeao-filhos oculto" id="filhos-sub-${iSec}-${iSub}">`;
           nucleosDaSub.forEach(nucleo => {
-            html += `<div class="item-nucleo" style="margin-left: 24px;">📌 Núcleo: ${nucleo.Nome}</div>`;
+            html += renderizarItemNucleo(nucleo, 24);
           });
           if (!nucleosDaSub.length) html += `<div class="item-nucleo" style="margin-left:24px; color: var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>`;
           html += `</div></div>`;
@@ -1635,6 +1650,51 @@ async function chamarBackend(acao, parametros = {}) {
       });
       container.innerHTML = html;
     }
+  }
+
+  // ESTE BLOCO MONTA O ITEM CLICÁVEL DE CADA NÚCLEO NA ÁRVORE, JÁ PREPARADO
+  // PRA ABRIR A LISTA DE PROFISSIONAIS DELE (só o Admin consegue expandir de verdade).
+  function renderizarItemNucleo(nucleo, margem) {
+    const idContainer = 'profissionais-nucleo-' + nucleo.NucleoID;
+    const estiloMargem = margem ? ` style="margin-left:${margem}px;"` : '';
+    return `<div${estiloMargem}>
+      <div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo('${nucleo.NucleoID}', '${(nucleo.Nome || '').replace(/'/g, "\\'")}', '${idContainer}', this)">
+        <span class="acordeao-seta">▶</span> 📌 Núcleo: ${nucleo.Nome}
+      </div>
+      <div class="acordeao-filhos oculto" id="${idContainer}"></div>
+    </div>`;
+  }
+
+  // ESTE BLOCO ABRE/FECHA A LISTA DE PROFISSIONAIS DE UM NÚCLEO. Na primeira
+  // vez que abre, busca no backend; das próximas, só mostra/esconde (sem gastar chamada de novo).
+  async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalhoClicado) {
+    const container = document.getElementById(idContainer);
+    const seta = cabecalhoClicado.querySelector('.acordeao-seta');
+    const vaiAbrir = container.classList.contains('oculto');
+
+    container.classList.toggle('oculto', !vaiAbrir);
+    if (seta) seta.textContent = vaiAbrir ? '▼' : '▶';
+    if (!vaiAbrir || container.dataset.carregado === '1') return;
+
+    container.innerHTML = '<div style="padding:6px 12px; color: var(--gov-texto-suave); font-size:12px;">Carregando profissionais...</div>';
+    const resposta = await chamarBackend('listarProfissionaisDoNucleo', { token: pegarTokenSalvo(), nucleoId });
+
+    if (!resposta.sucesso) {
+      container.innerHTML = `<div style="padding:6px 12px; color:#B3261E; font-size:12px;">${resposta.mensagem}</div>`;
+      return;
+    }
+
+    const profissionais = resposta.profissionais || [];
+    if (!profissionais.length) {
+      container.innerHTML = '<div style="padding:6px 12px; color: var(--gov-texto-suave); font-size:12px;">Nenhum profissional cadastrado nesse núcleo.</div>';
+    } else {
+      container.innerHTML = profissionais.map(p => `
+        <div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario('${p.id}', '${(p.nome || '').replace(/'/g, "\\'")}')">
+          👤 ${p.nome} <span style="color:var(--gov-texto-suave); font-size:12px;">— ${p.cargo || p.nivel}</span>
+        </div>
+      `).join('');
+    }
+    container.dataset.carregado = '1';
   }
 
   // ESTE BLOCO ABRE/FECHA CADA NÍVEL DO ACORDEÃO DA ESTRUTURA ORGANIZACIONAL
@@ -1776,7 +1836,14 @@ async function chamarBackend(acao, parametros = {}) {
   // Variável para guardar dados originais (cancelamento)
 let dadosPerfilOriginal = {};
 
+// Guarda o ID de quem está carregado no cartão de perfil no momento
+// (o próprio usuário logado, por padrão, ou outro profissional que o Admin abriu).
+let _usuarioIdAlvoPerfil = null;
+
 function habilitarEdicaoPerfil() {
+    const usuarioLogado = pegarUsuarioSalvo();
+    const ehAdmin = usuarioLogado && usuarioLogado.nivel === 'ADMIN';
+
     // Salva estado atual dos campos editáveis e da foto
     dadosPerfilOriginal = {
         fotoSrc: document.getElementById('img-avatar-preview').src,
@@ -1785,17 +1852,28 @@ function habilitarEdicaoPerfil() {
         planoSaude: document.getElementById('perfil-plano-saude').value,
         aceitePlano: document.getElementById('perfil-aceite-plano').value,
         numeroSapato: document.getElementById('perfil-numero-sapato').value,
-        manequim: document.getElementById('perfil-manequim').value
+        manequim: document.getElementById('perfil-manequim').value,
+        nomeCompleto: document.getElementById('perfil-nome-completo').value,
+        idFuncional: document.getElementById('perfil-id-funcional').value,
+        rg: document.getElementById('perfil-rg').value,
+        cpf: document.getElementById('perfil-cpf').value,
+        cargo: document.getElementById('perfil-cargo-campo').value
     };
 
-    // Habilita campos editáveis
-    document.getElementById('perfil-contato-emergencia').disabled = false;
-    document.getElementById('perfil-telefone-emergencia').disabled = false;
-    document.getElementById('perfil-plano-saude').disabled = false;
-    document.getElementById('perfil-aceite-plano').disabled = false;
-    document.getElementById('perfil-numero-sapato').disabled = false;
-    document.getElementById('perfil-manequim').disabled = false;
+    // Habilita os campos sempre editáveis (qualquer pessoa, no próprio perfil)
+    ['perfil-contato-emergencia', 'perfil-telefone-emergencia', 'perfil-plano-saude',
+     'perfil-aceite-plano', 'perfil-numero-sapato', 'perfil-manequim'].forEach(id => {
+        document.getElementById(id).disabled = false;
+    });
     document.getElementById('btn-alterar-foto').disabled = false;
+
+    // ESTE BLOCO SÓ LIBERA OS CAMPOS SENSÍVEIS (nome completo, ID funcional, RG,
+    // CPF, cargo) SE QUEM ESTÁ EDITANDO FOR ADMIN — poder total sobre o cadastro.
+    if (ehAdmin) {
+        ['perfil-nome-completo', 'perfil-id-funcional', 'perfil-rg', 'perfil-cpf', 'perfil-cargo-campo'].forEach(id => {
+            document.getElementById(id).disabled = false;
+        });
+    }
 
     // Mostra botões de ação, esconde botão editar
     document.getElementById('botoes-edicao-perfil').style.display = 'flex';
@@ -1811,14 +1889,18 @@ function cancelarEdicaoPerfil() {
     document.getElementById('perfil-aceite-plano').value = dadosPerfilOriginal.aceitePlano || '';
     document.getElementById('perfil-numero-sapato').value = dadosPerfilOriginal.numeroSapato || '';
     document.getElementById('perfil-manequim').value = dadosPerfilOriginal.manequim || '';
+    document.getElementById('perfil-nome-completo').value = dadosPerfilOriginal.nomeCompleto || '';
+    document.getElementById('perfil-id-funcional').value = dadosPerfilOriginal.idFuncional || '';
+    document.getElementById('perfil-rg').value = dadosPerfilOriginal.rg || '';
+    document.getElementById('perfil-cpf').value = dadosPerfilOriginal.cpf || '';
+    document.getElementById('perfil-cargo-campo').value = dadosPerfilOriginal.cargo || '';
 
-    // Desabilita campos
-    document.getElementById('perfil-contato-emergencia').disabled = true;
-    document.getElementById('perfil-telefone-emergencia').disabled = true;
-    document.getElementById('perfil-plano-saude').disabled = true;
-    document.getElementById('perfil-aceite-plano').disabled = true;
-    document.getElementById('perfil-numero-sapato').disabled = true;
-    document.getElementById('perfil-manequim').disabled = true;
+    // Desabilita todos os campos de novo
+    ['perfil-contato-emergencia', 'perfil-telefone-emergencia', 'perfil-plano-saude',
+     'perfil-aceite-plano', 'perfil-numero-sapato', 'perfil-manequim',
+     'perfil-nome-completo', 'perfil-id-funcional', 'perfil-rg', 'perfil-cpf', 'perfil-cargo-campo'].forEach(id => {
+        document.getElementById(id).disabled = true;
+    });
     document.getElementById('btn-alterar-foto').disabled = true;
 
     // Esconde botões de ação, mostra botão editar
@@ -1844,24 +1926,22 @@ function carregarPreviewFoto(event) {
 // Constante para foto padrão SVG (evita erro de imagem quebrada)
 const FOTO_PADRAO_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
 
-async function carregarPerfilNaTela() {
-    const resposta = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
-    if (!resposta.sucesso) return;
+// ESTE BLOCO PREENCHE O CARTÃO DE PERFIL NA TELA — usado tanto pro próprio
+// usuário logado quanto (via carregarPerfilDeOutroUsuario) pro Admin olhando
+// o perfil de qualquer profissional clicado na árvore de núcleos.
+function preencherCartaoPerfil(p) {
+    _usuarioIdAlvoPerfil = p.usuarioId || null;
 
-    const p = resposta.perfil;
-
-    // Cabeçalho
     document.getElementById('perfil-nome-exibicao').textContent = p.nome || 'NOME';
     document.getElementById('perfil-cargo-exibicao').textContent = p.cargo || 'Cargo';
-    if (p.foto) document.getElementById('img-avatar-preview').src = p.foto;
+    document.getElementById('img-avatar-preview').src = p.foto || FOTO_PADRAO_SVG;
 
-    // Campos não editáveis
-    document.getElementById('perfil-nome-completo').textContent = p.nomeCompleto || '---';
-    document.getElementById('perfil-id-funcional').textContent = p.idFuncional || '---';
-    document.getElementById('perfil-rg').textContent = p.rg || '---';
-    document.getElementById('perfil-cpf').textContent = p.cpf || '---';
+    document.getElementById('perfil-nome-completo').value = p.nomeCompleto || '';
+    document.getElementById('perfil-id-funcional').value = p.idFuncional || '';
+    document.getElementById('perfil-rg').value = p.rg || '';
+    document.getElementById('perfil-cpf').value = p.cpf || '';
+    document.getElementById('perfil-cargo-campo').value = p.cargo || '';
 
-    // Campos editáveis
     document.getElementById('perfil-contato-emergencia').value = p.contatoEmergencia || '';
     document.getElementById('perfil-telefone-emergencia').value = p.telefoneEmergencia || '';
     document.getElementById('perfil-plano-saude').value = p.planoSaude || 'NÃO';
@@ -1869,22 +1949,50 @@ async function carregarPerfilNaTela() {
     document.getElementById('perfil-numero-sapato').value = p.numeroSapato || '';
     document.getElementById('perfil-manequim').value = p.manequim || '';
 
-    // Guarda cópia para cancelamento
     dadosPerfilOriginal = {
         fotoSrc: document.getElementById('img-avatar-preview').src,
-        contatoEmergencia: p.contatoEmergencia || '',
-        telefoneEmergencia: p.telefoneEmergencia || '',
-        planoSaude: p.planoSaude || 'NÃO',
-        aceitePlano: p.aceitePlano || '',
-        numeroSapato: p.numeroSapato || '',
-        manequim: p.manequim || ''
+        contatoEmergencia: p.contatoEmergencia || '', telefoneEmergencia: p.telefoneEmergencia || '',
+        planoSaude: p.planoSaude || 'NÃO', aceitePlano: p.aceitePlano || '',
+        numeroSapato: p.numeroSapato || '', manequim: p.manequim || '',
+        nomeCompleto: p.nomeCompleto || '', idFuncional: p.idFuncional || '',
+        rg: p.rg || '', cpf: p.cpf || '', cargo: p.cargo || ''
     };
+}
+
+async function carregarPerfilNaTela() {
+    const resposta = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
+    if (!resposta.sucesso) return;
+    preencherCartaoPerfil(resposta.perfil);
+    document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
+    cancelarEdicaoPerfil(); // garante que os campos voltam desabilitados ao trocar de perfil
+}
+
+// ESTE BLOCO ABRE O PERFIL DE OUTRO PROFISSIONAL — só o Admin consegue chamar
+// isso de verdade (o backend também confere), acionado ao clicar num nome
+// dentro da árvore de núcleos na Estrutura Organizacional.
+async function carregarPerfilDeOutroUsuario(usuarioId, nomeExibido) {
+    const resposta = await chamarBackend('obterPerfilPorId', { token: pegarTokenSalvo(), usuarioIdAlvo: usuarioId });
+    if (!resposta.sucesso) { alert(resposta.mensagem); return; }
+
+    preencherCartaoPerfil(resposta.perfil);
+    cancelarEdicaoPerfil();
+
+    document.getElementById('nomePerfilDeOutro').textContent = nomeExibido || resposta.perfil.nome;
+    document.getElementById('avisoPerfilDeOutro').classList.remove('oculto');
+
+    // Garante que o cabeçalho do perfil (que pode estar recolhido, no caso do Admin) fique visível
+    document.getElementById('perfilCorpo').style.display = 'block';
+    const botaoToggle = document.getElementById('btnTogglePerfil');
+    if (botaoToggle) botaoToggle.textContent = '🔼 Recolher';
+
+    document.getElementById('secao-perfil-profissional').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function salvarPerfilProfissional() {
     const fotoSrc = document.getElementById('img-avatar-preview').src;
-    // Se for o SVG padrão, não enviar (ou enviar vazio)
     const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
+    const usuarioLogado = pegarUsuarioSalvo();
+    const ehAdmin = usuarioLogado && usuarioLogado.nivel === 'ADMIN';
 
     const payload = {
         token: pegarTokenSalvo(),
@@ -1897,28 +2005,36 @@ async function salvarPerfilProfissional() {
         manequim: document.getElementById('perfil-manequim').value
     };
 
-    const btnSalvar = document.querySelector('.btn-salvar-perfil');
-    if (btnSalvar) {
-        btnSalvar.disabled = true;
-        btnSalvar.innerText = "Salvando...";
+    // Se quem está editando é Admin, manda também os campos sensíveis + o alvo (caso seja outro profissional)
+    if (ehAdmin) {
+        payload.nomeCompleto = document.getElementById('perfil-nome-completo').value;
+        payload.idFuncional = document.getElementById('perfil-id-funcional').value;
+        payload.rg = document.getElementById('perfil-rg').value;
+        payload.cpf = document.getElementById('perfil-cpf').value;
+        payload.cargo = document.getElementById('perfil-cargo-campo').value;
+        payload.nomeExibicao = document.getElementById('perfil-nome-exibicao').textContent;
+        if (_usuarioIdAlvoPerfil && _usuarioIdAlvoPerfil !== usuarioLogado.id) {
+            payload.usuarioIdAlvo = _usuarioIdAlvoPerfil;
+        }
     }
+
+    const btnSalvar = document.querySelector('.btn-salvar-perfil');
+    if (btnSalvar) { btnSalvar.disabled = true; btnSalvar.innerText = "Salvando..."; }
 
     const resposta = await chamarBackend('salvarPerfil', payload);
 
-    if (btnSalvar) {
-        btnSalvar.disabled = false;
-        btnSalvar.innerText = "💾 Salvar";
-    }
+    if (btnSalvar) { btnSalvar.disabled = false; btnSalvar.innerText = "💾 Salvar"; }
 
     if (resposta.sucesso) {
         alert(resposta.mensagem || "Perfil salvo!");
-        // Se a foto foi atualizada, mantém a nova URL
-        if (resposta.url) {
-            document.getElementById('img-avatar-preview').src = resposta.url;
+        if (resposta.url) document.getElementById('img-avatar-preview').src = resposta.url;
+
+        // Recarrega o perfil certo: o próprio, ou o de quem estava sendo editado
+        if (payload.usuarioIdAlvo) {
+            await carregarPerfilDeOutroUsuario(payload.usuarioIdAlvo, payload.nomeExibicao);
+        } else {
+            await carregarPerfilNaTela();
         }
-        // Recarrega os dados para sincronizar
-        await carregarPerfilNaTela();
-        cancelarEdicaoPerfil(); // desabilita edição
     } else {
         alert("Erro ao salvar: " + (resposta.mensagem || "Falha na comunicação"));
     }
