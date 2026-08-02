@@ -457,7 +457,24 @@
     gap: 24px;
     flex-wrap: wrap;
     margin-bottom: 8px;
+    position: relative;
+    padding-right: 90px; /* espaço reservado pro botão de recolher/expandir */
 }
+
+.btn-toggle-perfil {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: var(--gov-azul);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-toggle-perfil:hover { opacity: 0.85; }
 
 .perfil-avatar {
     display: flex;
@@ -661,6 +678,16 @@
         height: 90px;
     }
 }
+/* ESTE BLOCO ESTILIZA O CAMPO DE SENHA COM BOTÃO "OLHO" E O CHECKBOX "MANTER CONECTADO" */
+.campo-senha-wrapper { position: relative; }
+.campo-senha-wrapper input { padding-right: 44px; }
+.botao-mostrar-senha {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; padding: 6px; cursor: pointer; font-size: 16px; line-height: 1;
+}
+.linha-manter-conectado { display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; font-size: 13px; }
+.linha-manter-conectado input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
+.linha-manter-conectado label { margin: 0; font-weight: 400; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -677,7 +704,14 @@
       <label for="campoEmail">E-mail Cadastrado</label>
       <input type="email" id="campoEmail" required autocomplete="username" placeholder="seu.email@rio.rj.gov.br">
       <label for="campoSenha">Senha de Acesso</label>
-      <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
+      <div class="campo-senha-wrapper">
+        <input type="password" id="campoSenha" required autocomplete="current-password" placeholder="••••••••">
+        <button type="button" class="botao-mostrar-senha" id="botaoMostrarSenha" aria-label="Mostrar senha" tabindex="-1">👁</button>
+      </div>
+      <div class="linha-manter-conectado">
+        <input type="checkbox" id="campoManterConectado" checked>
+        <label for="campoManterConectado">Manter conectado neste dispositivo</label>
+      </div>
       <button type="submit" class="botao-principal">Entrar no Sistema</button>
     </form>
     <button type="button" class="link-discreto" id="botaoEsqueciSenha">Esqueci minha senha</button>
@@ -1031,31 +1065,25 @@
             <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
         </div>
         <button id="btn-editar-perfil" class="btn-acao-secundario" onclick="habilitarEdicaoPerfil()">✏️ Editar</button>
+        <button id="btnTogglePerfil" class="btn-toggle-perfil">📋 Pautas</button>
     </div>
-  
-<div class="info-usuario">
-  <span id="nomeUsuarioLogado"></span>
-  <span class="badge-nivel" id="nivelUsuarioLogado"></span>
-  <button id="btnTogglePerfil" class="botao-sair" style="background: rgba(255,255,255,0.2);">📋 Pautas</button>
-  <button class="botao-sair" id="botaoSair">Sair</button>
-</div>
 
-  <!-- SEÇÃO DE PAUTAS (recolhível) -->
-<div id="secaoPautas" class="card-painel" style="display: none; margin-top: 20px;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-    <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
-    <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);">+ Nova Pauta</button>
-  </div>
-  <div id="listaPautasContainer">
-    <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
-  </div>
-</div>
-  
     <!-- Linha divisória azul -->
     <hr class="perfil-divisor">
 
+    <!-- SEÇÃO DE PAUTAS (recolhível) -->
+    <div id="secaoPautas" class="card-painel" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
+        <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);">+ Nova Pauta</button>
+      </div>
+      <div id="listaPautasContainer">
+        <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
+      </div>
+    </div>
+
     <!-- Corpo com os campos -->
-    <div class="perfil-corpo">
+    <div class="perfil-corpo" id="perfilCorpo">
         <div class="perfil-campos-grid">
             <!-- CAMPOS NÃO EDITÁVEIS (exibição em texto) -->
             <div class="campo-group">
@@ -1158,22 +1186,38 @@ async function chamarBackend(acao, parametros = {}) {
     return { sucesso: false, mensagem: "Erro ao se conectar com o servidor." };
   }
 }
-  function salvarSessao(token, usuario) {
-    localStorage.setItem('secc_token', token);
-    localStorage.setItem('secc_usuario', JSON.stringify(usuario));
+  function salvarSessao(token, usuario, manterConectado) {
+    const area = manterConectado ? localStorage : sessionStorage;
+    area.setItem('secc_token', token);
+    area.setItem('secc_usuario', JSON.stringify(usuario));
+    const outraArea = manterConectado ? sessionStorage : localStorage;
+    outraArea.removeItem('secc_token');
+    outraArea.removeItem('secc_usuario');
   }
 
-  function pegarTokenSalvo() { return localStorage.getItem('secc_token'); }
+  function pegarTokenSalvo() {
+    return localStorage.getItem('secc_token') || sessionStorage.getItem('secc_token');
+  }
 
   function pegarUsuarioSalvo() {
-    const bruto = localStorage.getItem('secc_usuario');
+    const bruto = localStorage.getItem('secc_usuario') || sessionStorage.getItem('secc_usuario');
     return bruto ? JSON.parse(bruto) : null;
   }
 
   function limparSessao() {
     localStorage.removeItem('secc_token');
     localStorage.removeItem('secc_usuario');
+    sessionStorage.removeItem('secc_token');
+    sessionStorage.removeItem('secc_usuario');
   }
+
+  document.getElementById('botaoMostrarSenha').addEventListener('click', () => {
+    const campo = document.getElementById('campoSenha');
+    const botao = document.getElementById('botaoMostrarSenha');
+    const vaiMostrar = campo.type === 'password';
+    campo.type = vaiMostrar ? 'text' : 'password';
+    botao.textContent = vaiMostrar ? '🙈' : '👁';
+  });
 
   /* ---------------------------------------------------------------
      BLOCO JS 3 - LOGIN E TROCA DE SENHA
@@ -1189,7 +1233,8 @@ async function chamarBackend(acao, parametros = {}) {
       divMensagem.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
       return;
     }
-    salvarSessao(resposta.token, resposta.usuario);
+    const manterConectado = document.getElementById('campoManterConectado').checked;
+    salvarSessao(resposta.token, resposta.usuario, manterConectado);
     if (resposta.precisaTrocarSenha) {
       mostrarTela('telaTrocaSenha');
     } else {
@@ -1647,22 +1692,26 @@ async function salvarPerfilProfissional() {
       mostrarTela('telaLogin');
     }
   })();
-// Toggle perfil/pautas
+// Toggle perfil/pautas — o cabeçalho (foto, nome, cargo) NUNCA é escondido.
+// Só alternamos entre o corpo de campos e a seção de pautas.
 document.getElementById('btnTogglePerfil').addEventListener('click', function() {
-  const perfilSecao = document.getElementById('secao-perfil-profissional');
+  const corpoSecao = document.getElementById('perfilCorpo');
   const pautasSecao = document.getElementById('secaoPautas');
+  const botaoEditar = document.getElementById('btn-editar-perfil');
   const btn = this;
 
   if (pautasSecao.style.display === 'none') {
-    // Recolher perfil, mostrar pautas
-    perfilSecao.style.display = 'none';
+    // Recolher perfil (esconde só o corpo), mostrar pautas
+    corpoSecao.style.display = 'none';
     pautasSecao.style.display = 'block';
-    btn.textContent = '📋 Perfil';
+    if (botaoEditar) botaoEditar.style.display = 'none';
+    btn.textContent = '👤 Perfil';
     carregarPautas(); // carrega a lista
   } else {
-    // Mostrar perfil, recolher pautas
-    perfilSecao.style.display = 'block';
+    // Mostrar perfil de novo, recolher pautas
+    corpoSecao.style.display = 'block';
     pautasSecao.style.display = 'none';
+    if (botaoEditar) botaoEditar.style.display = 'inline-block';
     btn.textContent = '📋 Pautas';
   }
 });
