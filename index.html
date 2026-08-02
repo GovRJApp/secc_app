@@ -1114,13 +1114,11 @@
 </div>
 
     <!-- ESTRUTURA ORGANIZACIONAL -->
-    <div class="cartao">
-      <h2>Estrutura Organizacional Cadastrada</h2>
-      <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
-      <div class="lista-estrutura" id="listaEstrutura">
-        <p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p>
-      </div>
-    </div>
+<div class="cartao" id="cartaoEstrutura">
+  <h2>Estrutura Organizacional Cadastrada</h2>
+  <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
+  <div class="lista-estrutura" id="listaEstrutura">
+    <p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p>
   </div>
 </div>
 
@@ -1239,35 +1237,32 @@ async function chamarBackend(acao, parametros = {}) {
      BLOCO JS 4 - PAINEL PRINCIPAL E ESTRUTURA ORGANIZACIONAL
      --------------------------------------------------------------- */
   async function iniciarPainelPrincipal() {
-    const usuario = pegarUsuarioSalvo();
-    mostrarTela('telaPrincipal');
-    window.scrollTo(0, 0);
-    document.getElementById('nomeUsuarioLogado').textContent = usuario.nome;
-    document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
-    
-    document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-    document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-    document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
-    
-    const areaBtn = document.getElementById('areaBotaoNovoUsuario');
-    if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
-    
-    const cartaoUsu = document.getElementById('cartaoCriarUsuario');
-    
-    if (cartaoUsu) cartaoUsu.classList.add('oculto');
-    // Ocultar estrutura organizacional para profissionais e alguns níveis
-const cartaoEstrutura = document.querySelector('.cartao:has(#listaEstrutura)');
-// Melhor: dar um ID para o cartão
-// Vou adicionar id="cartaoEstrutura" no HTML
-if (document.getElementById('cartaoEstrutura')) {
-  const niveisQueVeem = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'];
-  const visivel = niveisQueVeem.includes(usuario.nivel);
-  document.getElementById('cartaoEstrutura').style.display = visivel ? 'block' : 'none';
-}
-    
-    await carregarEstrutura();
-    await carregarPerfilNaTela();
+  const usuario = pegarUsuarioSalvo();
+  mostrarTela('telaPrincipal');
+  window.scrollTo(0, 0);
+  document.getElementById('nomeUsuarioLogado').textContent = usuario.nome;
+  document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
+  
+  document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
+  document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
+  document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
+  
+  const areaBtn = document.getElementById('areaBotaoNovoUsuario');
+  if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
+  
+  const cartaoUsu = document.getElementById('cartaoCriarUsuario');
+  if (cartaoUsu) cartaoUsu.classList.add('oculto');
+  
+  // Ocultar estrutura organizacional
+  const cartaoEstrutura = document.getElementById('cartaoEstrutura');
+  if (cartaoEstrutura) {
+    const niveisQueVeem = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'];
+    cartaoEstrutura.style.display = niveisQueVeem.includes(usuario.nivel) ? 'block' : 'none';
   }
+  
+  await carregarEstrutura();
+  await carregarPerfilNaTela();
+}
 
   document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
     popularSelectSecretariaUsuario();
