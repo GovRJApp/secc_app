@@ -1,0 +1,25 @@
+{
+  "name": "App SECC - Governo do Estado do Rio de Janeiro",
+  "short_name": "App SECC",
+  "description": "Sistema de Gestão de Secretarias e Produção - Governo do Estado do RJ",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2F4F7",
+  "theme_color": "#005A92",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "Brasao_Login_App.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "Brasao_Login_App.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
