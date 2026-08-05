@@ -34,7 +34,7 @@
   label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 6px; color: var(--gov-texto); }
   input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--gov-borda); border-radius: 8px; font-size: 15px; font-family: var(--fonte-oficial); background: #FFF; transition: all 0.2s ease; resize: vertical; }
   input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gov-azul); box-shadow: 0 0 0 3px rgba(0,90,146,0.15); }
-  button { cursor: pointer; font-family: var(--fonte-oficial); font-weight: 700; border: none; border-radius: 8px; padding: 14px 20px; font-size: 15px; transition: all 0.2s ease; }
+  button { cursor: pointer; font-family: var(--fonte-oficial); font-weight: 700; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; transition: all 0.2s ease; }
   .botao-principal { background: var(--gov-azul); color: #FFF; width: 100%; margin-top: 20px; box-shadow: 0 4px 12px rgba(0,90,146,0.25); }
   .botao-principal:hover { background: var(--gov-azul-hover); }
   .link-discreto { background: none; color: var(--gov-azul); text-decoration: underline; padding: 0; font-weight: 500; font-size: 13px; margin-top: 16px; display: block; width: 100%; text-align: center; }
@@ -49,81 +49,61 @@
   .conteudo-app { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
   .cartao { background: #FFF; border-radius: var(--raio-card); border: 1px solid var(--gov-borda); padding: 20px; margin-bottom: 20px; box-shadow: var(--sombra-card); position: relative; }
   .cartao::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gov-azul); border-radius: var(--raio-card) 0 0 var(--raio-card); }
-  .cartao h2 { font-size: 17px; font-weight: 700; margin: 0 0 4px; color: var(--gov-azul-escuro); }
-  .cartao p.descricao { font-size: 13px; color: var(--gov-texto-suave); margin: 0 0 16px; }
-  .linha-formulario { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
-  .linha-formulario > div { flex: 1; min-width: 220px; }
-  .lista-estrutura ul { list-style: none; padding-left: 0; margin: 0; }
-  .acordeao-cabecalho { cursor: pointer; user-select: none; }
-  .acordeao-cabecalho:hover { filter: brightness(0.97); }
-  .acordeao-seta { display: inline-block; width: 14px; font-size: 11px; color: var(--gov-texto-suave); }
-  .acordeao-filhos { padding-left: 8px; }
-  .acordeao-filhos.oculto { display: none; }
-  .item-profissional-clicavel { padding: 6px 12px 6px 32px; font-size: 13px; cursor: pointer; border-radius: 6px; }
-  .item-profissional-clicavel:hover { background: #EAF1FA; }
-  .item-secretaria { padding: 12px; background: #FFF; border: 1px solid var(--gov-borda); border-left: 4px solid var(--gov-azul); border-radius: 8px; margin-bottom: 8px; font-size: 15px; color: var(--gov-azul-escuro); }
-  .item-subsecretaria { margin: 6px 0 6px 16px; padding: 10px; border-left: 4px solid var(--gov-verde); background: #F8FAFC; border-radius: 6px; font-size: 14px; }
-  .item-nucleo { margin: 4px 0 4px 32px; padding: 8px; border-left: 3px solid var(--gov-dourado); background: #FFF; border-radius: 6px; font-size: 13px; color: var(--gov-texto-suave); }
-  .secao-titulo { font-size: 13px; font-weight: 700; color: var(--gov-azul); text-transform: uppercase; margin-top: 20px; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid var(--gov-cinza-claro); }
 
-  /* CARD PERFIL COM LAYOUT NOVO E HAMBÚRGUER */
-  .card-painel { background: #fff; border-radius: 10px; padding: 24px; max-width: 850px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-top: 5px solid #005696; font-family: var(--fonte-oficial); position: relative; }
+  /* CARD PERFIL & MENU */
+  .card-painel { background: #fff; border-radius: 10px; padding: 20px; max-width: 850px; margin: 16px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-top: 5px solid #005696; font-family: var(--fonte-oficial); position: relative; }
   .perfil-carteira { border-top: 5px solid var(--gov-azul); }
-  
-  .menu-hamburguer-wrapper { position: absolute; top: 16px; right: 16px; z-index: 100; }
-  .btn-hamburguer { background: none; border: none; font-size: 26px; color: var(--gov-azul-escuro); cursor: pointer; padding: 4px 8px; line-height: 1; }
+
+  .menu-hamburguer-wrapper { position: absolute; top: 12px; right: 12px; z-index: 100; }
+  .btn-hamburguer { background: none; border: none; font-size: 26px; color: #003F66; cursor: pointer; padding: 4px; line-height: 1; }
   .dropdown-hamburguer { position: absolute; right: 0; top: 36px; background: #FFF; border: 1px solid var(--gov-borda); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); display: flex; flex-direction: column; width: 170px; z-index: 101; overflow: hidden; }
   .dropdown-hamburguer a { padding: 12px 16px; text-decoration: none; color: var(--gov-texto); font-size: 14px; font-weight: 500; border-bottom: 1px solid #F0F0F0; transition: background 0.2s; }
   .dropdown-hamburguer a:hover { background: var(--gov-cinza-claro); color: var(--gov-azul); }
 
-  .perfil-cabecalho { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; position: relative; padding-right: 50px; }
-  .perfil-avatar { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .perfil-avatar .avatar-wrapper { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gov-azul); background: #f0f2f5; }
+  .perfil-cabecalho { display: flex; align-items: center; gap: 16px; padding-right: 40px; margin-bottom: 12px; }
+  .perfil-avatar .avatar-wrapper { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gov-azul); background: #f0f2f5; flex-shrink: 0; }
   .perfil-avatar .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-  .perfil-titulo { flex: 1; min-width: 180px; }
-  .perfil-nome { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; color: var(--gov-azul-escuro); letter-spacing: 0.5px; line-height: 1.2; }
-  .perfil-cargo { font-size: 1.05rem; font-weight: 500; color: var(--gov-texto-suave); margin-top: 4px; }
   
-  .perfil-divisor { border: none; border-top: 4px solid var(--gov-azul); margin: 16px 0 8px 0; }
-  
-  .wrapper-toggle-seta { text-align: center; margin-bottom: 16px; }
-  .btn-seta-toggle { background: none; border: none; font-size: 26px; font-weight: bold; color: var(--gov-azul-escuro); cursor: pointer; padding: 0 12px; line-height: 1; transition: transform 0.2s ease; }
-  .btn-seta-toggle:hover { color: var(--gov-azul); }
+  .perfil-titulo { display: flex; flex-direction: column; justify-content: center; }
+  .perfil-nome { font-size: 1.35rem; font-weight: 900; text-transform: uppercase; color: var(--gov-azul-escuro); line-height: 1.1; margin: 0; }
+  .perfil-cargo { font-size: 1rem; font-weight: 500; color: var(--gov-texto-suave); margin-top: 4px; }
 
-  .perfil-campos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; }
+  .perfil-divisor { border: none; border-top: 3.5px solid var(--gov-azul); margin: 10px 0 6px 0; }
+  .wrapper-toggle-seta { text-align: right; margin-bottom: 12px; padding-right: 4px; }
+  .btn-seta-toggle { background: none; border: none; font-size: 26px; font-weight: bold; color: var(--gov-azul-escuro); cursor: pointer; padding: 0; display: inline-block; }
+
+  .perfil-campos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
   .campo-group { display: flex; flex-direction: column; gap: 4px; }
   .campo-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--gov-texto-suave); margin: 0; }
-  .campo-group.editavel input, .campo-group.editavel select { width: 100%; padding: 8px 10px; border: 1px solid var(--gov-borda); border-radius: 6px; font-size: 0.95rem; background: #fff; transition: border 0.2s; }
+  .campo-group.editavel input, .campo-group.editavel select { width: 100%; padding: 8px 10px; border: 1px solid var(--gov-borda); border-radius: 6px; font-size: 0.95rem; background: #fff; }
   .campo-group.editavel input:disabled, .campo-group.editavel select:disabled { background: #f4f6f8; color: #555; }
   
   .btn-salvar-perfil { background: var(--gov-sucesso); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-right: 12px; }
-  .btn-salvar-perfil:hover { background: #1e6b1e; }
   .btn-cancelar-perfil { background: var(--gov-erro); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-  .btn-cancelar-perfil:hover { background: #b71c1c; }
-  .btn-foto-upload { padding: 4px 12px; font-size: 0.8rem; border: 1px solid var(--gov-azul); background: #eef6ff; color: var(--gov-azul); border-radius: 4px; cursor: pointer; }
-  .dica-foto { font-size: 0.65rem; color: #888; }
+  .btn-foto-upload { padding: 4px 10px; font-size: 0.75rem; border: 1px solid var(--gov-azul); background: #eef6ff; color: var(--gov-azul); border-radius: 4px; cursor: pointer; margin-top: 4px; }
+
+  /* CARDS RESTRUCTURADOS PARA MINHAS PAUTAS NO CELULAR */
+  .grid-pautas-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .card-item-pauta { background: #FFF; border: 1px solid var(--gov-borda); border-radius: 10px; padding: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 10px; border-left: 5px solid var(--gov-azul); }
+  .card-pauta-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .card-pauta-titulo { font-weight: 800; font-size: 0.95rem; color: var(--gov-azul-escuro); line-height: 1.25; flex: 1; }
+  .badge-status { padding: 4px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 800; color: #FFF; white-space: nowrap; }
+  .card-pauta-info { font-size: 0.82rem; color: var(--gov-texto-suave); display: flex; gap: 16px; }
+  .card-pauta-acoes { display: flex; align-items: center; justify-content: flex-end; gap: 8px; border-top: 1px solid #F0F0F0; padding-top: 10px; margin-top: 2px; }
+  
+  .btn-acao-pauta { padding: 6px 12px; font-size: 0.78rem; border-radius: 6px; font-weight: 700; border: none; color: #FFF; cursor: pointer; width: auto; }
+  .btn-ver { background: var(--gov-azul); }
+  .btn-editar { background: var(--gov-azul-hover); }
+  .btn-retorno { background: var(--gov-verde); }
 
   .secao-form-pauta { border: 1px solid var(--gov-borda); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; background: #fafbfc; }
   .secao-form-pauta h3 { margin: 0 0 14px; font-size: 0.95rem; color: var(--gov-azul-escuro); text-transform: uppercase; letter-spacing: 0.5px; }
   .grid-form-pauta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px 20px; }
-  .lista-sugestoes-endereco { position: absolute; top: 100%; left: 0; right: 0; z-index: 20; background: white; border: 1px solid var(--gov-borda); border-top: none; border-radius: 0 0 8px 8px; max-height: 220px; overflow-y: auto; }
-  .lista-sugestoes-endereco div { padding: 8px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
-  .lista-sugestoes-endereco div:hover { background: var(--gov-azul); color: white; }
-  .grade-checkbox-equipamento { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px 16px; font-size: 13px; }
-  .grade-checkbox-equipamento label { display: flex; align-items: center; gap: 6px; font-weight: 400; cursor: pointer; margin: 0; text-transform: none; font-size: 13px; letter-spacing: 0; }
 
-  .campo-senha-wrapper { position: relative; }
-  .campo-senha-wrapper input { padding-right: 44px; }
-  .botao-mostrar-senha { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 6px; cursor: pointer; font-size: 16px; line-height: 1; }
-  .linha-manter-conectado { display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; font-size: 13px; }
-  .linha-manter-conectado input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
-  .linha-manter-conectado label { margin: 0; font-weight: 400; cursor: pointer; text-transform: none; letter-spacing: 0; font-size: 13px; }
-
-  @media (max-width: 700px) {
-    .perfil-cabecalho { align-items: center; text-align: left; }
-    .perfil-nome { font-size: 1.3rem; }
-    .perfil-campos-grid { grid-template-columns: 1fr; gap: 14px; }
-    .perfil-avatar .avatar-wrapper { width: 80px; height: 80px; }
+  @media (max-width: 600px) {
+    .perfil-campos-grid { grid-template-columns: 1fr; gap: 12px; }
+    .card-pauta-acoes { justify-content: space-between; }
+    .btn-acao-pauta { flex: 1; text-align: center; }
   }
 </style>
 <base target="_blank">
@@ -190,7 +170,6 @@
 
     <div id="secao-perfil-profissional" class="card-painel perfil-carteira">
       
-      <!-- MENU HAMBÚRGUE NO CANDO SUPERIOR DIREITO -->
       <div class="menu-hamburguer-wrapper" id="wrapperHamburguer">
         <button type="button" class="btn-hamburguer" onclick="alternarMenuHamburguer(event)">☰</button>
         <div id="dropdownMenu" class="dropdown-hamburguer oculto">
@@ -206,18 +185,16 @@
             <img id="img-avatar-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E" alt="Foto">
           </div>
           <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
-          <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>📷 Alterar Foto</button>
-          <small class="dica-foto">JPG/PNG até 2MB</small>
+          <button type="button" id="btn-alterar-foto" class="btn-foto-upload oculto" onclick="document.getElementById('input-upload-foto').click()">📷 Alterar Foto</button>
         </div>
         <div class="perfil-titulo">
-          <div class="perfil-nome" id="perfil-nome-exibicao">NOME DE EXIBIÇÃO</div>
-          <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
+          <div class="perfil-nome" id="perfil-nome-exibicao">PAMPLONA</div>
+          <div class="perfil-cargo" id="perfil-cargo-exibicao">Cinegrafista</div>
         </div>
       </div>
 
       <hr class="perfil-divisor">
 
-      <!-- SETINHA LOGO ABAIXO DA LINHA AZUL -->
       <div class="wrapper-toggle-seta">
         <button type="button" id="btnSetaRecolher" class="btn-seta-toggle" onclick="alternarVisibilidadePerfil()" title="Recolher / Expandir Perfil">∨</button>
       </div>
@@ -246,15 +223,14 @@
         </div>
       </div>
 
-      <!-- SEÇÃO DE PAUTAS INTEGRADAS DENTRO DO CARD -->
       <div id="secaoPautas" style="display: none; margin-top: 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
-          <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);" onclick="abrirFormularioCriarPauta()">+ Nova Pauta</button>
+          <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 18px; background: var(--gov-verde);" onclick="abrirFormularioCriarPauta()">+ Nova Pauta</button>
         </div>
         <div id="listaPautasContainer"><p style="color: var(--gov-texto-suave);">Carregando pautas...</p></div>
 
-        <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none;">
+        <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none; margin-top:16px;">
           <h3>Registrar Retorno da Equipe</h3>
           <div class="grid-form-pauta">
             <div class="campo-group"><label for="retorno-data">Data de Retorno*</label><input type="date" id="retorno-data" required></div>
@@ -266,15 +242,17 @@
           </div>
         </div>
 
-        <div id="painelDetalhePauta" class="secao-form-pauta" style="display:none;">
+        <div id="painelDetalhePauta" class="secao-form-pauta" style="display:none; margin-top:16px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <h3 style="margin:0;" id="tituloPainelPauta">Detalhes da Pauta</h3>
-            <span id="statusPainelPauta" style="padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold; color:#fff;"></span>
+            <span id="statusPainelPauta" class="badge-status"></span>
           </div>
           <div class="grid-form-pauta" style="margin-bottom:14px;">
             <div class="campo-group"><label>Título</label><input type="text" id="dp-titulo" disabled></div>
             <div class="campo-group"><label>Tipo de Produção</label><input type="text" id="dp-tipo-producao" disabled></div>
             <div class="campo-group"><label>Data de Saída</label><input type="text" id="dp-data-saida" disabled></div>
+            <div class="campo-group"><label>Data de Retorno</label><input type="date" id="dp-data-retorno" disabled></div>
+            <div class="campo-group"><label>Hora de Retorno</label><input type="time" id="dp-hora-retorno" disabled></div>
             <div class="campo-group"><label>Data do Evento</label><input type="text" id="dp-data-evento" disabled></div>
             <div class="campo-group"><label>Local</label><input type="text" id="dp-local" disabled></div>
             <div class="campo-group"><label>Motorista</label><input type="text" id="dp-motorista" disabled></div>
@@ -420,141 +398,7 @@
 
     </div>
 
-    <!-- 1. CRIAR SECRETARIA -->
-    <div class="cartao oculto" id="cartaoCriarSecretaria">
-      <h2>1. Criar Secretaria</h2>
-      <p class="descricao">Somente o Administrador pode cadastrar novas Secretarias de Estado.</p>
-      <form id="formularioCriarSecretaria" class="linha-formulario">
-        <div><label for="nomeSecretaria">Nome da Secretaria</label><input type="text" id="nomeSecretaria" placeholder="Ex: Secretaria da Casa Civil" required></div>
-        <div><label for="siglaSecretaria">Sigla Oficial</label><input type="text" id="siglaSecretaria" placeholder="Ex: SECC" required></div>
-        <div style="flex: 0 0 auto;"><button type="submit" class="botao-principal" style="margin-top:0;">Criar Secretaria</button></div>
-      </form>
-    </div>
-
-    <!-- 2. CRIAR SUBSECRETARIA -->
-    <div class="cartao oculto" id="cartaoCriarSubsecretaria">
-      <h2>2. Criar Subsecretaria</h2>
-      <p class="descricao">Cadastre uma Subsecretaria vinculada a uma Secretaria existente.</p>
-      <form id="formularioCriarSubsecretaria" class="linha-formulario">
-        <div><label for="secretariaDaSubsecretaria">Secretaria Responsável</label><select id="secretariaDaSubsecretaria" required></select></div>
-        <div><label for="nomeSubsecretaria">Nome da Subsecretaria</label><input type="text" id="nomeSubsecretaria" placeholder="Ex: Subsecretaria de Comunicação" required></div>
-        <div><label for="siglaSubsecretaria">Sigla</label><input type="text" id="siglaSubsecretaria" placeholder="Ex: SUBCOM" required></div>
-        <div style="flex: 0 0 auto;"><button type="submit" class="botao-principal" style="margin-top:0;">Criar Subsecretaria</button></div>
-      </form>
-    </div>
-
-    <!-- 3. CRIAR NÚCLEO -->
-    <div class="cartao oculto" id="cartaoCriarNucleo">
-      <h2>3. Criar Núcleo Operacional</h2>
-      <p class="descricao">Cadastre núcleos vinculando-os à sua Secretaria ou Subsecretaria.</p>
-      <form id="formularioCriarNucleo" class="linha-formulario">
-        <div><label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label><select id="vinculoDoNucleo" required><option value="">Selecione o local...</option></select></div>
-        <div><label for="nomeNucleo">Nome do Núcleo</label><input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required></div>
-        <div><label for="agendaNucleo">E-mail / ID da Google Agenda de Produção</label><input type="text" id="agendaNucleo" placeholder="exemplo@gmail.com ou ID da Agenda" required></div>
-        <div style="flex: 0 0 auto;"><button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button></div>
-      </form>
-    </div>
-
-    <!-- 4. BOTÃO NOVO USUÁRIO -->
-    <div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 20px 24px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 12px;">
-        <div>
-          <h2 style="margin:0; font-size:16px;">Gestão de Profissionais e Usuários</h2>
-          <p style="margin:0; font-size:13px; color:var(--gov-texto-suave);">Cadastre profissionais após estruturar secretarias e núcleos.</p>
-        </div>
-        <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:12px 24px; background-color:var(--gov-verde);">+ Criar Novo Usuário</button>
-      </div>
-    </div>
-
-    <!-- CARTÃO FICHA CADASTRAL -->
-    <div class="cartao oculto" id="cartaoCriarUsuario" style="border-top: 4px solid var(--gov-verde);">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h2 style="margin:0;">Ficha Cadastral / Novo Profissional</h2>
-        <button type="button" id="btnFecharFormUsuario" style="background:none; border:none; color:var(--gov-erro); font-weight:bold; cursor:pointer; font-size:13px;">✕ Fechar Formulário</button>
-      </div>
-      <p class="descricao">Preencha os dados do servidor e atribua o nível de acesso e vínculo organizacional.</p>
-      <form id="formularioCriarUsuario">
-        <div class="secao-titulo">1. Acesso e Estrutura Organizacional</div>
-        <div class="linha-formulario">
-          <div><label for="nomeUsuarioNovo">Nome de Exibição*</label><input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required></div>
-          <div><label for="emailUsuarioNovo">E-mail Válido*</label><input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required></div>
-          <div><label for="nivelUsuarioNovo">Nível de Acesso*</label><select id="nivelUsuarioNovo" required>
-            <option value="SECRETARIO">SECRETARIO</option><option value="SUBSECRETARIO">SUBSECRETARIO</option><option value="COORDENADOR">COORDENADOR</option><option value="SUBCOORDENADOR">SUBCOORDENADOR</option><option value="PROFISSIONAL">PROFISSIONAL</option>
-          </select></div>
-        </div>
-        <div class="linha-formulario" style="margin-top:10px;">
-          <div><label for="secretariaDoUsuario">Secretaria*</label><select id="secretariaDoUsuario" required><option value="">Selecione...</option></select></div>
-          <div><label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label><select id="subsecretariaDoUsuario"><option value="">Nenhuma / Todas</option></select></div>
-          <div><label for="nucleoDoUsuario">Núcleo (opcional)</label><select id="nucleoDoUsuario"><option value="">Nenhum / Todos</option></select></div>
-        </div>
-
-        <div class="secao-titulo">2. Dados Profissionais e Contratuais</div>
-        <div class="linha-formulario">
-          <div><label for="nomeCompleto">Nome Completo</label><input type="text" id="nomeCompleto" placeholder="Nome civil completo"></div>
-          <div><label for="cargo">Cargo / Função</label><input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor, Cinegrafista"></div>
-          <div><label for="empregador">Empregador / Vínculo</label><select id="empregador"><option value="NOMEADO">NOMEADO</option><option value="FSB">FSB</option><option value="INPACTO">INPACTO</option></select></div>
-          <div><label for="dataAdmissao">Data de Admissão</label><input type="date" id="dataAdmissao"></div>
-        </div>
-        <div class="linha-formulario" style="margin-top:10px;">
-          <div><label for="horarioEntrada">Horário de Entrada*</label><input type="time" id="horarioEntrada" required></div>
-          <div><label for="horarioSaida">Horário de Saída*</label><input type="time" id="horarioSaida" required></div>
-          <div><label for="telefone">Telefone / WhatsApp*</label><input type="text" id="telefone" placeholder="(21) 99999-9999" required></div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-            <div class="avatar-wrapper" style="width:60px;height:60px;"><img id="preview-foto-cadastro" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
-            <input type="file" id="input-foto-cadastro" accept="image/*" style="display:none;" onchange="carregarPreviewFotoCadastro(event)">
-            <button type="button" class="btn-foto-upload" onclick="document.getElementById('input-foto-cadastro').click()">📷 Foto</button>
-            <small class="dica-foto">JPG/PNG até 2MB</small>
-          </div>
-        </div>
-
-        <div class="secao-titulo">3. Documentação</div>
-        <div class="linha-formulario">
-          <div><label for="cpf">CPF</label><input type="text" id="cpf" placeholder="000.000.000-00"></div>
-          <div><label for="rg">RG</label><input type="text" id="rg"></div>
-          <div><label for="orgaoEmissor">Órgão Emissor / UF</label><input type="text" id="orgaoEmissor" placeholder="Ex: DETRAN/RJ"></div>
-          <div><label for="dataExpedicao">Data Expedição RG</label><input type="date" id="dataExpedicao"></div>
-        </div>
-        <div class="linha-formulario" style="margin-top:10px;">
-          <div><label for="idFuncional">ID Funcional</label><input type="text" id="idFuncional"></div>
-          <div><label for="dataNascimento">Data de Nascimento</label><input type="date" id="dataNascimento"></div>
-          <div><label for="nomeMae">Nome da Mãe</label><input type="text" id="nomeMae"></div>
-          <div><label for="registroProfissional">Registro Profissional (DRT/MTE)</label><input type="text" id="registroProfissional"></div>
-        </div>
-
-        <div class="secao-titulo">4. Endereço Residencial*</div>
-        <div class="linha-formulario">
-          <div><label for="cep">CEP*</label><input type="text" id="cep" placeholder="00000-000" required></div>
-          <div style="flex: 2;"><label for="enderecoCompleto">Endereço Completo*</label><input type="text" id="enderecoCompleto" placeholder="Rua, número, complemento" required></div>
-        </div>
-        <div class="linha-formulario" style="margin-top:10px;">
-          <div><label for="bairro">Bairro*</label><input type="text" id="bairro" required></div>
-          <div><label for="cidade">Cidade*</label><input type="text" id="cidade" value="Rio de Janeiro" required></div>
-          <div><label for="uf">UF*</label><input type="text" id="uf" value="RJ" maxlength="2" required></div>
-        </div>
-
-        <div class="secao-titulo">5. Emergência, Saúde e Uniforme*</div>
-        <div class="linha-formulario">
-          <div><label for="nomeContatoEmergencia">Contato de Emergência*</label><input type="text" id="nomeContatoEmergencia" required></div>
-          <div><label for="grauParentesco">Grau de Parentesco*</label><input type="text" id="grauParentesco" placeholder="Ex: Mãe, Cônjuge" required></div>
-          <div><label for="telefoneEmergencia">Telefone de Emergência*</label><input type="text" id="telefoneEmergencia" required></div>
-        </div>
-        <div class="linha-formulario" style="margin-top:10px;">
-          <div><label for="planoSaude">Possui Plano de Saúde?*</label><select id="planoSaude"><option value="NÃO">NÃO</option><option value="SIM">SIM</option></select></div>
-          <div id="boxAceitePlano" class="oculto"><label for="aceitePlano">Hospitais / Clínicas que aceitam*</label><input type="text" id="aceitePlano" placeholder="Ex: Hospital Unimed, Barra D'Or"></div>
-          <div><label for="alergia">Possui Alguma Alergia?*</label><select id="alergia"><option value="NÃO">NÃO</option><option value="SIM">SIM</option></select></div>
-          <div id="boxTipoAlergia" class="oculto"><label for="tipoAlergia">Especifique a Alergia*</label><input type="text" id="tipoAlergia" placeholder="Ex: Dipirona, Camarão"></div>
-        </div>
-        <div class="linha-formulario" style="margin-top:10px;">
-          <div><label for="numeroSapato">Número do Calçado*</label><input type="text" id="numeroSapato" placeholder="Ex: 40" required></div>
-          <div><label for="manequim">Tamanho Manequim/Camisa*</label><input type="text" id="manequim" placeholder="Ex: M, G, 42" required></div>
-        </div>
-        <div style="margin-top: 28px; text-align: right;">
-          <button type="submit" class="botao-principal" style="width: auto; padding: 14px 36px; background-color: var(--gov-verde);">Salvar e Cadastrar Usuário</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- ESTRUTURA ORGANIZACIONAL -->
+    <!-- ESTRUTURA ORGANIZACIONAL E DEMAIS CARTÕES PERMANECEM MANTIDOS -->
     <div class="cartao" id="cartaoEstrutura">
       <h2>Estrutura Organizacional Cadastrada</h2>
       <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
@@ -568,13 +412,11 @@
 /* ================================================================
    CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
    ================================================================ */
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbzkyCIMQ4QAuZRNwDRc7xvaMcxw1Ifi5qsHLglkLOoYRU-yr4FIZpBZhUst4queAW6H/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycby22pfXL_8TCSMzBMG7F3Cac3mc3NXzKdYBpnOB5ihCAgntjpFsAIZE-4aral9VClIW/exec";
 let dadosEstruturaGlobal = null;
+let _nivelUsuarioLogado = '';
 const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
 
-/* ================================================================
-   UTILITÁRIOS DE DATA
-   ================================================================ */
 function parseDataBackend(valor) {
   if (!valor) return null;
   if (typeof valor === 'number') {
@@ -582,7 +424,7 @@ function parseDataBackend(valor) {
     return new Date(epoch.getTime() + valor * 86400000);
   }
   const d = new Date(valor);
-  return isNaN(d) ? null : d;
+  return isNaN(d.getTime()) ? null : d;
 }
 function formatarData(valor) {
   const d = parseDataBackend(valor);
@@ -595,9 +437,6 @@ function formatarHora(valor) {
   return d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
 }
 
-/* ================================================================
-   COMUNICAÇÃO COM BACKEND
-   ================================================================ */
 async function chamarBackend(acao, parametros = {}) {
   const payload = { action: acao, ...parametros };
   try {
@@ -628,12 +467,12 @@ function limparSessao() { ['secc_token','secc_usuario'].forEach(k => { localStor
 /* ================================================================
    LOGIN E SESSÃO
    ================================================================ */
-document.getElementById('botaoMostrarSenha').addEventListener('click', () => {
+document.getElementById('botaoMostrarSenha')?.addEventListener('click', () => {
   const c = document.getElementById('campoSenha'), b = document.getElementById('botaoMostrarSenha');
   const mostrar = c.type === 'password'; c.type = mostrar ? 'text' : 'password'; b.textContent = mostrar ? '🙈' : '👁';
 });
 
-document.getElementById('formularioLogin').addEventListener('submit', async (e) => {
+document.getElementById('formularioLogin')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const div = document.getElementById('mensagemLogin'); div.textContent = '';
   const r = await chamarBackend('login', { email: document.getElementById('campoEmail').value, senha: document.getElementById('campoSenha').value });
@@ -642,21 +481,7 @@ document.getElementById('formularioLogin').addEventListener('submit', async (e) 
   r.precisaTrocarSenha ? mostrarTela('telaTrocaSenha') : iniciarPainelPrincipal();
 });
 
-document.getElementById('formularioTrocaSenha').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const div = document.getElementById('mensagemTrocaSenha');
-  const r = await chamarBackend('trocarSenha', { token: pegarTokenSalvo(), senhaAtual: document.getElementById('senhaProvisoriaAtual').value, senhaNova: document.getElementById('senhaNovaEscolhida').value });
-  if (!r.sucesso) { div.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
-  div.innerHTML = '<p class="mensagem-sucesso">Senha alterada! Redirecionando...</p>';
-  setTimeout(iniciarPainelPrincipal, 800);
-});
-
-document.getElementById('botaoEsqueciSenha').addEventListener('click', async () => {
-  const email = prompt('Digite seu e-mail cadastrado:'); if (!email) return;
-  const r = await chamarBackend('recuperarSenha', { email }); alert(r.mensagem);
-});
-document.getElementById('botaoSair').addEventListener('click', () => { limparSessao(); location.reload(); });
-
+document.getElementById('botaoSair')?.addEventListener('click', () => { limparSessao(); location.reload(); });
 function mostrarTela(id) { ['telaLogin','telaTrocaSenha','telaPrincipal'].forEach(x => document.getElementById(x).classList.toggle('oculto', x !== id)); }
 
 /* ================================================================
@@ -664,23 +489,19 @@ function mostrarTela(id) { ['telaLogin','telaTrocaSenha','telaPrincipal'].forEac
    ================================================================ */
 function alternarMenuHamburguer(event) {
   if (event) event.stopPropagation();
-  const dropdown = document.getElementById('dropdownMenu');
-  dropdown.classList.toggle('oculto');
+  document.getElementById('dropdownMenu').classList.toggle('oculto');
 }
 
 document.addEventListener('click', function(e) {
   const wrapper = document.getElementById('wrapperHamburguer');
   const dropdown = document.getElementById('dropdownMenu');
-  if (wrapper && !wrapper.contains(e.target) && dropdown) {
-    dropdown.classList.add('oculto');
-  }
+  if (wrapper && !wrapper.contains(e.target) && dropdown) dropdown.classList.add('oculto');
 });
 
 function alternarVisibilidadePerfil() {
   const corpo = document.getElementById('perfilCorpo');
   const seta = document.getElementById('btnSetaRecolher');
   const estaOculto = corpo.style.display === 'none';
-  
   corpo.style.display = estaOculto ? 'block' : 'none';
   seta.textContent = estaOculto ? '∨' : '∧';
 }
@@ -688,7 +509,6 @@ function alternarVisibilidadePerfil() {
 function executarAcaoMenu(opcao, event) {
   if (event) event.preventDefault();
   document.getElementById('dropdownMenu').classList.add('oculto');
-  
   const corpoPerfil = document.getElementById('perfilCorpo');
   const secaoPautas = document.getElementById('secaoPautas');
   const btnSeta = document.getElementById('btnSetaRecolher');
@@ -712,240 +532,14 @@ function executarAcaoMenu(opcao, event) {
   }
 }
 
-/* ================================================================
-   INICIALIZAÇÃO DO PAINEL
-   ================================================================ */
-const NIVEIS_PAUTA = ['COORDENADOR','SUBCOORDENADOR','PROFISSIONAL'];
-const NIVEIS_ESTRUTURA = ['ADMIN','SECRETARIO','SUBSECRETARIO'];
-
 async function iniciarPainelPrincipal() {
   const u = pegarUsuarioSalvo();
+  _nivelUsuarioLogado = u.nivel;
   mostrarTela('telaPrincipal'); window.scrollTo(0,0);
   document.getElementById('nomeUsuarioLogado').textContent = u.nome;
-
-  document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', u.nivel !== 'ADMIN');
-  document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', u.nivel !== 'ADMIN');
-  document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN','SECRETARIO','SUBSECRETARIO'].includes(u.nivel));
-
-  const areaBtn = document.getElementById('areaBotaoNovoUsuario');
-  if (areaBtn) areaBtn.classList.toggle('oculto', u.nivel !== 'ADMIN');
-  const cartUsu = document.getElementById('cartaoCriarUsuario');
-  if (cartUsu) cartUsu.classList.add('oculto');
-
-  const cartEstr = document.getElementById('cartaoEstrutura');
-  if (cartEstr) cartEstr.style.display = NIVEIS_ESTRUTURA.includes(u.nivel) ? 'block' : 'none';
-
   await carregarEstrutura();
   await carregarPerfilNaTela();
 }
-
-/* ================================================================
-   ESTRUTURA ORGANIZACIONAL
-   ================================================================ */
-async function carregarEstrutura() {
-  const r = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
-  const container = document.getElementById('listaEstrutura');
-  if (!r.sucesso) { if (container) container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
-  dadosEstruturaGlobal = r;
-
-  const selSecSub = document.getElementById('secretariaDaSubsecretaria');
-  if (selSecSub && r.secretarias) selSecSub.innerHTML = r.secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+'</option>').join('');
-
-  const selVinc = document.getElementById('vinculoDoNucleo');
-  if (selVinc && r.secretarias) {
-    let html = '<option value="">Selecione o local...</option>';
-    r.secretarias.forEach(sec => {
-      html += '<option value="SEC:'+sec.SecretariaID+'">🏢 '+sec.Nome+' ('+sec.Sigla+')</option>';
-      (r.subsecretarias||[]).filter(sub => sub.SecretariaID === sec.SecretariaID).forEach(sub => {
-        html += '<option value="SUB:'+sec.SecretariaID+':'+sub.SubsecretariaID+'">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 '+sub.Nome+' ('+sub.Sigla+')</option>';
-      });
-    });
-    selVinc.innerHTML = html;
-  }
-  popularSelectSecretariaUsuario();
-
-  if (container) {
-    if (!(r.secretarias||[]).length) { container.innerHTML = '<p>Nenhuma secretaria cadastrada.</p>'; return; }
-    let html = '';
-    r.secretarias.forEach((sec, iSec) => {
-      const nucsDir = (r.nucleos||[]).filter(n => n.SecretariaID === sec.SecretariaID && !n.SubsecretariaID);
-      const subs = (r.subsecretarias||[]).filter(sub => sub.SecretariaID === sec.SecretariaID);
-      html += '<div><div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao(\'filhos-sec-'+iSec+'\',this)"><span class="acordeao-seta">▶</span> <strong>'+sec.Nome+'</strong> ('+sec.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sec-'+iSec+'">';
-      nucsDir.forEach(n => { html += renderizarItemNucleo(n); });
-      subs.forEach((sub, iSub) => {
-        const nucsSub = (r.nucleos||[]).filter(n => n.SubsecretariaID === sub.SubsecretariaID);
-        html += '<div class="acordeao-subsecretaria"><div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao(\'filhos-sub-'+iSec+'-'+iSub+'\',this)"><span class="acordeao-seta">▶</span> 📂 '+sub.Nome+' ('+sub.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sub-'+iSec+'-'+iSub+'">';
-        nucsSub.forEach(n => { html += renderizarItemNucleo(n, 24); });
-        if (!nucsSub.length) html += '<div class="item-nucleo" style="margin-left:24px; color:var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>';
-        html += '</div></div>';
-      });
-      html += '</div></div>';
-    });
-    container.innerHTML = html;
-  }
-}
-
-function renderizarItemNucleo(nucleo, margem) {
-  const idContainer = 'profissionais-nucleo-' + nucleo.NucleoID;
-  const estilo = margem ? ' style="margin-left:'+margem+'px;"' : '';
-  return '<div'+estilo+'><div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo(\''+nucleo.NucleoID+'\', \''+(nucleo.Nome||'').replace(/'/g,"\\'")+'\', \''+idContainer+'\', this)"><span class="acordeao-seta">▶</span> 📌 Núcleo: '+nucleo.Nome+'</div><div class="acordeao-filhos oculto" id="'+idContainer+'"></div></div>';
-}
-
-async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalho) {
-  const container = document.getElementById(idContainer);
-  const seta = cabecalho.querySelector('.acordeao-seta');
-  const abrir = container.classList.contains('oculto');
-  container.classList.toggle('oculto', !abrir);
-  if (seta) seta.textContent = abrir ? '▼' : '▶';
-  if (!abrir || container.dataset.carregado === '1') return;
-  container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Carregando...</div>';
-  const r = await chamarBackend('listarProfissionaisDoNucleo', { token: pegarTokenSalvo(), nucleoId });
-  if (!r.sucesso) { container.innerHTML = '<div style="padding:6px 12px; color:#B3261E; font-size:12px;">'+r.mensagem+'</div>'; return; }
-  const profs = r.profissionais || [];
-  if (!profs.length) container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Nenhum profissional cadastrado.</div>';
-  else container.innerHTML = profs.map(p => '<div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario(\''+p.id+'\', \''+(p.nome||'').replace(/'/g,"\\'")+'\')">👤 '+p.nome+' <span style="color:var(--gov-texto-suave); font-size:12px;">— '+(p.cargo||p.nivel)+'</span></div>').join('');
-  container.dataset.carregado = '1';
-}
-
-function alternarAcordeao(idFilhos, cabecalho) {
-  const filhos = document.getElementById(idFilhos);
-  const seta = cabecalho.querySelector('.acordeao-seta');
-  const abrir = filhos.classList.contains('oculto');
-  filhos.classList.toggle('oculto', !abrir);
-  if (seta) seta.textContent = abrir ? '▼' : '▶';
-}
-
-function popularSelectSecretariaUsuario() {
-  const sel = document.getElementById('secretariaDoUsuario');
-  if (sel && dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) {
-    sel.innerHTML = '<option value="">Selecione...</option>' + dadosEstruturaGlobal.secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+'</option>').join('');
-  }
-}
-
-function atualizarDropdownsDependenteUsuario() {
-  if (!dadosEstruturaGlobal) return;
-  const secId = document.getElementById('secretariaDoUsuario')?.value;
-  const subSel = document.getElementById('subsecretariaDoUsuario');
-  if (subSel) {
-    const subs = (dadosEstruturaGlobal.subsecretarias||[]).filter(s => s.SecretariaID === secId);
-    subSel.innerHTML = '<option value="">Nenhuma / Todas</option>' + subs.map(s => '<option value="'+s.SubsecretariaID+'">'+s.Nome+'</option>').join('');
-  }
-  filtrarNucleosDoUsuario();
-}
-function filtrarNucleosDoUsuario() {
-  if (!dadosEstruturaGlobal) return;
-  const secId = document.getElementById('secretariaDoUsuario')?.value;
-  const subId = document.getElementById('subsecretariaDoUsuario')?.value;
-  const nucSel = document.getElementById('nucleoDoUsuario');
-  if (!nucSel) return;
-  let nucs = (dadosEstruturaGlobal.nucleos||[]).filter(n => n.SecretariaID === secId);
-  if (subId) nucs = nucs.filter(n => n.SubsecretariaID === subId);
-  nucSel.innerHTML = '<option value="">Nenhum / Todos</option>' + nucs.map(n => '<option value="'+n.NucleoID+'">'+n.Nome+'</option>').join('');
-}
-document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
-document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
-
-/* ================================================================
-   FORMULÁRIOS DE CRIAÇÃO
-   ================================================================ */
-document.getElementById('formularioCriarSecretaria').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const r = await chamarBackend('criarSecretaria', { token: pegarTokenSalvo(), nome: document.getElementById('nomeSecretaria').value, sigla: document.getElementById('siglaSecretaria').value });
-  alert(r.sucesso ? 'Secretaria criada!' : r.mensagem);
-  if (r.sucesso) { e.target.reset(); carregarEstrutura(); }
-});
-document.getElementById('formularioCriarSubsecretaria').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const r = await chamarBackend('criarSubsecretaria', { token: pegarTokenSalvo(), secretariaId: document.getElementById('secretariaDaSubsecretaria').value, nome: document.getElementById('nomeSubsecretaria').value, sigla: document.getElementById('siglaSubsecretaria').value });
-  alert(r.sucesso ? 'Subsecretaria criada!' : r.mensagem);
-  if (r.sucesso) { e.target.reset(); carregarEstrutura(); }
-});
-document.getElementById('formularioCriarNucleo').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const v = document.getElementById('vinculoDoNucleo').value;
-  if (!v) { alert('Selecione o vínculo.'); return; }
-  const p = v.split(':');
-  let secId = '', subId = '';
-  if (p[0] === 'SEC') secId = p[1];
-  else if (p[0] === 'SUB') { secId = p[1]; subId = p[2]; }
-  const r = await chamarBackend('criarNucleo', { token: pegarTokenSalvo(), secretariaId: secId, subsecretariaId: subId, nome: document.getElementById('nomeNucleo').value, agendaGoogleUrl: document.getElementById('agendaNucleo').value });
-  alert(r.sucesso ? 'Núcleo criado!' : r.mensagem);
-  if (r.sucesso) { e.target.reset(); carregarEstrutura(); }
-});
-
-document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
-  popularSelectSecretariaUsuario();
-  document.getElementById('cartaoCriarUsuario')?.classList.remove('oculto');
-  document.getElementById('cartaoCriarUsuario')?.scrollIntoView({ behavior: 'smooth' });
-});
-document.getElementById('btnFecharFormUsuario')?.addEventListener('click', () => {
-  document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
-});
-
-document.getElementById('planoSaude')?.addEventListener('change', (e) => {
-  document.getElementById('boxAceitePlano')?.classList.toggle('oculto', e.target.value !== 'SIM');
-});
-document.getElementById('alergia')?.addEventListener('change', (e) => {
-  document.getElementById('boxTipoAlergia')?.classList.toggle('oculto', e.target.value !== 'SIM');
-});
-
-function carregarPreviewFotoCadastro(event) {
-  const file = event.target.files[0];
-  if (file) {
-    if (file.size > 2 * 1024 * 1024) { alert("A foto deve ter no máximo 2MB."); return; }
-    const reader = new FileReader();
-    reader.onload = function(e) { document.getElementById('preview-foto-cadastro').src = e.target.result; };
-    reader.readAsDataURL(file);
-  }
-}
-
-document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const fotoSrc = document.getElementById('preview-foto-cadastro').src;
-  const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
-  const dados = {
-    token: pegarTokenSalvo(),
-    nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
-    email: document.getElementById('emailUsuarioNovo').value,
-    nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
-    secretariaId: document.getElementById('secretariaDoUsuario').value,
-    subsecretariaId: document.getElementById('subsecretariaDoUsuario').value || '',
-    nucleoId: document.getElementById('nucleoDoUsuario').value || '',
-    nomeCompleto: document.getElementById('nomeCompleto').value,
-    cargo: document.getElementById('cargo').value,
-    empregador: document.getElementById('empregador').value,
-    dataAdmissao: document.getElementById('dataAdmissao').value,
-    horarioEntrada: document.getElementById('horarioEntrada').value,
-    horarioSaida: document.getElementById('horarioSaida').value,
-    telefone: document.getElementById('telefone').value,
-    fotoBase64: fotoBase64,
-    cpf: document.getElementById('cpf').value,
-    rg: document.getElementById('rg').value,
-    orgaoEmissor: document.getElementById('orgaoEmissor').value,
-    dataExpedicao: document.getElementById('dataExpedicao').value,
-    idFuncional: document.getElementById('idFuncional').value,
-    dataNascimento: document.getElementById('dataNascimento').value,
-    nomeMae: document.getElementById('nomeMae').value,
-    registroProfissional: document.getElementById('registroProfissional').value,
-    cep: document.getElementById('cep').value,
-    enderecoCompleto: document.getElementById('enderecoCompleto').value,
-    bairro: document.getElementById('bairro').value,
-    cidade: document.getElementById('cidade').value,
-    uf: document.getElementById('uf').value,
-    nomeContatoEmergencia: document.getElementById('nomeContatoEmergencia').value,
-    grauParentesco: document.getElementById('grauParentesco').value,
-    telefoneEmergencia: document.getElementById('telefoneEmergencia').value,
-    planoSaude: document.getElementById('planoSaude').value,
-    aceitePlano: document.getElementById('aceitePlano').value,
-    numeroSapato: document.getElementById('numeroSapato').value,
-    manequim: document.getElementById('manequim').value,
-    alergia: document.getElementById('alergia').value,
-    tipoAlergia: document.getElementById('tipoAlergia').value
-  };
-  const r = await chamarBackend('criarUsuario', dados);
-  alert(r.sucesso ? 'Usuário cadastrado! Acesso provisório enviado por e-mail.' : r.mensagem);
-  if (r.sucesso) { e.target.reset(); document.getElementById('preview-foto-cadastro').src = FOTO_PADRAO_SVG; document.getElementById('cartaoCriarUsuario')?.classList.add('oculto'); }
-});
 
 /* ================================================================
    PERFIL DO PROFISSIONAL
@@ -954,8 +548,6 @@ let dadosPerfilOriginal = {};
 let _usuarioIdAlvoPerfil = null;
 
 function habilitarEdicaoPerfil() {
-  const u = pegarUsuarioSalvo();
-  const ehAdmin = u && u.nivel === 'ADMIN';
   dadosPerfilOriginal = {
     fotoSrc: document.getElementById('img-avatar-preview').src,
     contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
@@ -971,24 +563,14 @@ function habilitarEdicaoPerfil() {
     cargo: document.getElementById('perfil-cargo-campo').value
   };
   ['perfil-contato-emergencia','perfil-telefone-emergencia','perfil-plano-saude','perfil-aceite-plano','perfil-numero-sapato','perfil-manequim','perfil-nome-completo','perfil-id-funcional','perfil-rg','perfil-cpf','perfil-cargo-campo'].forEach(id => { document.getElementById(id).disabled = false; });
+  document.getElementById('btn-alterar-foto').classList.remove('oculto');
   document.getElementById('btn-alterar-foto').disabled = false;
   document.getElementById('botoes-edicao-perfil').style.display = 'flex';
 }
 
 function cancelarEdicaoPerfil() {
-  document.getElementById('img-avatar-preview').src = dadosPerfilOriginal.fotoSrc || FOTO_PADRAO_SVG;
-  document.getElementById('perfil-contato-emergencia').value = dadosPerfilOriginal.contatoEmergencia || '';
-  document.getElementById('perfil-telefone-emergencia').value = dadosPerfilOriginal.telefoneEmergencia || '';
-  document.getElementById('perfil-plano-saude').value = dadosPerfilOriginal.planoSaude || 'NÃO';
-  document.getElementById('perfil-aceite-plano').value = dadosPerfilOriginal.aceitePlano || '';
-  document.getElementById('perfil-numero-sapato').value = dadosPerfilOriginal.numeroSapato || '';
-  document.getElementById('perfil-manequim').value = dadosPerfilOriginal.manequim || '';
-  document.getElementById('perfil-nome-completo').value = dadosPerfilOriginal.nomeCompleto || '';
-  document.getElementById('perfil-id-funcional').value = dadosPerfilOriginal.idFuncional || '';
-  document.getElementById('perfil-rg').value = dadosPerfilOriginal.rg || '';
-  document.getElementById('perfil-cpf').value = dadosPerfilOriginal.cpf || '';
-  document.getElementById('perfil-cargo-campo').value = dadosPerfilOriginal.cargo || '';
   ['perfil-contato-emergencia','perfil-telefone-emergencia','perfil-plano-saude','perfil-aceite-plano','perfil-numero-sapato','perfil-manequim','perfil-nome-completo','perfil-id-funcional','perfil-rg','perfil-cpf','perfil-cargo-campo'].forEach(id => { document.getElementById(id).disabled = true; });
+  document.getElementById('btn-alterar-foto').classList.add('oculto');
   document.getElementById('btn-alterar-foto').disabled = true;
   document.getElementById('botoes-edicao-perfil').style.display = 'none';
 }
@@ -1019,38 +601,20 @@ function preencherCartaoPerfil(p) {
   document.getElementById('perfil-aceite-plano').value = p.aceitePlano || '';
   document.getElementById('perfil-numero-sapato').value = p.numeroSapato || '';
   document.getElementById('perfil-manequim').value = p.manequim || '';
-  dadosPerfilOriginal = { fotoSrc: document.getElementById('img-avatar-preview').src, contatoEmergencia: p.contatoEmergencia||'', telefoneEmergencia: p.telefoneEmergencia||'', planoSaude: p.planoSaude||'NÃO', aceitePlano: p.aceitePlano||'', numeroSapato: p.numeroSapato||'', manequim: p.manequim||'', nomeCompleto: p.nomeCompleto||'', idFuncional: p.idFuncional||'', rg: p.rg||'', cpf: p.cpf||'', cargo: p.cargo||'' };
 }
 
 async function carregarPerfilNaTela() {
   const r = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
   if (!r.sucesso) return;
   preencherCartaoPerfil(r.perfil);
-  document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
   cancelarEdicaoPerfil();
-}
-
-async function carregarPerfilDeOutroUsuario(usuarioId, nomeExibido) {
-  const r = await chamarBackend('obterPerfilPorId', { token: pegarTokenSalvo(), usuarioIdAlvo: usuarioId });
-  if (!r.sucesso) { alert(r.mensagem); return; }
-  preencherCartaoPerfil(r.perfil);
-  cancelarEdicaoPerfil();
-  document.getElementById('nomePerfilDeOutro').textContent = nomeExibido || r.perfil.nome;
-  document.getElementById('avisoPerfilDeOutro').classList.remove('oculto');
-  document.getElementById('secaoPautas').style.display = 'none';
-  document.getElementById('perfilCorpo').style.display = 'block';
-  document.getElementById('btnSetaRecolher').textContent = '∨';
-  document.getElementById('secao-perfil-profissional').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function salvarPerfilProfissional() {
   const fotoSrc = document.getElementById('img-avatar-preview').src;
   const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
-  const u = pegarUsuarioSalvo();
-  const ehAdmin = u && u.nivel === 'ADMIN';
   const payload = {
-    token: pegarTokenSalvo(),
-    fotoBase64: fotoBase64,
+    token: pegarTokenSalvo(), fotoBase64,
     contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
     telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
     planoSaude: document.getElementById('perfil-plano-saude').value,
@@ -1058,29 +622,13 @@ async function salvarPerfilProfissional() {
     numeroSapato: document.getElementById('perfil-numero-sapato').value,
     manequim: document.getElementById('perfil-manequim').value
   };
-  if (ehAdmin) {
-    payload.nomeCompleto = document.getElementById('perfil-nome-completo').value;
-    payload.idFuncional = document.getElementById('perfil-id-funcional').value;
-    payload.rg = document.getElementById('perfil-rg').value;
-    payload.cpf = document.getElementById('perfil-cpf').value;
-    payload.cargo = document.getElementById('perfil-cargo-campo').value;
-    payload.nomeExibicao = document.getElementById('perfil-nome-exibicao').textContent;
-    if (_usuarioIdAlvoPerfil && _usuarioIdAlvoPerfil !== u.id) payload.usuarioIdAlvo = _usuarioIdAlvoPerfil;
-  }
-  const btn = document.querySelector('.btn-salvar-perfil');
-  if (btn) { btn.disabled = true; btn.innerText = "Salvando..."; }
   const r = await chamarBackend('salvarPerfil', payload);
-  if (btn) { btn.disabled = false; btn.innerText = "💾 Salvar"; }
-  if (r.sucesso) {
-    alert(r.mensagem || "Perfil salvo!");
-    if (r.url) document.getElementById('img-avatar-preview').src = r.url;
-    if (payload.usuarioIdAlvo) await carregarPerfilDeOutroUsuario(payload.usuarioIdAlvo, payload.nomeExibicao);
-    else await carregarPerfilNaTela();
-  } else { alert("Erro ao salvar: " + (r.mensagem || "Falha")); }
+  if (r.sucesso) { alert("Perfil salvo!"); await carregarPerfilNaTela(); }
+  else alert("Erro: " + r.mensagem);
 }
 
 /* ================================================================
-   PAUTAS
+   MINHAS PAUTAS (LAYOUT MOBILE EM CARDS E REGRAS DE STATUS)
    ================================================================ */
 async function carregarPautas() {
   const container = document.getElementById('listaPautasContainer');
@@ -1089,25 +637,53 @@ async function carregarPautas() {
   if (!r.sucesso) { container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
   const pautas = r.pautas || [];
   if (!pautas.length) { container.innerHTML = '<p style="color:var(--gov-texto-suave);">Nenhuma pauta encontrada.</p>'; return; }
-  let html = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:0.9rem;"><thead><tr style="background:var(--gov-cinza-claro);"><th style="padding:8px; text-align:left;">Título</th><th style="padding:8px; text-align:left;">Data Saída</th><th style="padding:8px; text-align:left;">Status</th><th style="padding:8px; text-align:left;">Ações</th></tr></thead><tbody>';
+
+  let html = '<div class="grid-pautas-cards">';
   pautas.forEach(p => {
     const st = determinarStatus(p);
-    html += '<tr style="border-bottom:1px solid var(--gov-borda);"><td style="padding:8px;">'+(p.Titulo_Producao_Email||'Sem título')+'</td><td style="padding:8px;">'+formatarData(p.Data_Saida)+'</td><td style="padding:8px;"><span style="background:'+st.cor+'; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold;">'+st.label+'</span></td><td style="padding:8px;"><button onclick="verPauta(\''+p.ProducaoID+'\')" class="botao-principal" style="padding:4px 10px; font-size:0.75rem; margin-right:4px; width:auto;">Ver</button><button onclick="editarPauta(\''+p.ProducaoID+'\')" class="botao-principal" style="padding:4px 10px; font-size:0.75rem; background:var(--gov-azul-hover); margin-right:4px; width:auto;">Editar</button><button onclick="abrirRegistroRetorno(\''+p.ProducaoID+'\')" class="botao-principal" style="padding:4px 10px; font-size:0.75rem; background:var(--gov-verde); width:auto;">🕐 Retorno</button></td></tr>';
+    const jaTeveRetorno = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
+    const ocultarBotaoRetorno = (jaTeveRetorno && p.Producao_Realizada === 'SIM');
+
+    html += '<div class="card-item-pauta">' +
+      '<div class="card-pauta-topo">' +
+        '<div class="card-pauta-titulo">' + (p.Titulo_Producao_Email || 'Sem título') + '</div>' +
+        '<span class="badge-status" style="background:' + st.cor + ';">' + st.label + '</span>' +
+      '</div>' +
+      '<div class="card-pauta-info">📅 Saída: ' + formatarData(p.Data_Saida) + '</div>' +
+      '<div class="card-pauta-acoes">' +
+        '<button onclick="verPauta(\'' + p.ProducaoID + '\')" class="btn-acao-pauta btn-ver">👁 Ver</button>' +
+        '<button onclick="editarPauta(\'' + p.ProducaoID + '\')" class="btn-acao-pauta btn-editar">✏️ Editar</button>' +
+        (ocultarBotaoRetorno ? '' : '<button onclick="abrirRegistroRetorno(\'' + p.ProducaoID + '\')" class="btn-acao-pauta btn-retorno">🕐 Retorno</button>') +
+      '</div>' +
+    '</div>';
   });
-  html += '</tbody></table></div>';
+  html += '</div>';
   container.innerHTML = html;
 }
 
 function determinarStatus(p) {
   if (p.Producao_Realizada === 'NÃO') return { cor: '#D32F2F', label: 'Cancelada' };
+  
+  const temVideo = p.Tem_Video === 'SIM', temFoto = p.Tem_Foto === 'SIM', temDigital = p.Tem_Digital === 'SIM', temAssessor = p.Tem_Assessor === 'SIM';
+  const linkVideoOk = !temVideo || (p.Link_Video_Drive && String(p.Link_Video_Drive).trim() !== '');
+  const linkFotoOk = !temFoto || (p.Link_Foto_GooglePhotos && String(p.Link_Foto_GooglePhotos).trim() !== '');
+  const linkDigitalOk = !temDigital || (p.Link_Digital_RedeSocial && String(p.Link_Digital_RedeSocial).trim() !== '');
+  const linkReleaseOk = !temAssessor || (p.Link_Release_Assessor && String(p.Link_Release_Assessor).trim() !== '');
+
+  const backupVideoOk = !temVideo || (p.Backup_Rede_Video === 'SIM' || p.Backup_Rede_Video === true);
+  const backupFotoOk = !temFoto || (p.Backup_Rede_Foto === 'SIM' || p.Backup_Rede_Foto === true);
+  const backupDigitalOk = !temDigital || (p.Backup_Rede_Digital === 'SIM' || p.Backup_Rede_Digital === true);
+
   if (p.Producao_Realizada === 'SIM') {
-    const temVideo = p.Tem_Video === 'SIM', temFoto = p.Tem_Foto === 'SIM', temDigital = p.Tem_Digital === 'SIM';
-    const linkVideoOk = !temVideo || (p.Link_Video_Drive && String(p.Link_Video_Drive).trim() !== '');
-    const linkFotoOk = !temFoto || (p.Link_Foto_GooglePhotos && String(p.Link_Foto_GooglePhotos).trim() !== '');
-    const linkDigitalOk = !temDigital || (p.Link_Digital_RedeSocial && String(p.Link_Digital_RedeSocial).trim() !== '');
-    if (!linkVideoOk || !linkFotoOk || !linkDigitalOk) return { cor: '#F9A825', label: 'Aguardando links' };
-    return { cor: '#2E7D32', label: 'Aprovada' };
+    if (linkVideoOk && linkFotoOk && linkDigitalOk && linkReleaseOk && backupVideoOk && backupFotoOk && backupDigitalOk) {
+      return { cor: '#2E7D32', label: 'Aprovada' };
+    }
+    return { cor: '#005A92', label: 'Em Aprovação' };
   }
+
+  const jaTeveRetorno = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
+  if (jaTeveRetorno) return { cor: '#005A92', label: 'Em Aprovação' };
+
   const ds = parseDataBackend(p.Data_Saida), hs = parseDataBackend(p.Horario_Saida_Equipe);
   if (ds && hs) {
     const saida = new Date(ds.getFullYear(), ds.getMonth(), ds.getDate(), hs.getHours(), hs.getMinutes());
@@ -1131,9 +707,12 @@ async function abrirPainelPauta(id, modoEdicao) {
   const st = determinarStatus(p);
   const el = document.getElementById('statusPainelPauta');
   el.textContent = st.label; el.style.background = st.cor;
+
   document.getElementById('dp-titulo').value = p.Titulo_Producao_Email || '';
   document.getElementById('dp-tipo-producao').value = p.Tipo_Producao || '';
   document.getElementById('dp-data-saida').value = formatarData(p.Data_Saida) + (p.Horario_Saida_Equipe ? ' às ' + formatarHora(p.Horario_Saida_Equipe) : '');
+  document.getElementById('dp-data-retorno').value = p.Data_Retorno_Equipe ? formatarDataParaInput(p.Data_Retorno_Equipe) : '';
+  document.getElementById('dp-hora-retorno').value = p.Hora_Retorno_Equipe ? formatarHoraParaInput(p.Hora_Retorno_Equipe) : '';
   document.getElementById('dp-data-evento').value = formatarData(p.Data_Producao) + (p.Horario_Evento ? ' às ' + formatarHora(p.Horario_Evento) : '');
   document.getElementById('dp-local').value = [p.Cidade, p.Bairro, p.UF].filter(Boolean).join(' - ');
   document.getElementById('dp-motorista').value = p.Motorista || '';
@@ -1150,15 +729,32 @@ async function abrirPainelPauta(id, modoEdicao) {
   document.getElementById('dp-backup-video').checked = p.Backup_Rede_Video === 'SIM' || p.Backup_Rede_Video === true;
   document.getElementById('dp-backup-foto').checked = p.Backup_Rede_Foto === 'SIM' || p.Backup_Rede_Foto === true;
   document.getElementById('dp-backup-digital').checked = p.Backup_Rede_Digital === 'SIM' || p.Backup_Rede_Digital === true;
-  document.getElementById('dp-bloco-assessor').classList.toggle('oculto', p.Tem_Assessor !== 'SIM');
-  document.getElementById('dp-bloco-video').classList.toggle('oculto', p.Tem_Video !== 'SIM');
-  document.getElementById('dp-bloco-foto').classList.toggle('oculto', p.Tem_Foto !== 'SIM');
-  document.getElementById('dp-bloco-digital').classList.toggle('oculto', p.Tem_Digital !== 'SIM');
-  const editaveis = ['dp-producao-realizada','dp-observacoes','dp-link-release','dp-link-video','dp-link-foto','dp-link-digital','dp-backup-video','dp-backup-foto','dp-backup-digital'];
-  editaveis.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
+
+  const ehCoordOuAdmin = ['ADMIN', 'COORDENADOR', 'SUBCOORDENADOR'].includes(r.nivelUsuario);
+  const dataJaSalva = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
+
+  const editaveisCampos = ['dp-producao-realizada','dp-observacoes','dp-link-release','dp-link-video','dp-link-foto','dp-link-digital','dp-backup-video','dp-backup-foto','dp-backup-digital'];
+  editaveisCampos.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
+
+  // Regra especial para Data/Hora de Retorno no painel de edição
+  document.getElementById('dp-data-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
+  document.getElementById('dp-hora-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
+
   document.getElementById('btnSalvarPainelPauta').classList.toggle('oculto', !modoEdicao);
   alternarCamposLinkPauta();
   document.getElementById('painelDetalhePauta').scrollIntoView({ behavior: 'smooth' });
+}
+
+function formatarDataParaInput(valor) {
+  const d = parseDataBackend(valor);
+  if (!d) return '';
+  return d.toISOString().split('T')[0];
+}
+
+function formatarHoraParaInput(valor) {
+  const d = parseDataBackend(valor);
+  if (!d) return valor || '';
+  return d.toTimeString().substring(0,5);
 }
 
 function alternarCamposLinkPauta() {
@@ -1182,6 +778,8 @@ async function salvarPainelPauta() {
   const dados = {
     token: pegarTokenSalvo(), pautaId: _pautaCarregadaAtual.ProducaoID,
     Producao_Realizada: document.getElementById('dp-producao-realizada').value,
+    Data_Retorno_Equipe: document.getElementById('dp-data-retorno').value,
+    Hora_Retorno_Equipe: document.getElementById('dp-hora-retorno').value,
     Observacoes: document.getElementById('dp-observacoes').value,
     Link_Release_Assessor: document.getElementById('dp-link-release').value,
     Link_Video_Drive: document.getElementById('dp-link-video').value,
@@ -1208,13 +806,20 @@ function fecharRegistroRetorno() {
   document.getElementById('retorno-data').value = '';
   document.getElementById('retorno-hora').value = '';
 }
+
 async function confirmarRegistroRetorno() {
   const data = document.getElementById('retorno-data').value;
   const hora = document.getElementById('retorno-hora').value;
   if (!data || !hora) { alert('Preencha data e horário.'); return; }
-  const r = await chamarBackend('editarPauta', { token: pegarTokenSalvo(), pautaId: _pautaIdRetornoAtual, Data_Retorno_Equipe: data, Hora_Retorno_Equipe: hora });
+  const r = await chamarBackend('editarPauta', { 
+    token: pegarTokenSalvo(), 
+    pautaId: _pautaIdRetornoAtual, 
+    Data_Retorno_Equipe: data, 
+    Hora_Retorno_Equipe: hora,
+    Producao_Realizada: 'SIM'
+  });
   if (!r.sucesso) { alert('Erro: ' + r.mensagem); return; }
-  alert('Retorno registrado! Diária/pernoite recalculados.');
+  alert('Retorno registrado com sucesso!');
   fecharRegistroRetorno(); carregarPautas();
 }
 
@@ -1233,64 +838,16 @@ function fecharFormCriarPauta() {
   document.getElementById('formCriarPautaWrapper').style.display = 'none';
   document.getElementById('listaPautasContainer').style.display = 'block';
   document.getElementById('btnCriarPauta').style.display = 'inline-block';
-  ['bloco-assessor','bloco-video','bloco-video-edicao','bloco-foto','bloco-digital'].forEach(id => { document.getElementById(id).style.display = 'none'; });
 }
+
 function alternarCampoCondicional(idSelect, idBloco) {
   const v = document.getElementById(idSelect).value;
   document.getElementById(idBloco).style.display = (v === 'SIM') ? 'block' : 'none';
   if (idBloco === 'bloco-video') document.getElementById('bloco-video-edicao').style.display = (v === 'SIM') ? 'block' : 'none';
 }
 
-const EQUIPAMENTOS_VIDEO = [
-  'Osmo FSB - 1','Osmo FSB - 2','Osmo FSB - 3','Drone FSB - 1','Drone FSB - 2',
-  'Mac Grafite','Mac Pérola','Maczinho','HDzinho A','HDzinho B','HDzinho C',
-  'Luz 1','Luz 2','Rebatedor mini 1','Rebatedor mini 2'
-];
-(function montarGradeEquipamento() {
-  const g = document.getElementById('gradeEquipamento');
-  if (!g) return;
-  g.innerHTML = EQUIPAMENTOS_VIDEO.map(n => '<label><input type="checkbox" value="'+n+'" class="chk-equipamento"> '+n+'</label>').join('');
-})();
-
-let timeoutBuscaEndereco = null;
-document.getElementById('pauta-endereco').addEventListener('input', function() {
-  clearTimeout(timeoutBuscaEndereco);
-  const texto = this.value;
-  const caixa = document.getElementById('sugestoesEndereco');
-  if (texto.length < 5) { caixa.innerHTML = ''; return; }
-  timeoutBuscaEndereco = setTimeout(async () => {
-    try {
-      const url = 'https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=br&limit=5&q=' + encodeURIComponent(texto + ', Rio de Janeiro');
-      const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR' } });
-      const resultados = await res.json();
-      if (!resultados.length) { caixa.innerHTML = '<div>Nenhum endereço encontrado</div>'; return; }
-      caixa.innerHTML = resultados.map((r, i) => '<div onclick="selecionarEndereco('+i+')">'+r.display_name+'</div>').join('');
-      window._sugestoesEnderecoAtuais = resultados;
-    } catch (e) { caixa.innerHTML = '<div>Erro ao buscar</div>'; }
-  }, 500);
-});
-function selecionarEndereco(indice) {
-  const r = window._sugestoesEnderecoAtuais[indice];
-  const end = r.address || {};
-  document.getElementById('pauta-endereco').value = r.display_name;
-  document.getElementById('pauta-cidade').value = end.city || end.town || end.municipality || end.village || '';
-  document.getElementById('pauta-bairro').value = end.suburb || end.neighbourhood || '';
-  document.getElementById('pauta-uf').value = end.state || 'Rio de Janeiro';
-  document.getElementById('sugestoesEndereco').innerHTML = '';
-}
-
-document.getElementById('pauta-titulo-email').addEventListener('blur', async function() {
-  const titulo = this.value.trim();
-  const aviso = document.getElementById('avisoTituloDuplicado');
-  if (!titulo) { aviso.style.display = 'none'; return; }
-  const r = await chamarBackend('verificarTituloPauta', { token: pegarTokenSalvo(), titulo });
-  aviso.style.display = (r.sucesso && r.duplicado) ? 'block' : 'none';
-  if (r.duplicado) aviso.textContent = '⚠️ Essa pauta já foi criada por ' + r.criadoPor + '.';
-});
-
-document.getElementById('formCriarPauta').addEventListener('submit', async function(e) {
+document.getElementById('formCriarPauta')?.addEventListener('submit', async function(e) {
   e.preventDefault();
-  const equipamentos = Array.from(document.querySelectorAll('.chk-equipamento:checked')).map(c => c.value).join(', ');
   const dados = {
     token: pegarTokenSalvo(),
     Tipo_Producao: document.getElementById('pauta-tipo-producao').value,
@@ -1317,7 +874,6 @@ document.getElementById('formCriarPauta').addEventListener('submit', async funct
     Fotografo: document.getElementById('pauta-fotografo').value,
     Tem_Digital: document.getElementById('pauta-tem-digital').value,
     Digital: document.getElementById('pauta-digital').value,
-    Equipamento_Usado_Video: equipamentos,
     Observacoes: document.getElementById('pauta-observacoes').value,
     Producao_Realizada: ''
   };
@@ -1328,9 +884,6 @@ document.getElementById('formCriarPauta').addEventListener('submit', async funct
   carregarPautas();
 });
 
-/* ================================================================
-   INICIALIZAÇÃO
-   ================================================================ */
 (function iniciar() {
   if (pegarTokenSalvo() && pegarUsuarioSalvo()) iniciarPainelPrincipal();
   else mostrarTela('telaLogin');
