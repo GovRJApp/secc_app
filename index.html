@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>App SECC - Governo do Estado do Rio de Janeiro</title>
-
-<!-- ESTE BLOCO PERMITE "ADICIONAR À TELA DE INÍCIO" NO CELULAR, USANDO O
-     BRASÃO DO GOVERNO COMO ÍCONE DO APP (tanto no iOS quanto no Android) -->
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="Brasao_Login_App.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,736 +11,125 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#005A92">
 <link rel="icon" type="image/png" href="Brasao_Login_App.png">
-<!-- Tipografia Oficial de Apoio (Roboto) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gov-azul: #005A92;
-    --gov-azul-escuro: #003F66;
-    --gov-azul-hover: #004A80;
-    --gov-verde: #427842;
-    --gov-dourado: #BC9D32;
-    --gov-cinza: #A0A0A0;
-    --gov-cinza-claro: #F4F6F9;
-    --gov-borda: #CBD5E1;
-    --gov-texto: #1E293B;
-    --gov-texto-suave: #64748B;
-    --gov-erro: #D32F2F;
-    --gov-sucesso: #2E7D32;
-    --raio-card: 12px;
-    --sombra-card: 0 4px 18px rgba(0, 90, 146, 0.08);
+    --gov-azul: #005A92; --gov-azul-escuro: #003F66; --gov-azul-hover: #004A80;
+    --gov-verde: #427842; --gov-dourado: #BC9D32; --gov-cinza: #A0A0A0;
+    --gov-cinza-claro: #F4F6F9; --gov-borda: #CBD5E1; --gov-texto: #1E293B;
+    --gov-texto-suave: #64748B; --gov-erro: #D32F2F; --gov-sucesso: #2E7D32;
+    --raio-card: 12px; --sombra-card: 0 4px 18px rgba(0,90,146,0.08);
     --fonte-oficial: 'Roboto', -apple-system, sans-serif;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: var(--fonte-oficial);
-    background-color: var(--gov-cinza-claro);
-    color: var(--gov-texto);
-    -webkit-font-smoothing: antialiased;
-  }
-  .tela-login {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--gov-azul-escuro) 0%, var(--gov-azul) 100%);
-  }
-  .cartao-login {
-    background: #FFFFFF;
-    border-radius: var(--raio-card);
-    padding: 32px 24px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
-    border-top: 6px solid var(--gov-dourado);
-  }
-  .header-login {
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .logo-brasao-login {
-    max-width: 90px;
-    height: auto;
-    margin-bottom: 12px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .header-login .logo-gov-text {
-    font-weight: 900;
-    font-size: 20px;
-    color: var(--gov-azul);
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-  }
-  .header-login .subtitulo-login {
-    font-size: 13px;
-    color: var(--gov-texto-suave);
-    margin-top: 6px;
-    font-weight: 500;
-  }
-  label {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 14px 0 6px;
-    color: var(--gov-texto);
-  }
-  input[type="email"], 
-  input[type="password"], 
-  input[type="text"], 
-  input[type="date"], 
-  input[type="time"], 
-  select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--gov-borda);
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: var(--fonte-oficial);
-    background-color: #FFFFFF;
-    transition: all 0.2s ease;
-  }
-  input:focus, select:focus {
-    outline: none;
-    border-color: var(--gov-azul);
-    box-shadow: 0 0 0 3px rgba(0, 90, 146, 0.15);
-  }
-  button {
-    cursor: pointer;
-    font-family: var(--fonte-oficial);
-    font-weight: 700;
-    border: none;
-    border-radius: 8px;
-    padding: 14px 20px;
-    font-size: 15px;
-    transition: all 0.2s ease;
-  }
-  .botao-principal {
-    background-color: var(--gov-azul);
-    color: #FFFFFF;
-    width: 100%;
-    margin-top: 20px;
-    box-shadow: 0 4px 12px rgba(0, 90, 146, 0.25);
-  }
-  .botao-principal:hover {
-    background-color: var(--gov-azul-hover);
-  }
-  .link-discreto {
-    background: none;
-    color: var(--gov-azul);
-    text-decoration: underline;
-    padding: 0;
-    font-weight: 500;
-    font-size: 13px;
-    margin-top: 16px;
-    display: block;
-    width: 100%;
-    text-align: center;
-  }
+  body { margin: 0; font-family: var(--fonte-oficial); background: var(--gov-cinza-claro); color: var(--gov-texto); -webkit-font-smoothing: antialiased; }
+  .tela-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; background: linear-gradient(135deg, var(--gov-azul-escuro) 0%, var(--gov-azul) 100%); }
+  .cartao-login { background: #FFF; border-radius: var(--raio-card); padding: 32px 24px; width: 100%; max-width: 400px; box-shadow: 0 12px 32px rgba(0,0,0,0.2); border-top: 6px solid var(--gov-dourado); }
+  .header-login { text-align: center; margin-bottom: 24px; }
+  .logo-brasao-login { max-width: 90px; height: auto; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto; }
+  .header-login .logo-gov-text { font-weight: 900; font-size: 20px; color: var(--gov-azul); letter-spacing: -0.5px; line-height: 1.2; }
+  .header-login .subtitulo-login { font-size: 13px; color: var(--gov-texto-suave); margin-top: 6px; font-weight: 500; }
+  label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 6px; color: var(--gov-texto); }
+  input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--gov-borda); border-radius: 8px; font-size: 15px; font-family: var(--fonte-oficial); background: #FFF; transition: all 0.2s ease; resize: vertical; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gov-azul); box-shadow: 0 0 0 3px rgba(0,90,146,0.15); }
+  button { cursor: pointer; font-family: var(--fonte-oficial); font-weight: 700; border: none; border-radius: 8px; padding: 14px 20px; font-size: 15px; transition: all 0.2s ease; }
+  .botao-principal { background: var(--gov-azul); color: #FFF; width: 100%; margin-top: 20px; box-shadow: 0 4px 12px rgba(0,90,146,0.25); }
+  .botao-principal:hover { background: var(--gov-azul-hover); }
+  .link-discreto { background: none; color: var(--gov-azul); text-decoration: underline; padding: 0; font-weight: 500; font-size: 13px; margin-top: 16px; display: block; width: 100%; text-align: center; }
   .mensagem-erro { color: var(--gov-erro); font-size: 13px; margin-top: 12px; font-weight: 500; text-align: center; }
   .mensagem-sucesso { color: var(--gov-sucesso); font-size: 13px; margin-top: 12px; font-weight: 500; text-align: center; }
   .oculto { display: none !important; }
-  .cabecalho-app {
-    background: linear-gradient(90deg, var(--gov-azul-escuro) 0%, var(--gov-azul) 100%);
-    color: #FFFFFF;
-    padding: 16px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 4px solid var(--gov-verde);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .brand-title {
-    font-weight: 900;
-    font-size: 16px;
-    letter-spacing: 0.5px;
-  }
-  .brand-sub {
-    font-size: 12px;
-    opacity: 0.85;
-  }
-  .cabecalho-app .info-usuario { 
-    font-size: 13px; 
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .badge-nivel {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 4px 8px;
-    border-radius: 16px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-  .botao-sair {
-    background: rgba(255,255,255,0.15);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 6px 14px;
-    border-radius: 6px;
-  }
-  .conteudo-app {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px 16px;
-  }
-  .cartao {
-    background: #FFFFFF;
-    border-radius: var(--raio-card);
-    border: 1px solid var(--gov-borda);
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--sombra-card);
-    position: relative;
-  }
-  .cartao::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background-color: var(--gov-azul);
-    border-radius: var(--raio-card) 0 0 var(--raio-card);
-  }
-  .cartao h2 {
-    font-size: 17px;
-    font-weight: 700;
-    margin: 0 0 4px;
-    color: var(--gov-azul-escuro);
-  }
-  .cartao p.descricao {
-    font-size: 13px;
-    color: var(--gov-texto-suave);
-    margin: 0 0 16px;
-  }
-  .linha-formulario {
-    display: flex;
-    gap: 12px;
-    align-items: flex-end;
-    flex-wrap: wrap;
-  }
+  .cabecalho-app { background: linear-gradient(90deg, var(--gov-azul-escuro) 0%, var(--gov-azul) 100%); color: #FFF; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--gov-verde); box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 12px; }
+  .brand-title { font-weight: 900; font-size: 16px; letter-spacing: 0.5px; }
+  .brand-sub { font-size: 12px; opacity: 0.85; }
+  .info-usuario { font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 12px; }
+  .botao-sair { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; border-radius: 6px; }
+  .conteudo-app { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
+  .cartao { background: #FFF; border-radius: var(--raio-card); border: 1px solid var(--gov-borda); padding: 20px; margin-bottom: 20px; box-shadow: var(--sombra-card); position: relative; }
+  .cartao::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gov-azul); border-radius: var(--raio-card) 0 0 var(--raio-card); }
+  .cartao h2 { font-size: 17px; font-weight: 700; margin: 0 0 4px; color: var(--gov-azul-escuro); }
+  .cartao p.descricao { font-size: 13px; color: var(--gov-texto-suave); margin: 0 0 16px; }
+  .linha-formulario { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
   .linha-formulario > div { flex: 1; min-width: 220px; }
   .lista-estrutura ul { list-style: none; padding-left: 0; margin: 0; }
-  /* ESTE BLOCO ESTILIZA O ACORDEÃO DA ESTRUTURA ORGANIZACIONAL (clicável) */
   .acordeao-cabecalho { cursor: pointer; user-select: none; }
   .acordeao-cabecalho:hover { filter: brightness(0.97); }
   .acordeao-seta { display: inline-block; width: 14px; font-size: 11px; color: var(--gov-texto-suave); }
   .acordeao-filhos { padding-left: 8px; }
   .acordeao-filhos.oculto { display: none; }
-  .acordeao-subsecretaria { margin-left: 8px; }
-  .item-profissional-clicavel {
-    padding: 6px 12px 6px 32px;
-    font-size: 13px;
-    cursor: pointer;
-    border-radius: 6px;
-  }
+  .item-profissional-clicavel { padding: 6px 12px 6px 32px; font-size: 13px; cursor: pointer; border-radius: 6px; }
   .item-profissional-clicavel:hover { background: #EAF1FA; }
-  .lista-estrutura .item-secretaria {
-    padding: 12px;
-    background: #FFFFFF;
-    border: 1px solid var(--gov-borda);
-    border-left: 4px solid var(--gov-azul);
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 15px;
-    color: var(--gov-azul-escuro);
+  .item-secretaria { padding: 12px; background: #FFF; border: 1px solid var(--gov-borda); border-left: 4px solid var(--gov-azul); border-radius: 8px; margin-bottom: 8px; font-size: 15px; color: var(--gov-azul-escuro); }
+  .item-subsecretaria { margin: 6px 0 6px 16px; padding: 10px; border-left: 4px solid var(--gov-verde); background: #F8FAFC; border-radius: 6px; font-size: 14px; }
+  .item-nucleo { margin: 4px 0 4px 32px; padding: 8px; border-left: 3px solid var(--gov-dourado); background: #FFF; border-radius: 6px; font-size: 13px; color: var(--gov-texto-suave); }
+  .secao-titulo { font-size: 13px; font-weight: 700; color: var(--gov-azul); text-transform: uppercase; margin-top: 20px; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 2px solid var(--gov-cinza-claro); }
+
+  /* CARD PERFIL COM LAYOUT NOVO E HAMBÚRGUER */
+  .card-painel { background: #fff; border-radius: 10px; padding: 24px; max-width: 850px; margin: 20px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-top: 5px solid #005696; font-family: var(--fonte-oficial); position: relative; }
+  .perfil-carteira { border-top: 5px solid var(--gov-azul); }
+  
+  .menu-hamburguer-wrapper { position: absolute; top: 16px; right: 16px; z-index: 100; }
+  .btn-hamburguer { background: none; border: none; font-size: 26px; color: var(--gov-azul-escuro); cursor: pointer; padding: 4px 8px; line-height: 1; }
+  .dropdown-hamburguer { position: absolute; right: 0; top: 36px; background: #FFF; border: 1px solid var(--gov-borda); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); display: flex; flex-direction: column; width: 170px; z-index: 101; overflow: hidden; }
+  .dropdown-hamburguer a { padding: 12px 16px; text-decoration: none; color: var(--gov-texto); font-size: 14px; font-weight: 500; border-bottom: 1px solid #F0F0F0; transition: background 0.2s; }
+  .dropdown-hamburguer a:hover { background: var(--gov-cinza-claro); color: var(--gov-azul); }
+
+  .perfil-cabecalho { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; position: relative; padding-right: 50px; }
+  .perfil-avatar { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .perfil-avatar .avatar-wrapper { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gov-azul); background: #f0f2f5; }
+  .perfil-avatar .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  .perfil-titulo { flex: 1; min-width: 180px; }
+  .perfil-nome { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; color: var(--gov-azul-escuro); letter-spacing: 0.5px; line-height: 1.2; }
+  .perfil-cargo { font-size: 1.05rem; font-weight: 500; color: var(--gov-texto-suave); margin-top: 4px; }
+  
+  .perfil-divisor { border: none; border-top: 4px solid var(--gov-azul); margin: 16px 0 8px 0; }
+  
+  .wrapper-toggle-seta { text-align: center; margin-bottom: 16px; }
+  .btn-seta-toggle { background: none; border: none; font-size: 26px; font-weight: bold; color: var(--gov-azul-escuro); cursor: pointer; padding: 0 12px; line-height: 1; transition: transform 0.2s ease; }
+  .btn-seta-toggle:hover { color: var(--gov-azul); }
+
+  .perfil-campos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; }
+  .campo-group { display: flex; flex-direction: column; gap: 4px; }
+  .campo-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--gov-texto-suave); margin: 0; }
+  .campo-group.editavel input, .campo-group.editavel select { width: 100%; padding: 8px 10px; border: 1px solid var(--gov-borda); border-radius: 6px; font-size: 0.95rem; background: #fff; transition: border 0.2s; }
+  .campo-group.editavel input:disabled, .campo-group.editavel select:disabled { background: #f4f6f8; color: #555; }
+  
+  .btn-salvar-perfil { background: var(--gov-sucesso); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-right: 12px; }
+  .btn-salvar-perfil:hover { background: #1e6b1e; }
+  .btn-cancelar-perfil { background: var(--gov-erro); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+  .btn-cancelar-perfil:hover { background: #b71c1c; }
+  .btn-foto-upload { padding: 4px 12px; font-size: 0.8rem; border: 1px solid var(--gov-azul); background: #eef6ff; color: var(--gov-azul); border-radius: 4px; cursor: pointer; }
+  .dica-foto { font-size: 0.65rem; color: #888; }
+
+  .secao-form-pauta { border: 1px solid var(--gov-borda); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; background: #fafbfc; }
+  .secao-form-pauta h3 { margin: 0 0 14px; font-size: 0.95rem; color: var(--gov-azul-escuro); text-transform: uppercase; letter-spacing: 0.5px; }
+  .grid-form-pauta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px 20px; }
+  .lista-sugestoes-endereco { position: absolute; top: 100%; left: 0; right: 0; z-index: 20; background: white; border: 1px solid var(--gov-borda); border-top: none; border-radius: 0 0 8px 8px; max-height: 220px; overflow-y: auto; }
+  .lista-sugestoes-endereco div { padding: 8px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
+  .lista-sugestoes-endereco div:hover { background: var(--gov-azul); color: white; }
+  .grade-checkbox-equipamento { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px 16px; font-size: 13px; }
+  .grade-checkbox-equipamento label { display: flex; align-items: center; gap: 6px; font-weight: 400; cursor: pointer; margin: 0; text-transform: none; font-size: 13px; letter-spacing: 0; }
+
+  .campo-senha-wrapper { position: relative; }
+  .campo-senha-wrapper input { padding-right: 44px; }
+  .botao-mostrar-senha { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 6px; cursor: pointer; font-size: 16px; line-height: 1; }
+  .linha-manter-conectado { display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; font-size: 13px; }
+  .linha-manter-conectado input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
+  .linha-manter-conectado label { margin: 0; font-weight: 400; cursor: pointer; text-transform: none; letter-spacing: 0; font-size: 13px; }
+
+  @media (max-width: 700px) {
+    .perfil-cabecalho { align-items: center; text-align: left; }
+    .perfil-nome { font-size: 1.3rem; }
+    .perfil-campos-grid { grid-template-columns: 1fr; gap: 14px; }
+    .perfil-avatar .avatar-wrapper { width: 80px; height: 80px; }
   }
-  .lista-estrutura .item-subsecretaria {
-    margin: 6px 0 6px 16px;
-    padding: 10px;
-    border-left: 4px solid var(--gov-verde);
-    background: #F8FAFC;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  .lista-estrutura .item-nucleo {
-    margin: 4px 0 4px 32px;
-    padding: 8px;
-    border-left: 3px solid var(--gov-dourado);
-    background: #FFFFFF;
-    border-radius: 6px;
-    font-size: 13px;
-    color: var(--gov-texto-suave);
-  }
-  .secao-titulo {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--gov-azul);
-    text-transform: uppercase;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    padding-bottom: 4px;
-    border-bottom: 2px solid var(--gov-cinza-claro);
-  }
-  @media (max-width: 600px) {
-    .conteudo-app { padding: 12px 10px; }
-    .cartao { padding: 16px; }
-    .linha-formulario > div { min-width: 100%; }
-    .cabecalho-app {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .cabecalho-app .info-usuario {
-      width: 100%;
-      justify-content: space-between;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255,255,255,0.15);
-    }
-    #areaBotaoNovoUsuario {
-      flex-direction: column;
-      align-items: stretch !important;
-    }
-    #btnAbrirFormUsuario {
-      width: 100% !important;
-      margin-top: 10px !important;
-    }
-    .card-painel {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 24px;
-    max-width: 850px;
-    margin: 20px auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-top: 5px solid #005696;
-    font-family: Arial, sans-serif;
-}
-
-.card-header-perfil {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #f0f2f5;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
-.card-header-perfil h2 {
-    margin: 0;
-    color: #005696;
-    font-size: 1.4rem;
-}
-
-.card-body-perfil {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.area-avatar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 160px;
-}
-
-.avatar-wrapper {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid #005696;
-    margin-bottom: 10px;
-    background-color: #f8f9fa;
-}
-
-.avatar-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.btn-foto-upload {
-    padding: 6px 12px;
-    font-size: 0.82rem;
-    border: 1px solid #005696;
-    background: #eef6ff;
-    color: #005696;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-foto-upload:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: #eee;
-    border-color: #ccc;
-    color: #777;
-}
-
-.dica-foto {
-    font-size: 0.7rem;
-    color: #888;
-    margin-top: 6px;
-    text-align: center;
-}
-
-.form-grid-perfil {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    min-width: 280px;
-}
-
-.campo-full {
-    grid-column: 1 / -1;
-}
-
-.campo-form {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.campo-form label {
-    font-weight: bold;
-    font-size: 0.88rem;
-    color: #333;
-}
-
-.campo-form input, .campo-form select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-
-.campo-form input:disabled, .campo-form select:disabled {
-    background-color: #f4f6f8;
-    color: #555;
-}
-
-.tag-vinculo {
-    background-color: #eef6ff;
-    border: 1px solid #b3d7ff;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-size: 0.88rem;
-    color: #004085;
-}
-
-.btn-acao-secundario {
-    padding: 8px 16px;
-    background-color: #005696;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.acoes-form {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.btn-salvar-perfil {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn-cancelar-perfil {
-    padding: 10px 20px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-  }
-  /* ---- PERFIL CARTEIRA FUNCIONAL ---- */
-.perfil-carteira {
-    border-top: 5px solid var(--gov-azul);
-}
-
-.perfil-cabecalho {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-    position: relative;
-    padding-right: 90px;
-}
-
-.btn-toggle-perfil {
-    position: absolute; right: 0; bottom: 0;
-    background: var(--gov-azul); color: white; border: none;
-    border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
-}
-.btn-toggle-perfil:hover { opacity: 0.85; }
-
-/* ESTE BLOCO ESTILIZA O FORMULÁRIO DE CRIAR PAUTA */
-.secao-form-pauta {
-    border: 1px solid var(--gov-borda, #ddd);
-    border-radius: 10px;
-    padding: 16px 18px;
-    margin-bottom: 16px;
-    background: #fafbfc;
-}
-.secao-form-pauta h3 {
-    margin: 0 0 14px;
-    font-size: 0.95rem;
-    color: var(--gov-azul-escuro);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.grid-form-pauta {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px 20px;
-}
-.lista-sugestoes-endereco {
-    position: absolute; top: 100%; left: 0; right: 0; z-index: 20;
-    background: white; border: 1px solid var(--gov-borda, #ddd); border-top: none;
-    border-radius: 0 0 8px 8px; max-height: 220px; overflow-y: auto;
-}
-.lista-sugestoes-endereco div {
-    padding: 8px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid #f0f0f0;
-}
-.lista-sugestoes-endereco div:hover { background: var(--gov-azul); color: white; }
-.grade-checkbox-equipamento {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 8px 16px; font-size: 13px;
-}
-.grade-checkbox-equipamento label { display: flex; align-items: center; gap: 6px; font-weight: 400; cursor: pointer; }
-
-.perfil-avatar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.perfil-avatar .avatar-wrapper {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid var(--gov-azul);
-    background: #f0f2f5;
-}
-
-.perfil-avatar .avatar-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.perfil-titulo {
-    flex: 1;
-    min-width: 200px;
-}
-
-.perfil-nome {
-    font-size: 1.6rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: var(--gov-azul-escuro);
-    letter-spacing: 1px;
-    line-height: 1.2;
-}
-
-.perfil-cargo {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--gov-texto-suave);
-    margin-top: 4px;
-}
-
-.perfil-divisor {
-    border: none;
-    border-top: 4px solid var(--gov-azul);
-    margin: 16px 0 20px 0;
-}
-
-.perfil-corpo {
-    margin-top: 4px;
-}
-
-.perfil-campos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 30px;
-}
-
-.campo-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.campo-group label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    color: var(--gov-texto-suave);
-}
-
-.campo-valor {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--gov-texto);
-    padding: 6px 0;
-    border-bottom: 1px dashed var(--gov-borda);
-}
-
-.campo-group.editavel input,
-.campo-group.editavel select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--gov-borda);
-    border-radius: 6px;
-    font-size: 0.95rem;
-    background: #fff;
-    transition: border 0.2s;
-}
-
-.campo-group.editavel input:disabled,
-.campo-group.editavel select:disabled {
-    background: #f4f6f8;
-    color: #555;
-}
-
-.campo-group.editavel input:not(:disabled):focus,
-.campo-group.editavel select:not(:disabled):focus {
-    outline: none;
-    border-color: var(--gov-azul);
-    box-shadow: 0 0 0 3px rgba(0, 90, 146, 0.15);
-}
-
-.btn-acao-secundario {
-    background: var(--gov-azul);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.2s;
-    align-self: flex-start;
-    margin-left: auto;
-}
-
-.btn-acao-secundario:hover {
-    background: var(--gov-azul-hover);
-}
-
-.btn-salvar-perfil {
-    background: var(--gov-sucesso);
-    color: #fff;
-    border: none;
-    padding: 10px 28px;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-right: 12px;
-}
-
-.btn-salvar-perfil:hover {
-    background: #1e6b1e;
-}
-
-.btn-cancelar-perfil {
-    background: var(--gov-erro);
-    color: #fff;
-    border: none;
-    padding: 10px 28px;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.btn-cancelar-perfil:hover {
-    background: #b71c1c;
-}
-
-.btn-foto-upload {
-    padding: 4px 12px;
-    font-size: 0.8rem;
-    border: 1px solid var(--gov-azul);
-    background: #eef6ff;
-    color: var(--gov-azul);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-foto-upload:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: #eee;
-    border-color: #ccc;
-    color: #777;
-}
-
-.dica-foto {
-    font-size: 0.65rem;
-    color: #888;
-}
-
-/* Responsivo */
-@media (max-width: 700px) {
-    .perfil-cabecalho {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-    .perfil-titulo {
-        text-align: center;
-    }
-    .perfil-nome {
-        font-size: 1.3rem;
-    }
-    .btn-acao-secundario {
-        align-self: center;
-        margin-left: 0;
-    }
-    .perfil-campos-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
-    .perfil-avatar .avatar-wrapper {
-        width: 90px;
-        height: 90px;
-    }
-}
-/* ESTE BLOCO ESTILIZA O CAMPO DE SENHA COM BOTÃO "OLHO" E O CHECKBOX "MANTER CONECTADO" */
-.campo-senha-wrapper { position: relative; }
-.campo-senha-wrapper input { padding-right: 44px; }
-.botao-mostrar-senha {
-  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; padding: 6px; cursor: pointer; font-size: 16px; line-height: 1;
-}
-.linha-manter-conectado { display: flex; align-items: center; gap: 8px; margin: 14px 0 4px; font-size: 13px; }
-.linha-manter-conectado input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
-.linha-manter-conectado label { margin: 0; font-weight: 400; cursor: pointer; }
 </style>
+<base target="_blank">
 </head>
 <body>
 
-<!-- TELA 1 - LOGIN -->
 <div class="tela-login" id="telaLogin">
   <div class="cartao-login">
     <div class="header-login">
@@ -770,7 +156,6 @@
   </div>
 </div>
 
-<!-- TELA 2 - TROCA OBRIGATÓRIA DE SENHA -->
 <div class="tela-login oculto" id="telaTrocaSenha">
   <div class="cartao-login">
     <div class="header-login">
@@ -788,376 +173,261 @@
   </div>
 </div>
 
-<!-- TELA 3 - PAINEL PRINCIPAL -->
 <div class="oculto" id="telaPrincipal">
   <div class="cabecalho-app">
     <div>
       <div class="brand-title">GOVERNO DO ESTADO RIO DE JANEIRO</div>
-      <div class="brand-sub">Sistema de Gestão de Secretarias e Produção</div>
+      <div class="brand-sub">SECC - SUBCOM</div>
+      <div class="brand-sub" style="font-size:11px; opacity:0.75;">Sistema de Gestão de Secretarias e Produção</div>
     </div>
     <div class="info-usuario">
       <span id="nomeUsuarioLogado"></span>
-      <span class="badge-nivel" id="nivelUsuarioLogado"></span>
       <button class="botao-sair" id="botaoSair">Sair</button>
     </div>
   </div>
+  
   <div class="conteudo-app">
 
-<div id="secao-perfil-profissional" class="card-painel perfil-carteira">
-    <!-- Cabeçalho com foto, nome e cargo -->
-    <div class="perfil-cabecalho">
+    <div id="secao-perfil-profissional" class="card-painel perfil-carteira">
+      
+      <!-- MENU HAMBÚRGUE NO CANDO SUPERIOR DIREITO -->
+      <div class="menu-hamburguer-wrapper" id="wrapperHamburguer">
+        <button type="button" class="btn-hamburguer" onclick="alternarMenuHamburguer(event)">☰</button>
+        <div id="dropdownMenu" class="dropdown-hamburguer oculto">
+          <a href="#" onclick="executarAcaoMenu('editar', event)">✏️ Editar Perfil</a>
+          <a href="#" onclick="executarAcaoMenu('pautas', event)">📋 Minhas Pautas</a>
+          <a href="#" onclick="executarAcaoMenu('criarPauta', event)">➕ Criar Pautas</a>
+        </div>
+      </div>
+
+      <div class="perfil-cabecalho">
         <div class="perfil-avatar">
-            <div class="avatar-wrapper">
-                <img id="img-avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>" alt="Foto do Profissional">
-            </div>
-            <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
-            <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>
-                📷 Alterar Foto
-            </button>
-            <small class="dica-foto">JPG/PNG até 2MB</small>
+          <div class="avatar-wrapper">
+            <img id="img-avatar-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E" alt="Foto">
+          </div>
+          <input type="file" id="input-upload-foto" accept="image/*" style="display: none;" onchange="carregarPreviewFoto(event)">
+          <button type="button" id="btn-alterar-foto" class="btn-foto-upload" onclick="document.getElementById('input-upload-foto').click()" disabled>📷 Alterar Foto</button>
+          <small class="dica-foto">JPG/PNG até 2MB</small>
         </div>
         <div class="perfil-titulo">
-            <div class="perfil-nome" id="perfil-nome-exibicao">NOME DE EXIBIÇÃO</div>
-            <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
-        </div>
-        <button id="btn-editar-perfil" class="btn-acao-secundario" onclick="habilitarEdicaoPerfil()">✏️ Editar</button>
-        <button id="btnTogglePerfil" class="btn-toggle-perfil">📋 Pautas</button>
-    </div>
-
-    <!-- Linha divisória azul -->
-    <hr class="perfil-divisor">
-
-    <!-- SEÇÃO DE PAUTAS (recolhível) -->
-    <div id="secaoPautas" class="card-painel" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
-        <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);">+ Nova Pauta</button>
-      </div>
-      <div id="listaPautasContainer">
-        <p style="color: var(--gov-texto-suave);">Carregando pautas...</p>
-      </div>
-
-      <!-- ESTE BLOCO ABRE A CAIXINHA DE REGISTRO DO RETORNO DA EQUIPE (aciona o cálculo de diária) -->
-      <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none;">
-        <h3>Registrar Retorno da Equipe</h3>
-        <div class="grid-form-pauta">
-          <div class="campo-group"><label for="retorno-data">Data de Retorno*</label><input type="date" id="retorno-data" required></div>
-          <div class="campo-group"><label for="retorno-hora">Horário de Retorno*</label><input type="time" id="retorno-hora" required></div>
-        </div>
-        <div style="text-align:right; margin-top:14px;">
-          <button type="button" onclick="fecharRegistroRetorno()" class="btn-cancelar-perfil">Cancelar</button>
-          <button type="button" onclick="confirmarRegistroRetorno()" class="botao-principal" style="width:auto; padding:10px 24px;">Salvar Retorno</button>
+          <div class="perfil-nome" id="perfil-nome-exibicao">NOME DE EXIBIÇÃO</div>
+          <div class="perfil-cargo" id="perfil-cargo-exibicao">Cargo</div>
         </div>
       </div>
 
-      <!-- ESTE BLOCO ABRE O PAINEL DE VER/EDITAR PAUTA -->
-      <div id="painelDetalhePauta" class="secao-form-pauta" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <h3 style="margin:0;" id="tituloPainelPauta">Detalhes da Pauta</h3>
-          <span id="statusPainelPauta" style="padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold; color:#fff;"></span>
-        </div>
+      <hr class="perfil-divisor">
 
-        <div class="grid-form-pauta" style="margin-bottom:14px;">
-          <div class="campo-group"><label>Título</label><input type="text" id="dp-titulo" disabled></div>
-          <div class="campo-group"><label>Tipo de Produção</label><input type="text" id="dp-tipo-producao" disabled></div>
-          <div class="campo-group"><label>Data de Saída</label><input type="text" id="dp-data-saida" disabled></div>
-          <div class="campo-group"><label>Data do Evento</label><input type="text" id="dp-data-evento" disabled></div>
-          <div class="campo-group"><label>Local</label><input type="text" id="dp-local" disabled></div>
-          <div class="campo-group"><label>Motorista</label><input type="text" id="dp-motorista" disabled></div>
-        </div>
-
-        <div class="campo-group" style="margin-bottom:14px;">
-          <label for="dp-producao-realizada">A produção foi realizada?</label>
-          <select id="dp-producao-realizada" disabled onchange="alternarCamposLinkPauta()">
-            <option value="">Aguardando confirmação</option>
-            <option value="SIM">SIM</option>
-            <option value="NÃO">NÃO</option>
-          </select>
-        </div>
-
-        <!-- ESTES BLOCOS SÓ APARECEM SE Producao_Realizada = SIM, e cada um só se Tem_X = SIM -->
-        <div id="dp-bloco-assessor" class="campo-group oculto" style="margin-bottom:12px;">
-          <label for="dp-link-release">Link do Release (Assessor: <span id="dp-nome-assessor"></span>)</label>
-          <input type="text" id="dp-link-release" placeholder="Cole o link aqui" disabled>
-        </div>
-
-        <div id="dp-bloco-video" class="campo-group oculto" style="margin-bottom:12px;">
-          <label for="dp-link-video">Link do Vídeo/Drive (Cinegrafista: <span id="dp-nome-video"></span>)</label>
-          <input type="text" id="dp-link-video" placeholder="Cole o link aqui" disabled>
-          <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;">
-            <input type="checkbox" id="dp-backup-video" style="width:auto;" disabled> Backup na rede feito (Núcleo de Vídeo)
-          </label>
-        </div>
-
-        <div id="dp-bloco-foto" class="campo-group oculto" style="margin-bottom:12px;">
-          <label for="dp-link-foto">Link das Fotos/Google Photos (Fotógrafo: <span id="dp-nome-foto"></span>)</label>
-          <input type="text" id="dp-link-foto" placeholder="Cole o link aqui" disabled>
-          <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;">
-            <input type="checkbox" id="dp-backup-foto" style="width:auto;" disabled> Backup na rede feito (Núcleo de Fotografia)
-          </label>
-        </div>
-
-        <div id="dp-bloco-digital" class="campo-group oculto" style="margin-bottom:12px;">
-          <label for="dp-link-digital">Link do Digital/Rede Social (Profissional: <span id="dp-nome-digital"></span>)</label>
-          <input type="text" id="dp-link-digital" placeholder="Cole o link aqui" disabled>
-          <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;">
-            <input type="checkbox" id="dp-backup-digital" style="width:auto;" disabled> Backup na rede feito (Núcleo de Digital)
-          </label>
-        </div>
-
-        <div class="campo-group" style="margin-bottom:14px;">
-          <label for="dp-observacoes">Observações</label>
-          <textarea id="dp-observacoes" rows="3" disabled></textarea>
-        </div>
-
-        <div style="text-align:right;">
-          <button type="button" onclick="fecharPainelPauta()" class="btn-cancelar-perfil">Fechar</button>
-          <button type="button" id="btnSalvarPainelPauta" onclick="salvarPainelPauta()" class="botao-principal oculto" style="width:auto; padding:10px 24px;">💾 Salvar Alterações</button>
-        </div>
+      <!-- SETINHA LOGO ABAIXO DA LINHA AZUL -->
+      <div class="wrapper-toggle-seta">
+        <button type="button" id="btnSetaRecolher" class="btn-seta-toggle" onclick="alternarVisibilidadePerfil()" title="Recolher / Expandir Perfil">∨</button>
       </div>
 
-      <!-- ESTE BLOCO ABRE O FORMULÁRIO DE CRIAR PAUTA (rolagem única, seções condicionais) -->
-      <div id="formCriarPautaWrapper" style="display: none; margin-top: 20px; border-top: 3px solid var(--gov-azul); padding-top: 20px;">
-        <h2 style="margin:0 0 16px; color: var(--gov-azul-escuro);">Nova Pauta</h2>
-        <form id="formCriarPauta">
-
-          <!-- SEÇÃO: DADOS DA DEMANDA -->
-          <div class="secao-form-pauta">
-            <h3>Dados da Demanda</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group">
-                <label for="pauta-tipo-producao">Tipo de Produção*</label>
-                <select id="pauta-tipo-producao" required>
-                  <option value="">Selecione...</option>
-                  <option>AGENDA GOVERNADOR</option>
-                  <option>PAUTA SUGERIDA</option>
-                  <option>REDE SOCIAL GOVRJ</option>
-                  <option>PEÇA PUBLICITÁRIA</option>
-                  <option>INSTITUCIONAL</option>
-                  <option>GOVCAST</option>
-                  <option>CAMPANHAS E SERVIÇOS DO ESTADO</option>
-                  <option>EDIÇÃO DE IMAGENS CEDIDAS POR OUTRAS SECRETARIAS</option>
-                  <option>CESSÃO DE IMAGENS PARA TERCEIROS</option>
-                </select>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-tipo-video">Tipo de Vídeo*</label>
-                <select id="pauta-tipo-video" required>
-                  <option value="">Selecione...</option>
-                  <option>VÍDEO RELEASE</option>
-                  <option>VIDEO INSTITUCIONAL</option>
-                  <option>DIGITAL GOVRJ</option>
-                  <option>PUBLICIDADE DO ESTADO</option>
-                  <option>EDUCATIVO/INFORMATIVO</option>
-                  <option>EDIÇÃO DE IMAGENS CEDIDAS PARA VEICULAR</option>
-                </select>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-setor-solicitante">Setor Solicitante*</label>
-                <input type="text" id="pauta-setor-solicitante" required>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-secretaria-envolvida">Secretaria Envolvida*</label>
-                <input type="text" id="pauta-secretaria-envolvida" placeholder="Ex: Secretaria de Segurança Pública" required>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-titulo-email">Título da Pauta (igual ao e-mail)*</label>
-                <input type="text" id="pauta-titulo-email" required>
-                <small id="avisoTituloDuplicado" style="color:#B3261E; display:none;">⚠️ Essa pauta já foi criada.</small>
-              </div>
-              <div class="campo-group">
-                <label for="pauta-titulo-final">Título Final da Produção</label>
-                <input type="text" id="pauta-titulo-final" placeholder="Preencher depois, se ainda não tiver">
-              </div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: SAÍDA E EVENTO -->
-          <div class="secao-form-pauta">
-            <h3>Saída da Equipe e Evento</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group"><label for="pauta-data-saida">Data de Saída*</label><input type="date" id="pauta-data-saida" required></div>
-              <div class="campo-group"><label for="pauta-horario-saida">Horário de Saída*</label><input type="time" id="pauta-horario-saida" required></div>
-              <div class="campo-group">
-                <label for="pauta-motorista">Motorista</label>
-                <select id="pauta-motorista">
-                  <option value="">Selecione...</option>
-                  <option>DA SILVA</option><option>EDSON</option><option>HIGOR</option>
-                  <option>UBER FSB</option><option>UBER INPACTO</option>
-                </select>
-              </div>
-              <div class="campo-group"><label for="pauta-data-producao">Data do Evento*</label><input type="date" id="pauta-data-producao" required></div>
-              <div class="campo-group"><label for="pauta-horario-evento">Horário do Evento*</label><input type="time" id="pauta-horario-evento" required></div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: LOCAL (com busca de endereço via Nominatim/OpenStreetMap) -->
-          <div class="secao-form-pauta">
-            <h3>Local da Produção</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group" style="grid-column: 1 / -1; position: relative;">
-                <label for="pauta-endereco">Endereço*</label>
-                <input type="text" id="pauta-endereco" placeholder="Digite o endereço e escolha uma sugestão..." autocomplete="off" required>
-                <div id="sugestoesEndereco" class="lista-sugestoes-endereco"></div>
-              </div>
-              <div class="campo-group"><label>Cidade</label><input type="text" id="pauta-cidade" disabled></div>
-              <div class="campo-group"><label>Bairro</label><input type="text" id="pauta-bairro" disabled></div>
-              <div class="campo-group"><label>UF</label><input type="text" id="pauta-uf" disabled></div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: EQUIPE (campos condicionais SIM/NÃO) -->
-          <div class="secao-form-pauta">
-            <h3>Equipe Escalada</h3>
-            <div class="grid-form-pauta">
-              <div class="campo-group">
-                <label for="pauta-tem-assessor">Tem Assessor de Imprensa?</label>
-                <select id="pauta-tem-assessor" onchange="alternarCampoCondicional('pauta-tem-assessor','bloco-assessor')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-assessor" style="display:none;">
-                <label for="pauta-assessor">Assessor</label>
-                <input type="text" id="pauta-assessor" placeholder="Nome do assessor">
-              </div>
-
-              <div class="campo-group">
-                <label for="pauta-tem-video">Tem Vídeo?</label>
-                <select id="pauta-tem-video" onchange="alternarCampoCondicional('pauta-tem-video','bloco-video')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-video" style="display:none;">
-                <label for="pauta-cinegrafista">Cinegrafista</label>
-                <input type="text" id="pauta-cinegrafista" placeholder="Nome do cinegrafista">
-              </div>
-              <div class="campo-group" id="bloco-video-edicao" style="display:none;">
-                <label for="pauta-edicao">Editor de Imagens</label>
-                <input type="text" id="pauta-edicao" placeholder="Nome de quem vai editar">
-              </div>
-
-              <div class="campo-group">
-                <label for="pauta-tem-foto">Tem Fotografia?</label>
-                <select id="pauta-tem-foto" onchange="alternarCampoCondicional('pauta-tem-foto','bloco-foto')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-foto" style="display:none;">
-                <label for="pauta-fotografo">Fotógrafo</label>
-                <input type="text" id="pauta-fotografo" placeholder="Nome do fotógrafo">
-              </div>
-
-              <div class="campo-group">
-                <label for="pauta-tem-digital">Tem Digital?</label>
-                <select id="pauta-tem-digital" onchange="alternarCampoCondicional('pauta-tem-digital','bloco-digital')"><option>NÃO</option><option>SIM</option></select>
-              </div>
-              <div class="campo-group" id="bloco-digital" style="display:none;">
-                <label for="pauta-digital">Profissional Digital</label>
-                <input type="text" id="pauta-digital" placeholder="Nome do profissional de digital">
-              </div>
-            </div>
-          </div>
-
-          <!-- SEÇÃO: EQUIPAMENTO E OBSERVAÇÕES -->
-          <div class="secao-form-pauta">
-            <h3>Equipamento e Observações</h3>
-            <div class="campo-group" style="margin-bottom: 16px;">
-              <label>Equipamento Usado (marque todos que forem levados)</label>
-              <div class="grade-checkbox-equipamento" id="gradeEquipamento">
-                <!-- preenchido via JS a partir da lista EQUIPAMENTOS_VIDEO -->
-              </div>
-            </div>
-            <div class="campo-group">
-              <label for="pauta-observacoes">Observações</label>
-              <textarea id="pauta-observacoes" rows="3"></textarea>
-            </div>
-          </div>
-
-          <div style="text-align: right; margin-top: 20px;">
-            <button type="button" onclick="fecharFormCriarPauta()" class="btn-cancelar-perfil">Cancelar</button>
-            <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Salvar Pauta</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Corpo com os campos -->
-    <div class="perfil-corpo" id="perfilCorpo">
+      <div class="perfil-corpo" id="perfilCorpo">
         <div id="avisoPerfilDeOutro" class="oculto" style="background:#FFF4E5; border:1px solid #F0B84C; border-radius:8px; padding:10px 14px; margin-bottom:16px; font-size:13px; display:flex; justify-content:space-between; align-items:center;">
           <span>👁️ Você está vendo o perfil de <strong id="nomePerfilDeOutro"></strong> (modo Admin)</span>
           <button type="button" onclick="carregarPerfilNaTela()" class="link-discreto" style="margin:0;">🔙 Voltar ao meu perfil</button>
         </div>
         <div class="perfil-campos-grid">
-            <!-- CAMPOS NÃO EDITÁVEIS PARA O PRÓPRIO PROFISSIONAL (o Admin pode liberar) -->
-            <div class="campo-group">
-                <label for="perfil-nome-completo">Nome Completo</label>
-                <input type="text" id="perfil-nome-completo" disabled>
-            </div>
-            <div class="campo-group">
-                <label for="perfil-id-funcional">ID Funcional</label>
-                <input type="text" id="perfil-id-funcional" disabled>
-            </div>
-            <div class="campo-group">
-                <label for="perfil-rg">RG</label>
-                <input type="text" id="perfil-rg" disabled>
-            </div>
-            <div class="campo-group">
-                <label for="perfil-cpf">CPF</label>
-                <input type="text" id="perfil-cpf" disabled>
-            </div>
-            <div class="campo-group">
-                <label for="perfil-cargo-campo">Cargo</label>
-                <input type="text" id="perfil-cargo-campo" disabled>
-            </div>
-
-            <!-- CAMPOS EDITÁVEIS (inputs/select) -->
-            <div class="campo-group editavel">
-                <label for="perfil-contato-emergencia">Contato de Emergência</label>
-                <input type="text" id="perfil-contato-emergencia" disabled>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-telefone-emergencia">Telefone do Contato</label>
-                <input type="text" id="perfil-telefone-emergencia" disabled>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-plano-saude">Plano de Saúde</label>
-                <select id="perfil-plano-saude" disabled>
-                    <option value="NÃO">NÃO</option>
-                    <option value="SIM">SIM</option>
-                </select>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-aceite-plano">Local de Atendimento</label>
-                <input type="text" id="perfil-aceite-plano" disabled placeholder="Ex: Hospital Unimed">
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-numero-sapato">Nº do Calçado</label>
-                <input type="text" id="perfil-numero-sapato" disabled>
-            </div>
-            <div class="campo-group editavel">
-                <label for="perfil-manequim">Manequim</label>
-                <input type="text" id="perfil-manequim" disabled>
-            </div>
+          <div class="campo-group editavel"><label for="perfil-nome-completo">Nome Completo</label><input type="text" id="perfil-nome-completo" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-id-funcional">ID Funcional</label><input type="text" id="perfil-id-funcional" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-rg">RG</label><input type="text" id="perfil-rg" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-cpf">CPF</label><input type="text" id="perfil-cpf" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-cargo-campo">Cargo</label><input type="text" id="perfil-cargo-campo" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-contato-emergencia">Contato de Emergência</label><input type="text" id="perfil-contato-emergencia" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-telefone-emergencia">Telefone do Contato</label><input type="text" id="perfil-telefone-emergencia" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-plano-saude">Plano de Saúde</label><select id="perfil-plano-saude" disabled><option value="NÃO">NÃO</option><option value="SIM">SIM</option></select></div>
+          <div class="campo-group editavel"><label for="perfil-aceite-plano">Local de Atendimento</label><input type="text" id="perfil-aceite-plano" disabled placeholder="Ex: Hospital Unimed"></div>
+          <div class="campo-group editavel"><label for="perfil-numero-sapato">Nº do Calçado</label><input type="text" id="perfil-numero-sapato" disabled></div>
+          <div class="campo-group editavel"><label for="perfil-manequim">Manequim</label><input type="text" id="perfil-manequim" disabled></div>
         </div>
-
-        <!-- Botões de ação da edição -->
         <div id="botoes-edicao-perfil" style="display: none; margin-top: 24px;">
-            <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar</button>
-            <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
+          <button type="button" onclick="salvarPerfilProfissional()" class="btn-salvar-perfil">💾 Salvar</button>
+          <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
         </div>
+      </div>
+
+      <!-- SEÇÃO DE PAUTAS INTEGRADAS DENTRO DO CARD -->
+      <div id="secaoPautas" style="display: none; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
+          <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 20px; background: var(--gov-verde);" onclick="abrirFormularioCriarPauta()">+ Nova Pauta</button>
+        </div>
+        <div id="listaPautasContainer"><p style="color: var(--gov-texto-suave);">Carregando pautas...</p></div>
+
+        <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none;">
+          <h3>Registrar Retorno da Equipe</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="retorno-data">Data de Retorno*</label><input type="date" id="retorno-data" required></div>
+            <div class="campo-group"><label for="retorno-hora">Horário de Retorno*</label><input type="time" id="retorno-hora" required></div>
+          </div>
+          <div style="text-align:right; margin-top:14px;">
+            <button type="button" onclick="fecharRegistroRetorno()" class="btn-cancelar-perfil">Cancelar</button>
+            <button type="button" onclick="confirmarRegistroRetorno()" class="botao-principal" style="width:auto; padding:10px 24px;">Salvar Retorno</button>
+          </div>
+        </div>
+
+        <div id="painelDetalhePauta" class="secao-form-pauta" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0;" id="tituloPainelPauta">Detalhes da Pauta</h3>
+            <span id="statusPainelPauta" style="padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold; color:#fff;"></span>
+          </div>
+          <div class="grid-form-pauta" style="margin-bottom:14px;">
+            <div class="campo-group"><label>Título</label><input type="text" id="dp-titulo" disabled></div>
+            <div class="campo-group"><label>Tipo de Produção</label><input type="text" id="dp-tipo-producao" disabled></div>
+            <div class="campo-group"><label>Data de Saída</label><input type="text" id="dp-data-saida" disabled></div>
+            <div class="campo-group"><label>Data do Evento</label><input type="text" id="dp-data-evento" disabled></div>
+            <div class="campo-group"><label>Local</label><input type="text" id="dp-local" disabled></div>
+            <div class="campo-group"><label>Motorista</label><input type="text" id="dp-motorista" disabled></div>
+          </div>
+          <div class="campo-group" style="margin-bottom:14px;">
+            <label for="dp-producao-realizada">A produção foi realizada?</label>
+            <select id="dp-producao-realizada" disabled onchange="alternarCamposLinkPauta()">
+              <option value="">Aguardando confirmação</option>
+              <option value="SIM">SIM</option>
+              <option value="NÃO">NÃO</option>
+            </select>
+          </div>
+          <div id="dp-bloco-assessor" class="campo-group oculto" style="margin-bottom:12px;">
+            <label for="dp-link-release">Link do Release (Assessor: <span id="dp-nome-assessor"></span>)</label>
+            <input type="text" id="dp-link-release" placeholder="Cole o link aqui" disabled>
+          </div>
+          <div id="dp-bloco-video" class="campo-group oculto" style="margin-bottom:12px;">
+            <label for="dp-link-video">Link do Vídeo/Drive (Cinegrafista: <span id="dp-nome-video"></span>)</label>
+            <input type="text" id="dp-link-video" placeholder="Cole o link aqui" disabled>
+            <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;"><input type="checkbox" id="dp-backup-video" style="width:auto;" disabled> Backup na rede feito (Núcleo de Vídeo)</label>
+          </div>
+          <div id="dp-bloco-foto" class="campo-group oculto" style="margin-bottom:12px;">
+            <label for="dp-link-foto">Link das Fotos/Google Photos (Fotógrafo: <span id="dp-nome-foto"></span>)</label>
+            <input type="text" id="dp-link-foto" placeholder="Cole o link aqui" disabled>
+            <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;"><input type="checkbox" id="dp-backup-foto" style="width:auto;" disabled> Backup na rede feito (Núcleo de Fotografia)</label>
+          </div>
+          <div id="dp-bloco-digital" class="campo-group oculto" style="margin-bottom:12px;">
+            <label for="dp-link-digital">Link do Digital/Rede Social (Profissional: <span id="dp-nome-digital"></span>)</label>
+            <input type="text" id="dp-link-digital" placeholder="Cole o link aqui" disabled>
+            <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;"><input type="checkbox" id="dp-backup-digital" style="width:auto;" disabled> Backup na rede feito (Núcleo de Digital)</label>
+          </div>
+          <div class="campo-group" style="margin-bottom:14px;">
+            <label for="dp-observacoes">Observações</label>
+            <textarea id="dp-observacoes" rows="3" disabled></textarea>
+          </div>
+          <div style="text-align:right;">
+            <button type="button" onclick="fecharPainelPauta()" class="btn-cancelar-perfil">Fechar</button>
+            <button type="button" id="btnSalvarPainelPauta" onclick="salvarPainelPauta()" class="botao-principal oculto" style="width:auto; padding:10px 24px;">💾 Salvar Alterações</button>
+          </div>
+        </div>
+
+        <div id="formCriarPautaWrapper" style="display: none; margin-top: 20px; border-top: 3px solid var(--gov-azul); padding-top: 20px;">
+          <h2 style="margin:0 0 16px; color: var(--gov-azul-escuro);">Nova Pauta</h2>
+          <form id="formCriarPauta">
+            <div class="secao-form-pauta">
+              <h3>Dados da Demanda</h3>
+              <div class="grid-form-pauta">
+                <div class="campo-group">
+                  <label for="pauta-tipo-producao">Tipo de Produção*</label>
+                  <select id="pauta-tipo-producao" required>
+                    <option value="">Selecione...</option>
+                    <option>AGENDA GOVERNADOR</option><option>PAUTA SUGERIDA</option><option>REDE SOCIAL GOVRJ</option>
+                    <option>PEÇA PUBLICITÁRIA</option><option>INSTITUCIONAL</option><option>GOVCAST</option>
+                    <option>CAMPANHAS E SERVIÇOS DO ESTADO</option>
+                    <option>EDIÇÃO DE IMAGENS CEDIDAS POR OUTRAS SECRETARIAS</option><option>CESSÃO DE IMAGENS PARA TERCEIROS</option>
+                  </select>
+                </div>
+                <div class="campo-group">
+                  <label for="pauta-tipo-video">Tipo de Vídeo*</label>
+                  <select id="pauta-tipo-video" required>
+                    <option value="">Selecione...</option>
+                    <option>VÍDEO RELEASE</option><option>VIDEO INSTITUCIONAL</option><option>DIGITAL GOVRJ</option>
+                    <option>PUBLICIDADE DO ESTADO</option><option>EDUCATIVO/INFORMATIVO</option><option>EDIÇÃO DE IMAGENS CEDIDAS PARA VEICULAR</option>
+                  </select>
+                </div>
+                <div class="campo-group"><label for="pauta-setor-solicitante">Setor Solicitante*</label><input type="text" id="pauta-setor-solicitante" required></div>
+                <div class="campo-group"><label for="pauta-secretaria-envolvida">Secretaria Envolvida*</label><input type="text" id="pauta-secretaria-envolvida" placeholder="Ex: Secretaria de Segurança Pública" required></div>
+                <div class="campo-group">
+                  <label for="pauta-titulo-email">Título da Pauta (igual ao e-mail)*</label>
+                  <input type="text" id="pauta-titulo-email" required>
+                  <small id="avisoTituloDuplicado" style="color:#B3261E; display:none;">⚠️ Essa pauta já foi criada.</small>
+                </div>
+                <div class="campo-group"><label for="pauta-titulo-final">Título Final da Produção</label><input type="text" id="pauta-titulo-final" placeholder="Preencher depois, se ainda não tiver"></div>
+              </div>
+            </div>
+            <div class="secao-form-pauta">
+              <h3>Saída da Equipe e Evento</h3>
+              <div class="grid-form-pauta">
+                <div class="campo-group"><label for="pauta-data-saida">Data de Saída*</label><input type="date" id="pauta-data-saida" required></div>
+                <div class="campo-group"><label for="pauta-horario-saida">Horário de Saída*</label><input type="time" id="pauta-horario-saida" required></div>
+                <div class="campo-group">
+                  <label for="pauta-motorista">Motorista</label>
+                  <select id="pauta-motorista"><option value="">Selecione...</option><option>DA SILVA</option><option>EDSON</option><option>HIGOR</option><option>UBER FSB</option><option>UBER INPACTO</option></select>
+                </div>
+                <div class="campo-group"><label for="pauta-data-producao">Data do Evento*</label><input type="date" id="pauta-data-producao" required></div>
+                <div class="campo-group"><label for="pauta-horario-evento">Horário do Evento*</label><input type="time" id="pauta-horario-evento" required></div>
+              </div>
+            </div>
+            <div class="secao-form-pauta">
+              <h3>Local da Produção</h3>
+              <div class="grid-form-pauta">
+                <div class="campo-group" style="grid-column: 1 / -1; position: relative;">
+                  <label for="pauta-endereco">Endereço*</label>
+                  <input type="text" id="pauta-endereco" placeholder="Digite o endereço e escolha uma sugestão..." autocomplete="off" required>
+                  <div id="sugestoesEndereco" class="lista-sugestoes-endereco"></div>
+                </div>
+                <div class="campo-group"><label>Cidade</label><input type="text" id="pauta-cidade" disabled></div>
+                <div class="campo-group"><label>Bairro</label><input type="text" id="pauta-bairro" disabled></div>
+                <div class="campo-group"><label>UF</label><input type="text" id="pauta-uf" disabled></div>
+              </div>
+            </div>
+            <div class="secao-form-pauta">
+              <h3>Equipe Escalada</h3>
+              <div class="grid-form-pauta">
+                <div class="campo-group">
+                  <label for="pauta-tem-assessor">Tem Assessor de Imprensa?</label>
+                  <select id="pauta-tem-assessor" onchange="alternarCampoCondicional('pauta-tem-assessor','bloco-assessor')"><option>NÃO</option><option>SIM</option></select>
+                </div>
+                <div class="campo-group" id="bloco-assessor" style="display:none;"><label for="pauta-assessor">Assessor</label><input type="text" id="pauta-assessor" placeholder="Nome do assessor"></div>
+                <div class="campo-group">
+                  <label for="pauta-tem-video">Tem Vídeo?</label>
+                  <select id="pauta-tem-video" onchange="alternarCampoCondicional('pauta-tem-video','bloco-video')"><option>NÃO</option><option>SIM</option></select>
+                </div>
+                <div class="campo-group" id="bloco-video" style="display:none;"><label for="pauta-cinegrafista">Cinegrafista</label><input type="text" id="pauta-cinegrafista" placeholder="Nome do cinegrafista"></div>
+                <div class="campo-group" id="bloco-video-edicao" style="display:none;"><label for="pauta-edicao">Editor de Imagens</label><input type="text" id="pauta-edicao" placeholder="Nome de quem vai editar"></div>
+                <div class="campo-group">
+                  <label for="pauta-tem-foto">Tem Fotografia?</label>
+                  <select id="pauta-tem-foto" onchange="alternarCampoCondicional('pauta-tem-foto','bloco-foto')"><option>NÃO</option><option>SIM</option></select>
+                </div>
+                <div class="campo-group" id="bloco-foto" style="display:none;"><label for="pauta-fotografo">Fotógrafo</label><input type="text" id="pauta-fotografo" placeholder="Nome do fotógrafo"></div>
+                <div class="campo-group">
+                  <label for="pauta-tem-digital">Tem Digital?</label>
+                  <select id="pauta-tem-digital" onchange="alternarCampoCondicional('pauta-tem-digital','bloco-digital')"><option>NÃO</option><option>SIM</option></select>
+                </div>
+                <div class="campo-group" id="bloco-digital" style="display:none;"><label for="pauta-digital">Profissional Digital</label><input type="text" id="pauta-digital" placeholder="Nome do profissional de digital"></div>
+              </div>
+            </div>
+            <div class="secao-form-pauta">
+              <h3>Equipamento e Observações</h3>
+              <div class="campo-group" style="margin-bottom: 16px;">
+                <label>Equipamento Usado (marque todos)</label>
+                <div class="grade-checkbox-equipamento" id="gradeEquipamento"></div>
+              </div>
+              <div class="campo-group"><label for="pauta-observacoes">Observações</label><textarea id="pauta-observacoes" rows="3"></textarea></div>
+            </div>
+            <div style="text-align: right; margin-top: 20px;">
+              <button type="button" onclick="fecharFormCriarPauta()" class="btn-cancelar-perfil">Cancelar</button>
+              <button type="submit" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Salvar Pauta</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
     </div>
-</div>
 
     <!-- 1. CRIAR SECRETARIA -->
     <div class="cartao oculto" id="cartaoCriarSecretaria">
       <h2>1. Criar Secretaria</h2>
       <p class="descricao">Somente o Administrador pode cadastrar novas Secretarias de Estado.</p>
       <form id="formularioCriarSecretaria" class="linha-formulario">
-        <div>
-          <label for="nomeSecretaria">Nome da Secretaria</label>
-          <input type="text" id="nomeSecretaria" placeholder="Ex: Secretaria da Casa Civil" required>
-        </div>
-        <div>
-          <label for="siglaSecretaria">Sigla Oficial</label>
-          <input type="text" id="siglaSecretaria" placeholder="Ex: SECC" required>
-        </div>
-        <div style="flex: 0 0 auto;">
-          <button type="submit" class="botao-principal" style="margin-top:0;">Criar Secretaria</button>
-        </div>
+        <div><label for="nomeSecretaria">Nome da Secretaria</label><input type="text" id="nomeSecretaria" placeholder="Ex: Secretaria da Casa Civil" required></div>
+        <div><label for="siglaSecretaria">Sigla Oficial</label><input type="text" id="siglaSecretaria" placeholder="Ex: SECC" required></div>
+        <div style="flex: 0 0 auto;"><button type="submit" class="botao-principal" style="margin-top:0;">Criar Secretaria</button></div>
       </form>
     </div>
 
@@ -1166,21 +436,10 @@
       <h2>2. Criar Subsecretaria</h2>
       <p class="descricao">Cadastre uma Subsecretaria vinculada a uma Secretaria existente.</p>
       <form id="formularioCriarSubsecretaria" class="linha-formulario">
-        <div>
-          <label for="secretariaDaSubsecretaria">Secretaria Responsável</label>
-          <select id="secretariaDaSubsecretaria" required></select>
-        </div>
-        <div>
-          <label for="nomeSubsecretaria">Nome da Subsecretaria</label>
-          <input type="text" id="nomeSubsecretaria" placeholder="Ex: Subsecretaria de Comunicação" required>
-        </div>
-        <div>
-          <label for="siglaSubsecretaria">Sigla</label>
-          <input type="text" id="siglaSubsecretaria" placeholder="Ex: SUBCOM" required>
-        </div>
-        <div style="flex: 0 0 auto;">
-          <button type="submit" class="botao-principal" style="margin-top:0;">Criar Subsecretaria</button>
-        </div>
+        <div><label for="secretariaDaSubsecretaria">Secretaria Responsável</label><select id="secretariaDaSubsecretaria" required></select></div>
+        <div><label for="nomeSubsecretaria">Nome da Subsecretaria</label><input type="text" id="nomeSubsecretaria" placeholder="Ex: Subsecretaria de Comunicação" required></div>
+        <div><label for="siglaSubsecretaria">Sigla</label><input type="text" id="siglaSubsecretaria" placeholder="Ex: SUBCOM" required></div>
+        <div style="flex: 0 0 auto;"><button type="submit" class="botao-principal" style="margin-top:0;">Criar Subsecretaria</button></div>
       </form>
     </div>
 
@@ -1189,1104 +448,701 @@
       <h2>3. Criar Núcleo Operacional</h2>
       <p class="descricao">Cadastre núcleos vinculando-os à sua Secretaria ou Subsecretaria.</p>
       <form id="formularioCriarNucleo" class="linha-formulario">
-        <div>
-          <label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label>
-          <select id="vinculoDoNucleo" required>
-            <option value="">Selecione o local...</option>
-          </select>
-        </div>
-        <div>
-          <label for="nomeNucleo">Nome do Núcleo</label>
-          <input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required>
-        </div>
-        <div>
-          <label for="agendaNucleo">E-mail / ID da Google Agenda de Produção</label>
-          <input type="text" id="agendaNucleo" placeholder="exemplo@gmail.com ou ID da Agenda" required>
-        </div>
-        <div style="flex: 0 0 auto;">
-          <button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button>
-        </div>
+        <div><label for="vinculoDoNucleo">Vincular a (Secretaria / Subsecretaria)</label><select id="vinculoDoNucleo" required><option value="">Selecione o local...</option></select></div>
+        <div><label for="nomeNucleo">Nome do Núcleo</label><input type="text" id="nomeNucleo" placeholder="Ex: Núcleo de Vídeo" required></div>
+        <div><label for="agendaNucleo">E-mail / ID da Google Agenda de Produção</label><input type="text" id="agendaNucleo" placeholder="exemplo@gmail.com ou ID da Agenda" required></div>
+        <div style="flex: 0 0 auto;"><button type="submit" class="botao-principal" style="margin-top:0;">Criar Núcleo</button></div>
       </form>
     </div>
 
-    <!-- 4. BOTÃO PARA EXPANDIR CRIAÇÃO DE USUÁRIO -->
+    <!-- 4. BOTÃO NOVO USUÁRIO -->
     <div id="areaBotaoNovoUsuario" class="cartao oculto" style="padding: 20px 24px;">
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 12px;">
         <div>
           <h2 style="margin:0; font-size:16px;">Gestão de Profissionais e Usuários</h2>
           <p style="margin:0; font-size:13px; color:var(--gov-texto-suave);">Cadastre profissionais após estruturar secretarias e núcleos.</p>
         </div>
-        <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:12px 24px; background-color:var(--gov-verde);">
-          + Criar Novo Usuário
-        </button>
+        <button type="button" class="botao-principal" id="btnAbrirFormUsuario" style="margin:0; width:auto; padding:12px 24px; background-color:var(--gov-verde);">+ Criar Novo Usuário</button>
       </div>
     </div>
 
-    <!-- CARTÃO FICHA CADASTRAL DO USUÁRIO -->
+    <!-- CARTÃO FICHA CADASTRAL -->
     <div class="cartao oculto" id="cartaoCriarUsuario" style="border-top: 4px solid var(--gov-verde);">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <h2 style="margin:0;">Ficha Cadastral / Novo Profissional</h2>
-        <button type="button" id="btnFecharFormUsuario" style="background:none; border:none; color:var(--gov-erro); font-weight:bold; cursor:pointer; font-size:13px;">
-          ✕ Fechar Formulário
-        </button>
+        <button type="button" id="btnFecharFormUsuario" style="background:none; border:none; color:var(--gov-erro); font-weight:bold; cursor:pointer; font-size:13px;">✕ Fechar Formulário</button>
       </div>
       <p class="descricao">Preencha os dados do servidor e atribua o nível de acesso e vínculo organizacional.</p>
-      
       <form id="formularioCriarUsuario">
-        <!-- SEÇÃO 1 -->
         <div class="secao-titulo">1. Acesso e Estrutura Organizacional</div>
         <div class="linha-formulario">
-          <div>
-            <label for="nomeUsuarioNovo">Nome de Exibição*</label>
-            <input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required>
-          </div>
-          <div>
-            <label for="emailUsuarioNovo">E-mail Válido</label>
-            <input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required>
-          </div>
-          <div>
-            <label for="nivelUsuarioNovo">Nível de Acesso</label>
-            <select id="nivelUsuarioNovo" required>
-              <option value="SECRETARIO">SECRETARIO</option>
-              <option value="SUBSECRETARIO">SUBSECRETARIO</option>
-              <option value="COORDENADOR">COORDENADOR</option>
-              <option value="SUBCOORDENADOR">SUBCOORDENADOR</option>
-              <option value="PROFISSIONAL">PROFISSIONAL</option>
-            </select>
-          </div>
+          <div><label for="nomeUsuarioNovo">Nome de Exibição*</label><input type="text" id="nomeUsuarioNovo" placeholder="Ex: Maria Silva" required></div>
+          <div><label for="emailUsuarioNovo">E-mail Válido*</label><input type="email" id="emailUsuarioNovo" placeholder="exemplo@email.com" required></div>
+          <div><label for="nivelUsuarioNovo">Nível de Acesso*</label><select id="nivelUsuarioNovo" required>
+            <option value="SECRETARIO">SECRETARIO</option><option value="SUBSECRETARIO">SUBSECRETARIO</option><option value="COORDENADOR">COORDENADOR</option><option value="SUBCOORDENADOR">SUBCOORDENADOR</option><option value="PROFISSIONAL">PROFISSIONAL</option>
+          </select></div>
         </div>
         <div class="linha-formulario" style="margin-top:10px;">
-          <div>
-            <label for="secretariaDoUsuario">Secretaria</label>
-            <select id="secretariaDoUsuario" required><option value="">Selecione...</option></select>
-          </div>
-          <div>
-            <label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label>
-            <select id="subsecretariaDoUsuario"><option value="">Nenhuma / Todas</option></select>
-          </div>
-          <div>
-            <label for="nucleoDoUsuario">Núcleo (opcional)</label>
-            <select id="nucleoDoUsuario"><option value="">Nenhum / Todos</option></select>
-          </div>
+          <div><label for="secretariaDoUsuario">Secretaria*</label><select id="secretariaDoUsuario" required><option value="">Selecione...</option></select></div>
+          <div><label for="subsecretariaDoUsuario">Subsecretaria (opcional)</label><select id="subsecretariaDoUsuario"><option value="">Nenhuma / Todas</option></select></div>
+          <div><label for="nucleoDoUsuario">Núcleo (opcional)</label><select id="nucleoDoUsuario"><option value="">Nenhum / Todos</option></select></div>
         </div>
 
-        <!-- SEÇÃO 2 -->
         <div class="secao-titulo">2. Dados Profissionais e Contratuais</div>
         <div class="linha-formulario">
-          <div>
-            <label for="nomeCompleto">Nome Completo</label>
-            <input type="text" id="nomeCompleto" placeholder="Nome civil completo">
-          </div>
-          <div>
-            <label for="cargo">Cargo / Função (Texto Livre)</label>
-            <input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor, Cinegrafista, Motorista">
-          </div>
-          <div>
-            <label for="empregador">Empregador / Vínculo</label>
-            <select id="empregador">
-              <option value="NOMEADO">NOMEADO</option>
-              <option value="FSB">FSB</option>
-              <option value="INPACTO">INPACTO</option>
-            </select>
-          </div>
-          <div>
-            <label for="dataAdmissao">Data de Admissão</label>
-            <input type="date" id="dataAdmissao">
-          </div>
+          <div><label for="nomeCompleto">Nome Completo</label><input type="text" id="nomeCompleto" placeholder="Nome civil completo"></div>
+          <div><label for="cargo">Cargo / Função</label><input type="text" id="cargo" placeholder="Ex: Fotógrafo, Assessor, Cinegrafista"></div>
+          <div><label for="empregador">Empregador / Vínculo</label><select id="empregador"><option value="NOMEADO">NOMEADO</option><option value="FSB">FSB</option><option value="INPACTO">INPACTO</option></select></div>
+          <div><label for="dataAdmissao">Data de Admissão</label><input type="date" id="dataAdmissao"></div>
         </div>
         <div class="linha-formulario" style="margin-top:10px;">
-          <div>
-            <label for="horarioEntrada">Horário de Entrada*</label>
-            <input type="time" id="horarioEntrada">
-          </div>
-          <div>
-            <label for="horarioSaida">Horário de Saída*</label>
-            <input type="time" id="horarioSaida">
-          </div>
-          <div>
-            <label for="telefone">Telefone / WhatsApp*</label>
-            <input type="text" id="telefone" placeholder="(21) 99999-9999">
-          </div>
-          <div>
-            <label for="fotoUrl">Link da Foto de Perfil*</label>
-            <input type="text" id="fotoUrl" placeholder="URL da foto no Drive/Web">
+          <div><label for="horarioEntrada">Horário de Entrada*</label><input type="time" id="horarioEntrada" required></div>
+          <div><label for="horarioSaida">Horário de Saída*</label><input type="time" id="horarioSaida" required></div>
+          <div><label for="telefone">Telefone / WhatsApp*</label><input type="text" id="telefone" placeholder="(21) 99999-9999" required></div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div class="avatar-wrapper" style="width:60px;height:60px;"><img id="preview-foto-cadastro" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+            <input type="file" id="input-foto-cadastro" accept="image/*" style="display:none;" onchange="carregarPreviewFotoCadastro(event)">
+            <button type="button" class="btn-foto-upload" onclick="document.getElementById('input-foto-cadastro').click()">📷 Foto</button>
+            <small class="dica-foto">JPG/PNG até 2MB</small>
           </div>
         </div>
 
-        <!-- SEÇÃO 3 -->
         <div class="secao-titulo">3. Documentação</div>
         <div class="linha-formulario">
-          <div>
-            <label for="cpf">CPF</label>
-            <input type="text" id="cpf" placeholder="000.000.000-00">
-          </div>
-          <div>
-            <label for="rg">RG</label>
-            <input type="text" id="rg">
-          </div>
-          <div>
-            <label for="orgaoEmissor">Órgão Emissor / UF</label>
-            <input type="text" id="orgaoEmissor" placeholder="Ex: DETRAN/RJ">
-          </div>
-          <div>
-            <label for="dataExpedicao">Data Expedição RG</label>
-            <input type="date" id="dataExpedicao">
-          </div>
+          <div><label for="cpf">CPF</label><input type="text" id="cpf" placeholder="000.000.000-00"></div>
+          <div><label for="rg">RG</label><input type="text" id="rg"></div>
+          <div><label for="orgaoEmissor">Órgão Emissor / UF</label><input type="text" id="orgaoEmissor" placeholder="Ex: DETRAN/RJ"></div>
+          <div><label for="dataExpedicao">Data Expedição RG</label><input type="date" id="dataExpedicao"></div>
         </div>
         <div class="linha-formulario" style="margin-top:10px;">
-          <div>
-            <label for="idFuncional">ID Funcional</label>
-            <input type="text" id="idFuncional">
-          </div>
-          <div>
-            <label for="dataNascimento">Data de Nascimento</label>
-            <input type="date" id="dataNascimento">
-          </div>
-          <div>
-            <label for="nomeMae">Nome da Mãe</label>
-            <input type="text" id="nomeMae">
-          </div>
-          <div>
-            <label for="registroProfissional">Registro Profissional (DRT/MTE)</label>
-            <input type="text" id="registroProfissional">
-          </div>
+          <div><label for="idFuncional">ID Funcional</label><input type="text" id="idFuncional"></div>
+          <div><label for="dataNascimento">Data de Nascimento</label><input type="date" id="dataNascimento"></div>
+          <div><label for="nomeMae">Nome da Mãe</label><input type="text" id="nomeMae"></div>
+          <div><label for="registroProfissional">Registro Profissional (DRT/MTE)</label><input type="text" id="registroProfissional"></div>
         </div>
 
-        <!-- SEÇÃO 4 -->
         <div class="secao-titulo">4. Endereço Residencial*</div>
         <div class="linha-formulario">
-          <div>
-            <label for="cep">CEP*</label>
-            <input type="text" id="cep" placeholder="00000-000">
-          </div>
-          <div style="flex: 2;">
-            <label for="enderecoCompleto">Endereço Completo*</label>
-            <input type="text" id="enderecoCompleto" placeholder="Rua, número, complemento">
-          </div>
+          <div><label for="cep">CEP*</label><input type="text" id="cep" placeholder="00000-000" required></div>
+          <div style="flex: 2;"><label for="enderecoCompleto">Endereço Completo*</label><input type="text" id="enderecoCompleto" placeholder="Rua, número, complemento" required></div>
         </div>
         <div class="linha-formulario" style="margin-top:10px;">
-          <div>
-            <label for="bairro">Bairro*</label>
-            <input type="text" id="bairro">
-          </div>
-          <div>
-            <label for="cidade">Cidade*</label>
-            <input type="text" id="cidade" value="Rio de Janeiro">
-          </div>
-          <div>
-            <label for="uf">UF*</label>
-            <input type="text" id="uf" value="RJ" maxlength="2">
-          </div>
+          <div><label for="bairro">Bairro*</label><input type="text" id="bairro" required></div>
+          <div><label for="cidade">Cidade*</label><input type="text" id="cidade" value="Rio de Janeiro" required></div>
+          <div><label for="uf">UF*</label><input type="text" id="uf" value="RJ" maxlength="2" required></div>
         </div>
 
-        <!-- SEÇÃO 5 -->
         <div class="secao-titulo">5. Emergência, Saúde e Uniforme*</div>
         <div class="linha-formulario">
-          <div>
-            <label for="nomeContatoEmergencia">Contato de Emergência*</label>
-            <input type="text" id="nomeContatoEmergencia">
-          </div>
-          <div>
-            <label for="grauParentesco">Grau de Parentesco*</label>
-            <input type="text" id="grauParentesco" placeholder="Ex: Mãe, Cônjuge">
-          </div>
-          <div>
-            <label for="telefoneEmergencia">Telefone de Emergência*</label>
-            <input type="text" id="telefoneEmergencia">
-          </div>
+          <div><label for="nomeContatoEmergencia">Contato de Emergência*</label><input type="text" id="nomeContatoEmergencia" required></div>
+          <div><label for="grauParentesco">Grau de Parentesco*</label><input type="text" id="grauParentesco" placeholder="Ex: Mãe, Cônjuge" required></div>
+          <div><label for="telefoneEmergencia">Telefone de Emergência*</label><input type="text" id="telefoneEmergencia" required></div>
         </div>
         <div class="linha-formulario" style="margin-top:10px;">
-          <div>
-            <label for="planoSaude">Possui Plano de Saúde?*</label>
-            <select id="planoSaude">
-              <option value="NÃO">NÃO</option>
-              <option value="SIM">SIM</option>
-            </select>
-          </div>
-          <div id="boxAceitePlano" class="oculto">
-            <label for="aceitePlano">Hospitais / Clínicas que aceitam*</label>
-            <input type="text" id="aceitePlano" placeholder="Ex: Hospital Unimed, Barra D'Or">
-          </div>
-          <div>
-            <label for="alergia">Possui Alguma Alergia?*</label>
-            <select id="alergia">
-              <option value="NÃO">NÃO</option>
-              <option value="SIM">SIM</option>
-            </select>
-          </div>
-          <div id="boxTipoAlergia" class="oculto">
-            <label for="tipoAlergia">Especifique a Alergia*</label>
-            <input type="text" id="tipoAlergia" placeholder="Ex: Dipirona, Camarão">
-          </div>
+          <div><label for="planoSaude">Possui Plano de Saúde?*</label><select id="planoSaude"><option value="NÃO">NÃO</option><option value="SIM">SIM</option></select></div>
+          <div id="boxAceitePlano" class="oculto"><label for="aceitePlano">Hospitais / Clínicas que aceitam*</label><input type="text" id="aceitePlano" placeholder="Ex: Hospital Unimed, Barra D'Or"></div>
+          <div><label for="alergia">Possui Alguma Alergia?*</label><select id="alergia"><option value="NÃO">NÃO</option><option value="SIM">SIM</option></select></div>
+          <div id="boxTipoAlergia" class="oculto"><label for="tipoAlergia">Especifique a Alergia*</label><input type="text" id="tipoAlergia" placeholder="Ex: Dipirona, Camarão"></div>
         </div>
         <div class="linha-formulario" style="margin-top:10px;">
-          <div>
-            <label for="numeroSapato">Número do Calçado*</label>
-            <input type="text" id="numeroSapato" placeholder="Ex: 40">
-          </div>
-          <div>
-            <label for="manequim">Tamanho Manequim/Camisa*</label>
-            <input type="text" id="manequim" placeholder="Ex: M, G, 42">
-          </div>
+          <div><label for="numeroSapato">Número do Calçado*</label><input type="text" id="numeroSapato" placeholder="Ex: 40" required></div>
+          <div><label for="manequim">Tamanho Manequim/Camisa*</label><input type="text" id="manequim" placeholder="Ex: M, G, 42" required></div>
         </div>
         <div style="margin-top: 28px; text-align: right;">
-          <button type="submit" class="botao-principal" style="width: auto; padding: 14px 36px; background-color: var(--gov-verde);">
-            Salvar e Cadastrar Usuário
-          </button>
+          <button type="submit" class="botao-principal" style="width: auto; padding: 14px 36px; background-color: var(--gov-verde);">Salvar e Cadastrar Usuário</button>
         </div>
       </form>
     </div>
-    
-<!-- TELA DE PERFIL DO PROFISSIONAL (CARTEIRA FUNCIONAL) -->
 
     <!-- ESTRUTURA ORGANIZACIONAL -->
-<div class="cartao" id="cartaoEstrutura">
-  <h2>Estrutura Organizacional Cadastrada</h2>
-  <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
-  <div class="lista-estrutura" id="listaEstrutura">
-    <p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p>
+    <div class="cartao" id="cartaoEstrutura">
+      <h2>Estrutura Organizacional Cadastrada</h2>
+      <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
+      <div class="lista-estrutura" id="listaEstrutura"><p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p></div>
+    </div>
+
   </div>
 </div>
 
 <script>
-  /* ---------------------------------------------------------------
-     BLOCO JS 1 - CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
-     --------------------------------------------------------------- */
-  const URL_BACKEND = "https://script.google.com/macros/s/AKfycbylbiEwJnAQ3lM-fiPreZC-oor6jIrxUNiBJevTK60HvrbpGdEBB2XnPMUa6fmAtd5w/exec";
-  let dadosEstruturaGlobal = null;
+/* ================================================================
+   CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
+   ================================================================ */
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbwuk2PJXbO8BMXkuAw9PTq9Zd27ASPs5wQXHA05xn1Qr2drKygRq0hoJON8s4r3sH5X/exec";
+let dadosEstruturaGlobal = null;
+const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
 
-  /* ---------------------------------------------------------------
-     BLOCO JS 2 - COMUNICAÇÃO COM O BACKEND
-     --------------------------------------------------------------- */
+/* ================================================================
+   UTILITÁRIOS DE DATA
+   ================================================================ */
+function parseDataBackend(valor) {
+  if (!valor) return null;
+  if (typeof valor === 'number') {
+    const epoch = new Date(1899, 11, 30);
+    return new Date(epoch.getTime() + valor * 86400000);
+  }
+  const d = new Date(valor);
+  return isNaN(d) ? null : d;
+}
+function formatarData(valor) {
+  const d = parseDataBackend(valor);
+  if (!d) return valor || '';
+  return d.toLocaleDateString('pt-BR');
+}
+function formatarHora(valor) {
+  const d = parseDataBackend(valor);
+  if (!d) return valor || '';
+  return d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+}
+
+/* ================================================================
+   COMUNICAÇÃO COM BACKEND
+   ================================================================ */
 async function chamarBackend(acao, parametros = {}) {
-  // Une a propriedade 'action' esperada pelo backend com os outros parâmetros (email, senha, etc)
-  const payload = {
-    action: acao,
-    ...parametros
-  };
-
+  const payload = { action: acao, ...parametros };
   try {
     const resposta = await fetch(URL_BACKEND, {
       method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
-
-    if (!resposta.ok) {
-      throw new Error("Erro de rede: " + resposta.status);
-    }
-
+    if (!resposta.ok) throw new Error("Erro de rede: " + resposta.status);
     return await resposta.json();
   } catch (erro) {
     console.error("Erro na chamada do backend:", erro);
     return { sucesso: false, mensagem: "Erro ao se conectar com o servidor." };
   }
 }
-  function salvarSessao(token, usuario, manterConectado) {
-    const area = manterConectado ? localStorage : sessionStorage;
-    area.setItem('secc_token', token);
-    area.setItem('secc_usuario', JSON.stringify(usuario));
-    const outraArea = manterConectado ? sessionStorage : localStorage;
-    outraArea.removeItem('secc_token');
-    outraArea.removeItem('secc_usuario');
+
+function salvarSessao(token, usuario, manterConectado) {
+  const area = manterConectado ? localStorage : sessionStorage;
+  area.setItem('secc_token', token);
+  area.setItem('secc_usuario', JSON.stringify(usuario));
+  const outra = manterConectado ? sessionStorage : localStorage;
+  outra.removeItem('secc_token'); outra.removeItem('secc_usuario');
+}
+function pegarTokenSalvo() { return localStorage.getItem('secc_token') || sessionStorage.getItem('secc_token'); }
+function pegarUsuarioSalvo() { const b = localStorage.getItem('secc_usuario') || sessionStorage.getItem('secc_usuario'); return b ? JSON.parse(b) : null; }
+function limparSessao() { ['secc_token','secc_usuario'].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); }); }
+
+/* ================================================================
+   LOGIN E SESSÃO
+   ================================================================ */
+document.getElementById('botaoMostrarSenha').addEventListener('click', () => {
+  const c = document.getElementById('campoSenha'), b = document.getElementById('botaoMostrarSenha');
+  const mostrar = c.type === 'password'; c.type = mostrar ? 'text' : 'password'; b.textContent = mostrar ? '🙈' : '👁';
+});
+
+document.getElementById('formularioLogin').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const div = document.getElementById('mensagemLogin'); div.textContent = '';
+  const r = await chamarBackend('login', { email: document.getElementById('campoEmail').value, senha: document.getElementById('campoSenha').value });
+  if (!r.sucesso) { div.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
+  salvarSessao(r.token, r.usuario, document.getElementById('campoManterConectado').checked);
+  r.precisaTrocarSenha ? mostrarTela('telaTrocaSenha') : iniciarPainelPrincipal();
+});
+
+document.getElementById('formularioTrocaSenha').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const div = document.getElementById('mensagemTrocaSenha');
+  const r = await chamarBackend('trocarSenha', { token: pegarTokenSalvo(), senhaAtual: document.getElementById('senhaProvisoriaAtual').value, senhaNova: document.getElementById('senhaNovaEscolhida').value });
+  if (!r.sucesso) { div.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
+  div.innerHTML = '<p class="mensagem-sucesso">Senha alterada! Redirecionando...</p>';
+  setTimeout(iniciarPainelPrincipal, 800);
+});
+
+document.getElementById('botaoEsqueciSenha').addEventListener('click', async () => {
+  const email = prompt('Digite seu e-mail cadastrado:'); if (!email) return;
+  const r = await chamarBackend('recuperarSenha', { email }); alert(r.mensagem);
+});
+document.getElementById('botaoSair').addEventListener('click', () => { limparSessao(); location.reload(); });
+
+function mostrarTela(id) { ['telaLogin','telaTrocaSenha','telaPrincipal'].forEach(x => document.getElementById(x).classList.toggle('oculto', x !== id)); }
+
+/* ================================================================
+   CONTROLE DO MENU HAMBÚRGUER E SETINHA DO PERFIL
+   ================================================================ */
+function alternarMenuHamburguer(event) {
+  if (event) event.stopPropagation();
+  const dropdown = document.getElementById('dropdownMenu');
+  dropdown.classList.toggle('oculto');
+}
+
+document.addEventListener('click', function(e) {
+  const wrapper = document.getElementById('wrapperHamburguer');
+  const dropdown = document.getElementById('dropdownMenu');
+  if (wrapper && !wrapper.contains(e.target) && dropdown) {
+    dropdown.classList.add('oculto');
   }
+});
 
-  function pegarTokenSalvo() {
-    return localStorage.getItem('secc_token') || sessionStorage.getItem('secc_token');
-  }
-
-  function pegarUsuarioSalvo() {
-    const bruto = localStorage.getItem('secc_usuario') || sessionStorage.getItem('secc_usuario');
-    return bruto ? JSON.parse(bruto) : null;
-  }
-
-  function limparSessao() {
-    localStorage.removeItem('secc_token');
-    localStorage.removeItem('secc_usuario');
-    sessionStorage.removeItem('secc_token');
-    sessionStorage.removeItem('secc_usuario');
-  }
-
-  document.getElementById('botaoMostrarSenha').addEventListener('click', () => {
-    const campo = document.getElementById('campoSenha');
-    const botao = document.getElementById('botaoMostrarSenha');
-    const vaiMostrar = campo.type === 'password';
-    campo.type = vaiMostrar ? 'text' : 'password';
-    botao.textContent = vaiMostrar ? '🙈' : '👁';
-  });
-
-  /* ---------------------------------------------------------------
-     BLOCO JS 3 - LOGIN E TROCA DE SENHA
-     --------------------------------------------------------------- */
-  document.getElementById('formularioLogin').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const email = document.getElementById('campoEmail').value;
-    const senha = document.getElementById('campoSenha').value;
-    const divMensagem = document.getElementById('mensagemLogin');
-    divMensagem.textContent = '';
-    const resposta = await chamarBackend('login', { email, senha });
-    if (!resposta.sucesso) {
-      divMensagem.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-      return;
-    }
-    const manterConectado = document.getElementById('campoManterConectado').checked;
-    salvarSessao(resposta.token, resposta.usuario, manterConectado);
-    if (resposta.precisaTrocarSenha) {
-      mostrarTela('telaTrocaSenha');
-    } else {
-      iniciarPainelPrincipal();
-    }
-  });
-
-  document.getElementById('formularioTrocaSenha').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const senhaAtual = document.getElementById('senhaProvisoriaAtual').value;
-    const senhaNova = document.getElementById('senhaNovaEscolhida').value;
-    const divMensagem = document.getElementById('mensagemTrocaSenha');
-    const resposta = await chamarBackend('trocarSenha', {
-      token: pegarTokenSalvo(),
-      senhaAtual,
-      senhaNova
-    });
-    if (!resposta.sucesso) {
-      divMensagem.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-      return;
-    }
-    divMensagem.innerHTML = `<p class="mensagem-sucesso">Senha alterada com sucesso! Redirecionando...</p>`;
-    setTimeout(iniciarPainelPrincipal, 800);
-  });
-
-  document.getElementById('botaoEsqueciSenha').addEventListener('click', async () => {
-    const email = prompt('Digite seu e-mail cadastrado:');
-    if (!email) return;
-    const resposta = await chamarBackend('recuperarSenha', { email });
-    alert(resposta.mensagem);
-  });
-
-  document.getElementById('botaoSair').addEventListener('click', () => {
-    limparSessao();
-    location.reload();
-  });
-
-  function mostrarTela(idTela) {
-    ['telaLogin', 'telaTrocaSenha', 'telaPrincipal'].forEach(id => {
-      document.getElementById(id).classList.toggle('oculto', id !== idTela);
-    });
-  }
-
-  /* ---------------------------------------------------------------
-     BLOCO JS 4 - PAINEL PRINCIPAL E ESTRUTURA ORGANIZACIONAL
-     --------------------------------------------------------------- */
-  async function iniciarPainelPrincipal() {
-  const usuario = pegarUsuarioSalvo();
-  mostrarTela('telaPrincipal');
-  window.scrollTo(0, 0);
-  document.getElementById('nomeUsuarioLogado').textContent = usuario.nome;
-  document.getElementById('nivelUsuarioLogado').textContent = usuario.nivel;
+function alternarVisibilidadePerfil() {
+  const corpo = document.getElementById('perfilCorpo');
+  const seta = document.getElementById('btnSetaRecolher');
+  const estaOculto = corpo.style.display === 'none';
   
-  document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-  document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', usuario.nivel !== 'ADMIN');
-  document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(usuario.nivel));
+  corpo.style.display = estaOculto ? 'block' : 'none';
+  seta.textContent = estaOculto ? '∨' : '∧';
+}
 
-  // ESTE BLOCO deixa o cabeçalho do perfil do Admin recolhido por padrão
-  // (só foto + nome + cargo aparecem). O botão de alternar é o mesmo de
-  // sempre, mas pro Admin ele só mostra/esconde o corpo (sem seção de Pautas).
-  if (usuario.nivel === 'ADMIN') {
-    document.getElementById('perfilCorpo').style.display = 'none';
-    const botaoToggle = document.getElementById('btnTogglePerfil');
-    if (botaoToggle) botaoToggle.textContent = '👤 Ver Perfil';
-  }
+function executarAcaoMenu(opcao, event) {
+  if (event) event.preventDefault();
+  document.getElementById('dropdownMenu').classList.add('oculto');
   
+  const corpoPerfil = document.getElementById('perfilCorpo');
+  const secaoPautas = document.getElementById('secaoPautas');
+  const btnSeta = document.getElementById('btnSetaRecolher');
+
+  if (opcao === 'editar') {
+    secaoPautas.style.display = 'none';
+    corpoPerfil.style.display = 'block';
+    btnSeta.textContent = '∨';
+    habilitarEdicaoPerfil();
+  } else if (opcao === 'pautas') {
+    corpoPerfil.style.display = 'none';
+    btnSeta.textContent = '∧';
+    secaoPautas.style.display = 'block';
+    fecharFormCriarPauta();
+    carregarPautas();
+  } else if (opcao === 'criarPauta') {
+    corpoPerfil.style.display = 'none';
+    btnSeta.textContent = '∧';
+    secaoPautas.style.display = 'block';
+    abrirFormularioCriarPauta();
+  }
+}
+
+/* ================================================================
+   INICIALIZAÇÃO DO PAINEL
+   ================================================================ */
+const NIVEIS_PAUTA = ['COORDENADOR','SUBCOORDENADOR','PROFISSIONAL'];
+const NIVEIS_ESTRUTURA = ['ADMIN','SECRETARIO','SUBSECRETARIO'];
+
+async function iniciarPainelPrincipal() {
+  const u = pegarUsuarioSalvo();
+  mostrarTela('telaPrincipal'); window.scrollTo(0,0);
+  document.getElementById('nomeUsuarioLogado').textContent = u.nome;
+
+  document.getElementById('cartaoCriarSecretaria').classList.toggle('oculto', u.nivel !== 'ADMIN');
+  document.getElementById('cartaoCriarSubsecretaria').classList.toggle('oculto', u.nivel !== 'ADMIN');
+  document.getElementById('cartaoCriarNucleo').classList.toggle('oculto', !['ADMIN','SECRETARIO','SUBSECRETARIO'].includes(u.nivel));
+
   const areaBtn = document.getElementById('areaBotaoNovoUsuario');
-  if (areaBtn) areaBtn.classList.toggle('oculto', usuario.nivel === 'PROFISSIONAL');
-  
-  const cartaoUsu = document.getElementById('cartaoCriarUsuario');
-  if (cartaoUsu) cartaoUsu.classList.add('oculto');
-  
-  // Ocultar estrutura organizacional
-  const cartaoEstrutura = document.getElementById('cartaoEstrutura');
-  if (cartaoEstrutura) {
-    const niveisQueVeem = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'];
-    cartaoEstrutura.style.display = niveisQueVeem.includes(usuario.nivel) ? 'block' : 'none';
-  }
-  
+  if (areaBtn) areaBtn.classList.toggle('oculto', u.nivel !== 'ADMIN');
+  const cartUsu = document.getElementById('cartaoCriarUsuario');
+  if (cartUsu) cartUsu.classList.add('oculto');
+
+  const cartEstr = document.getElementById('cartaoEstrutura');
+  if (cartEstr) cartEstr.style.display = NIVEIS_ESTRUTURA.includes(u.nivel) ? 'block' : 'none';
+
   await carregarEstrutura();
   await carregarPerfilNaTela();
 }
 
-  document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
-    popularSelectSecretariaUsuario();
-    document.getElementById('cartaoCriarUsuario')?.classList.remove('oculto');
-    document.getElementById('cartaoCriarUsuario')?.scrollIntoView({ behavior: 'smooth' });
-  });
+/* ================================================================
+   ESTRUTURA ORGANIZACIONAL
+   ================================================================ */
+async function carregarEstrutura() {
+  const r = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
+  const container = document.getElementById('listaEstrutura');
+  if (!r.sucesso) { if (container) container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
+  dadosEstruturaGlobal = r;
 
-  document.getElementById('btnFecharFormUsuario')?.addEventListener('click', () => {
-    document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
-  });
+  const selSecSub = document.getElementById('secretariaDaSubsecretaria');
+  if (selSecSub && r.secretarias) selSecSub.innerHTML = r.secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+'</option>').join('');
 
-  function atualizarDropdownsDependenteUsuario() {
-    if (!dadosEstruturaGlobal) return;
-    const secId = document.getElementById('secretariaDoUsuario')?.value;
-    const subSel = document.getElementById('subsecretariaDoUsuario');
-    if (subSel) {
-      const subsFiltradas = (dadosEstruturaGlobal.subsecretarias || []).filter(s => s.SecretariaID === secId);
-      subSel.innerHTML = '<option value="">Nenhuma / Todas</option>' + 
-        subsFiltradas.map(s => `<option value="${s.SubsecretariaID}">${s.Nome}</option>`).join('');
-    }
-    filtrarNucleosDoUsuario();
-  }
-
-  function filtrarNucleosDoUsuario() {
-    if (!dadosEstruturaGlobal) return;
-    const secId = document.getElementById('secretariaDoUsuario')?.value;
-    const subId = document.getElementById('subsecretariaDoUsuario')?.value;
-    const nucSel = document.getElementById('nucleoDoUsuario');
-    if (!nucSel) return;
-    let nucsFiltrados = (dadosEstruturaGlobal.nucleos || []).filter(n => n.SecretariaID === secId);
-    if (subId) {
-      nucsFiltrados = nucsFiltrados.filter(n => n.SubsecretariaID === subId);
-    }
-    nucSel.innerHTML = '<option value="">Nenhum / Todos</option>' + 
-      nucsFiltrados.map(n => `<option value="${n.NucleoID}">${n.Nome}</option>`).join('');
-  }
-
-  document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
-  document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
-
-  async function carregarEstrutura() {
-    const resposta = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
-    const container = document.getElementById('listaEstrutura');
-    if (!resposta.sucesso) {
-      if (container) container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-      return;
-    }
-    dadosEstruturaGlobal = resposta;
-
-    const seletorSecretariaSub = document.getElementById('secretariaDaSubsecretaria');
-    if (seletorSecretariaSub && resposta.secretarias) {
-      seletorSecretariaSub.innerHTML = resposta.secretarias
-        .map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-    }
-
-    const seletorVinculoNucleo = document.getElementById('vinculoDoNucleo');
-    if (seletorVinculoNucleo && resposta.secretarias) {
-      let htmlOptions = '<option value="">Selecione o local...</option>';
-      resposta.secretarias.forEach(sec => {
-        htmlOptions += `<option value="SEC:${sec.SecretariaID}">🏢 ${sec.Nome} (${sec.Sigla})</option>`;
-        const subs = (resposta.subsecretarias || []).filter(sub => sub.SecretariaID === sec.SecretariaID);
-        subs.forEach(sub => {
-          htmlOptions += `<option value="SUB:${sec.SecretariaID}:${sub.SubsecretariaID}">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 ${sub.Nome} (${sub.Sigla})</option>`;
-        });
+  const selVinc = document.getElementById('vinculoDoNucleo');
+  if (selVinc && r.secretarias) {
+    let html = '<option value="">Selecione o local...</option>';
+    r.secretarias.forEach(sec => {
+      html += '<option value="SEC:'+sec.SecretariaID+'">🏢 '+sec.Nome+' ('+sec.Sigla+')</option>';
+      (r.subsecretarias||[]).filter(sub => sub.SecretariaID === sec.SecretariaID).forEach(sub => {
+        html += '<option value="SUB:'+sec.SecretariaID+':'+sub.SubsecretariaID+'">&nbsp;&nbsp;&nbsp;&nbsp;↳ 📂 '+sub.Nome+' ('+sub.Sigla+')</option>';
       });
-      seletorVinculoNucleo.innerHTML = htmlOptions;
-    }
+    });
+    selVinc.innerHTML = html;
+  }
+  popularSelectSecretariaUsuario();
 
-    popularSelectSecretariaUsuario();
-
-    if (container) {
-      if (!(resposta.secretarias || []).length) {
-        container.innerHTML = '<p>Nenhuma secretaria cadastrada ainda.</p>';
-        return;
-      }
-
-      let html = '';
-      resposta.secretarias.forEach((secretaria, iSec) => {
-        const nucleosDiretos = (resposta.nucleos || [])
-          .filter(n => n.SecretariaID === secretaria.SecretariaID && !n.SubsecretariaID);
-        const subsecretarias = (resposta.subsecretarias || [])
-          .filter(sub => sub.SecretariaID === secretaria.SecretariaID);
-
-        html += `<div class="acordeao-secretaria">
-          <div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao('filhos-sec-${iSec}', this)">
-            <span class="acordeao-seta">▶</span> <strong>${secretaria.Nome}</strong> (${secretaria.Sigla})
-          </div>
-          <div class="acordeao-filhos oculto" id="filhos-sec-${iSec}">`;
-
-        nucleosDiretos.forEach(nucleo => {
-          html += renderizarItemNucleo(nucleo);
-        });
-
-        subsecretarias.forEach((sub, iSub) => {
-          const nucleosDaSub = (resposta.nucleos || []).filter(n => n.SubsecretariaID === sub.SubsecretariaID);
-          html += `<div class="acordeao-subsecretaria">
-            <div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao('filhos-sub-${iSec}-${iSub}', this)">
-              <span class="acordeao-seta">▶</span> 📂 ${sub.Nome} (${sub.Sigla})
-            </div>
-            <div class="acordeao-filhos oculto" id="filhos-sub-${iSec}-${iSub}">`;
-          nucleosDaSub.forEach(nucleo => {
-            html += renderizarItemNucleo(nucleo, 24);
-          });
-          if (!nucleosDaSub.length) html += `<div class="item-nucleo" style="margin-left:24px; color: var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>`;
-          html += `</div></div>`;
-        });
-
-        html += `</div></div>`;
+  if (container) {
+    if (!(r.secretarias||[]).length) { container.innerHTML = '<p>Nenhuma secretaria cadastrada.</p>'; return; }
+    let html = '';
+    r.secretarias.forEach((sec, iSec) => {
+      const nucsDir = (r.nucleos||[]).filter(n => n.SecretariaID === sec.SecretariaID && !n.SubsecretariaID);
+      const subs = (r.subsecretarias||[]).filter(sub => sub.SecretariaID === sec.SecretariaID);
+      html += '<div><div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao(\'filhos-sec-'+iSec+'\',this)"><span class="acordeao-seta">▶</span> <strong>'+sec.Nome+'</strong> ('+sec.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sec-'+iSec+'">';
+      nucsDir.forEach(n => { html += renderizarItemNucleo(n); });
+      subs.forEach((sub, iSub) => {
+        const nucsSub = (r.nucleos||[]).filter(n => n.SubsecretariaID === sub.SubsecretariaID);
+        html += '<div class="acordeao-subsecretaria"><div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao(\'filhos-sub-'+iSec+'-'+iSub+'\',this)"><span class="acordeao-seta">▶</span> 📂 '+sub.Nome+' ('+sub.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sub-'+iSec+'-'+iSub+'">';
+        nucsSub.forEach(n => { html += renderizarItemNucleo(n, 24); });
+        if (!nucsSub.length) html += '<div class="item-nucleo" style="margin-left:24px; color:var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>';
+        html += '</div></div>';
       });
-      container.innerHTML = html;
-    }
-  }
-
-  // ESTE BLOCO MONTA O ITEM CLICÁVEL DE CADA NÚCLEO NA ÁRVORE, JÁ PREPARADO
-  // PRA ABRIR A LISTA DE PROFISSIONAIS DELE (só o Admin consegue expandir de verdade).
-  function renderizarItemNucleo(nucleo, margem) {
-    const idContainer = 'profissionais-nucleo-' + nucleo.NucleoID;
-    const estiloMargem = margem ? ` style="margin-left:${margem}px;"` : '';
-    return `<div${estiloMargem}>
-      <div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo('${nucleo.NucleoID}', '${(nucleo.Nome || '').replace(/'/g, "\\'")}', '${idContainer}', this)">
-        <span class="acordeao-seta">▶</span> 📌 Núcleo: ${nucleo.Nome}
-      </div>
-      <div class="acordeao-filhos oculto" id="${idContainer}"></div>
-    </div>`;
-  }
-
-  // ESTE BLOCO ABRE/FECHA A LISTA DE PROFISSIONAIS DE UM NÚCLEO. Na primeira
-  // vez que abre, busca no backend; das próximas, só mostra/esconde (sem gastar chamada de novo).
-  async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalhoClicado) {
-    const container = document.getElementById(idContainer);
-    const seta = cabecalhoClicado.querySelector('.acordeao-seta');
-    const vaiAbrir = container.classList.contains('oculto');
-
-    container.classList.toggle('oculto', !vaiAbrir);
-    if (seta) seta.textContent = vaiAbrir ? '▼' : '▶';
-    if (!vaiAbrir || container.dataset.carregado === '1') return;
-
-    container.innerHTML = '<div style="padding:6px 12px; color: var(--gov-texto-suave); font-size:12px;">Carregando profissionais...</div>';
-    const resposta = await chamarBackend('listarProfissionaisDoNucleo', { token: pegarTokenSalvo(), nucleoId });
-
-    if (!resposta.sucesso) {
-      container.innerHTML = `<div style="padding:6px 12px; color:#B3261E; font-size:12px;">${resposta.mensagem}</div>`;
-      return;
-    }
-
-    const profissionais = resposta.profissionais || [];
-    if (!profissionais.length) {
-      container.innerHTML = '<div style="padding:6px 12px; color: var(--gov-texto-suave); font-size:12px;">Nenhum profissional cadastrado nesse núcleo.</div>';
-    } else {
-      container.innerHTML = profissionais.map(p => `
-        <div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario('${p.id}', '${(p.nome || '').replace(/'/g, "\\'")}')">
-          👤 ${p.nome} <span style="color:var(--gov-texto-suave); font-size:12px;">— ${p.cargo || p.nivel}</span>
-        </div>
-      `).join('');
-    }
-    container.dataset.carregado = '1';
-  }
-
-  // ESTE BLOCO ABRE/FECHA CADA NÍVEL DO ACORDEÃO DA ESTRUTURA ORGANIZACIONAL
-  function alternarAcordeao(idFilhos, cabecalhoClicado) {
-    const filhos = document.getElementById(idFilhos);
-    const seta = cabecalhoClicado.querySelector('.acordeao-seta');
-    const abrir = filhos.classList.contains('oculto');
-    filhos.classList.toggle('oculto', !abrir);
-    if (seta) seta.textContent = abrir ? '▼' : '▶';
-  }
-
-  function popularSelectSecretariaUsuario() {
-    const seletorSecretariaUsu = document.getElementById('secretariaDoUsuario');
-    if (seletorSecretariaUsu && dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) {
-      seletorSecretariaUsu.innerHTML = '<option value="">Selecione...</option>' + 
-        dadosEstruturaGlobal.secretarias.map(s => `<option value="${s.SecretariaID}">${s.Nome}</option>`).join('');
-    }
-  }
-
-  /* ---------------------------------------------------------------
-     BLOCO JS 5 - FORMULÁRIOS DE CRIAÇÃO
-     --------------------------------------------------------------- */
-  document.getElementById('formularioCriarSecretaria').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const resposta = await chamarBackend('criarSecretaria', {
-      token: pegarTokenSalvo(),
-      nome: document.getElementById('nomeSecretaria').value,
-      sigla: document.getElementById('siglaSecretaria').value
+      html += '</div></div>';
     });
-    alert(resposta.sucesso ? 'Secretaria criada com sucesso!' : resposta.mensagem);
-    if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
-  });
+    container.innerHTML = html;
+  }
+}
 
-  document.getElementById('formularioCriarSubsecretaria').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const resposta = await chamarBackend('criarSubsecretaria', {
-      token: pegarTokenSalvo(),
-      secretariaId: document.getElementById('secretariaDaSubsecretaria').value,
-      nome: document.getElementById('nomeSubsecretaria').value,
-      sigla: document.getElementById('siglaSubsecretaria').value
-    });
-    alert(resposta.sucesso ? 'Subsecretaria criada com sucesso!' : resposta.mensagem);
-    if (resposta.sucesso) { evento.target.reset(); carregarEstrutura(); }
-  });
+function renderizarItemNucleo(nucleo, margem) {
+  const idContainer = 'profissionais-nucleo-' + nucleo.NucleoID;
+  const estilo = margem ? ' style="margin-left:'+margem+'px;"' : '';
+  return '<div'+estilo+'><div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo(\''+nucleo.NucleoID+'\', \''+(nucleo.Nome||'').replace(/'/g,"\\'")+'\', \''+idContainer+'\', this)"><span class="acordeao-seta">▶</span> 📌 Núcleo: '+nucleo.Nome+'</div><div class="acordeao-filhos oculto" id="'+idContainer+'"></div></div>';
+}
 
-  document.getElementById('formularioCriarNucleo').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const usuario = pegarUsuarioSalvo();
-    const vinculoValor = document.getElementById('vinculoDoNucleo')?.value;
-    if (!vinculoValor) {
-      alert('Por favor, selecione a Secretaria ou Subsecretaria de vínculo.');
-      return;
-    }
-    const partes = vinculoValor.split(':');
-    let secId = '';
-    let subSecId = '';
-    if (partes[0] === 'SEC') {
-      secId = partes[1];
-    } else if (partes[0] === 'SUB') {
-      secId = partes[1];
-      subSecId = partes[2];
-    }
-    
-    const resposta = await chamarBackend('criarNucleo', {
-      token: pegarTokenSalvo(),
-      secretariaId: secId || usuario.secretariaId || '',
-      subsecretariaId: subSecId || usuario.subsecretariaId || '',
-      nome: document.getElementById('nomeNucleo').value,
-      agendaGoogleUrl: document.getElementById('agendaNucleo').value
-    });
-    alert(resposta.sucesso ? 'Núcleo criado com sucesso!' : resposta.mensagem);
-    if (resposta.sucesso) { 
-      evento.target.reset(); 
-      carregarEstrutura(); 
-    }
-  });
+async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalho) {
+  const container = document.getElementById(idContainer);
+  const seta = cabecalho.querySelector('.acordeao-seta');
+  const abrir = container.classList.contains('oculto');
+  container.classList.toggle('oculto', !abrir);
+  if (seta) seta.textContent = abrir ? '▼' : '▶';
+  if (!abrir || container.dataset.carregado === '1') return;
+  container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Carregando...</div>';
+  const r = await chamarBackend('listarProfissionaisDoNucleo', { token: pegarTokenSalvo(), nucleoId });
+  if (!r.sucesso) { container.innerHTML = '<div style="padding:6px 12px; color:#B3261E; font-size:12px;">'+r.mensagem+'</div>'; return; }
+  const profs = r.profissionais || [];
+  if (!profs.length) container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Nenhum profissional cadastrado.</div>';
+  else container.innerHTML = profs.map(p => '<div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario(\''+p.id+'\', \''+(p.nome||'').replace(/'/g,"\\'")+'\')">👤 '+p.nome+' <span style="color:var(--gov-texto-suave); font-size:12px;">— '+(p.cargo||p.nivel)+'</span></div>').join('');
+  container.dataset.carregado = '1';
+}
 
-  document.getElementById('planoSaude')?.addEventListener('change', (e) => {
-    const box = document.getElementById('boxAceitePlano');
-    if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
-  });
+function alternarAcordeao(idFilhos, cabecalho) {
+  const filhos = document.getElementById(idFilhos);
+  const seta = cabecalho.querySelector('.acordeao-seta');
+  const abrir = filhos.classList.contains('oculto');
+  filhos.classList.toggle('oculto', !abrir);
+  if (seta) seta.textContent = abrir ? '▼' : '▶';
+}
 
-  document.getElementById('alergia')?.addEventListener('change', (e) => {
-    const box = document.getElementById('boxTipoAlergia');
-    if (box) box.classList.toggle('oculto', e.target.value !== 'SIM');
-  });
+function popularSelectSecretariaUsuario() {
+  const sel = document.getElementById('secretariaDoUsuario');
+  if (sel && dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) {
+    sel.innerHTML = '<option value="">Selecione...</option>' + dadosEstruturaGlobal.secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+'</option>').join('');
+  }
+}
 
-  document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const usuario = pegarUsuarioSalvo();
-    const dadosPayload = {
-      token: pegarTokenSalvo(),
-      nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
-      email: document.getElementById('emailUsuarioNovo').value,
-      nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
-      secretariaId: document.getElementById('secretariaDoUsuario').value || usuario.secretariaId || '',
-      subsecretariaId: document.getElementById('subsecretariaDoUsuario').value || usuario.subsecretariaId || '',
-      nucleoId: document.getElementById('nucleoDoUsuario').value || usuario.nucleoId || '',
-      
-      nomeCompleto: document.getElementById('nomeCompleto').value,
-      cargo: document.getElementById('cargo').value,
-      empregador: document.getElementById('empregador').value,
-      dataAdmissao: document.getElementById('dataAdmissao').value,
-      horarioEntrada: document.getElementById('horarioEntrada').value,
-      horarioSaida: document.getElementById('horarioSaida').value,
-      telefone: document.getElementById('telefone').value,
-      foto: document.getElementById('fotoUrl').value,
-      cpf: document.getElementById('cpf').value,
-      rg: document.getElementById('rg').value,
-      orgaoEmissor: document.getElementById('orgaoEmissor').value,
-      dataExpedicao: document.getElementById('dataExpedicao').value,
-      idFuncional: document.getElementById('idFuncional').value,
-      dataNascimento: document.getElementById('dataNascimento').value,
-      nomeMae: document.getElementById('nomeMae').value,
-      registroProfissional: document.getElementById('registroProfissional').value,
-      cep: document.getElementById('cep').value,
-      enderecoCompleto: document.getElementById('enderecoCompleto').value,
-      bairro: document.getElementById('bairro').value,
-      cidade: document.getElementById('cidade').value,
-      uf: document.getElementById('uf').value,
-      nomeContatoEmergencia: document.getElementById('nomeContatoEmergencia').value,
-      grauParentesco: document.getElementById('grauParentesco').value,
-      telefoneEmergencia: document.getElementById('telefoneEmergencia').value,
-      planoSaude: document.getElementById('planoSaude').value,
-      aceitePlano: document.getElementById('aceitePlano').value,
-      numeroSapato: document.getElementById('numeroSapato').value,
-      manequim: document.getElementById('manequim').value,
-      alergia: document.getElementById('alergia').value,
-      tipoAlergia: document.getElementById('tipoAlergia').value
-    };
-    const resposta = await chamarBackend('criarUsuario', dadosPayload);
-    alert(resposta.sucesso ? 'Usuário cadastrado com sucesso! Acesso provisório enviado por e-mail.' : resposta.mensagem);
-    if (resposta.sucesso) { 
-      evento.target.reset(); 
-      document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
-    }
-  });
+function atualizarDropdownsDependenteUsuario() {
+  if (!dadosEstruturaGlobal) return;
+  const secId = document.getElementById('secretariaDoUsuario')?.value;
+  const subSel = document.getElementById('subsecretariaDoUsuario');
+  if (subSel) {
+    const subs = (dadosEstruturaGlobal.subsecretarias||[]).filter(s => s.SecretariaID === secId);
+    subSel.innerHTML = '<option value="">Nenhuma / Todas</option>' + subs.map(s => '<option value="'+s.SubsecretariaID+'">'+s.Nome+'</option>').join('');
+  }
+  filtrarNucleosDoUsuario();
+}
+function filtrarNucleosDoUsuario() {
+  if (!dadosEstruturaGlobal) return;
+  const secId = document.getElementById('secretariaDoUsuario')?.value;
+  const subId = document.getElementById('subsecretariaDoUsuario')?.value;
+  const nucSel = document.getElementById('nucleoDoUsuario');
+  if (!nucSel) return;
+  let nucs = (dadosEstruturaGlobal.nucleos||[]).filter(n => n.SecretariaID === secId);
+  if (subId) nucs = nucs.filter(n => n.SubsecretariaID === subId);
+  nucSel.innerHTML = '<option value="">Nenhum / Todos</option>' + nucs.map(n => '<option value="'+n.NucleoID+'">'+n.Nome+'</option>').join('');
+}
+document.getElementById('secretariaDoUsuario')?.addEventListener('change', atualizarDropdownsDependenteUsuario);
+document.getElementById('subsecretariaDoUsuario')?.addEventListener('change', filtrarNucleosDoUsuario);
 
-  // Variável para guardar dados originais (cancelamento)
+/* ================================================================
+   FORMULÁRIOS DE CRIAÇÃO
+   ================================================================ */
+document.getElementById('formularioCriarSecretaria').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = await chamarBackend('criarSecretaria', { token: pegarTokenSalvo(), nome: document.getElementById('nomeSecretaria').value, sigla: document.getElementById('siglaSecretaria').value });
+  alert(r.sucesso ? 'Secretaria criada!' : r.mensagem);
+  if (r.sucesso) { e.target.reset(); carregarEstrutura(); }
+});
+document.getElementById('formularioCriarSubsecretaria').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = await chamarBackend('criarSubsecretaria', { token: pegarTokenSalvo(), secretariaId: document.getElementById('secretariaDaSubsecretaria').value, nome: document.getElementById('nomeSubsecretaria').value, sigla: document.getElementById('siglaSubsecretaria').value });
+  alert(r.sucesso ? 'Subsecretaria criada!' : r.mensagem);
+  if (r.sucesso) { e.target.reset(); carregarEstrutura(); }
+});
+document.getElementById('formularioCriarNucleo').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const v = document.getElementById('vinculoDoNucleo').value;
+  if (!v) { alert('Selecione o vínculo.'); return; }
+  const p = v.split(':');
+  let secId = '', subId = '';
+  if (p[0] === 'SEC') secId = p[1];
+  else if (p[0] === 'SUB') { secId = p[1]; subId = p[2]; }
+  const r = await chamarBackend('criarNucleo', { token: pegarTokenSalvo(), secretariaId: secId, subsecretariaId: subId, nome: document.getElementById('nomeNucleo').value, agendaGoogleUrl: document.getElementById('agendaNucleo').value });
+  alert(r.sucesso ? 'Núcleo criado!' : r.mensagem);
+  if (r.sucesso) { e.target.reset(); carregarEstrutura(); }
+});
+
+document.getElementById('btnAbrirFormUsuario')?.addEventListener('click', () => {
+  popularSelectSecretariaUsuario();
+  document.getElementById('cartaoCriarUsuario')?.classList.remove('oculto');
+  document.getElementById('cartaoCriarUsuario')?.scrollIntoView({ behavior: 'smooth' });
+});
+document.getElementById('btnFecharFormUsuario')?.addEventListener('click', () => {
+  document.getElementById('cartaoCriarUsuario')?.classList.add('oculto');
+});
+
+document.getElementById('planoSaude')?.addEventListener('change', (e) => {
+  document.getElementById('boxAceitePlano')?.classList.toggle('oculto', e.target.value !== 'SIM');
+});
+document.getElementById('alergia')?.addEventListener('change', (e) => {
+  document.getElementById('boxTipoAlergia')?.classList.toggle('oculto', e.target.value !== 'SIM');
+});
+
+function carregarPreviewFotoCadastro(event) {
+  const file = event.target.files[0];
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) { alert("A foto deve ter no máximo 2MB."); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) { document.getElementById('preview-foto-cadastro').src = e.target.result; };
+    reader.readAsDataURL(file);
+  }
+}
+
+document.getElementById('formularioCriarUsuario')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fotoSrc = document.getElementById('preview-foto-cadastro').src;
+  const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
+  const dados = {
+    token: pegarTokenSalvo(),
+    nomeExibicao: document.getElementById('nomeUsuarioNovo').value,
+    email: document.getElementById('emailUsuarioNovo').value,
+    nivelAcesso: document.getElementById('nivelUsuarioNovo').value,
+    secretariaId: document.getElementById('secretariaDoUsuario').value,
+    subsecretariaId: document.getElementById('subsecretariaDoUsuario').value || '',
+    nucleoId: document.getElementById('nucleoDoUsuario').value || '',
+    nomeCompleto: document.getElementById('nomeCompleto').value,
+    cargo: document.getElementById('cargo').value,
+    empregador: document.getElementById('empregador').value,
+    dataAdmissao: document.getElementById('dataAdmissao').value,
+    horarioEntrada: document.getElementById('horarioEntrada').value,
+    horarioSaida: document.getElementById('horarioSaida').value,
+    telefone: document.getElementById('telefone').value,
+    fotoBase64: fotoBase64,
+    cpf: document.getElementById('cpf').value,
+    rg: document.getElementById('rg').value,
+    orgaoEmissor: document.getElementById('orgaoEmissor').value,
+    dataExpedicao: document.getElementById('dataExpedicao').value,
+    idFuncional: document.getElementById('idFuncional').value,
+    dataNascimento: document.getElementById('dataNascimento').value,
+    nomeMae: document.getElementById('nomeMae').value,
+    registroProfissional: document.getElementById('registroProfissional').value,
+    cep: document.getElementById('cep').value,
+    enderecoCompleto: document.getElementById('enderecoCompleto').value,
+    bairro: document.getElementById('bairro').value,
+    cidade: document.getElementById('cidade').value,
+    uf: document.getElementById('uf').value,
+    nomeContatoEmergencia: document.getElementById('nomeContatoEmergencia').value,
+    grauParentesco: document.getElementById('grauParentesco').value,
+    telefoneEmergencia: document.getElementById('telefoneEmergencia').value,
+    planoSaude: document.getElementById('planoSaude').value,
+    aceitePlano: document.getElementById('aceitePlano').value,
+    numeroSapato: document.getElementById('numeroSapato').value,
+    manequim: document.getElementById('manequim').value,
+    alergia: document.getElementById('alergia').value,
+    tipoAlergia: document.getElementById('tipoAlergia').value
+  };
+  const r = await chamarBackend('criarUsuario', dados);
+  alert(r.sucesso ? 'Usuário cadastrado! Acesso provisório enviado por e-mail.' : r.mensagem);
+  if (r.sucesso) { e.target.reset(); document.getElementById('preview-foto-cadastro').src = FOTO_PADRAO_SVG; document.getElementById('cartaoCriarUsuario')?.classList.add('oculto'); }
+});
+
+/* ================================================================
+   PERFIL DO PROFISSIONAL
+   ================================================================ */
 let dadosPerfilOriginal = {};
-
-// Guarda o ID de quem está carregado no cartão de perfil no momento
-// (o próprio usuário logado, por padrão, ou outro profissional que o Admin abriu).
 let _usuarioIdAlvoPerfil = null;
 
 function habilitarEdicaoPerfil() {
-    const usuarioLogado = pegarUsuarioSalvo();
-    const ehAdmin = usuarioLogado && usuarioLogado.nivel === 'ADMIN';
-
-    // Salva estado atual dos campos editáveis e da foto
-    dadosPerfilOriginal = {
-        fotoSrc: document.getElementById('img-avatar-preview').src,
-        contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
-        telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
-        planoSaude: document.getElementById('perfil-plano-saude').value,
-        aceitePlano: document.getElementById('perfil-aceite-plano').value,
-        numeroSapato: document.getElementById('perfil-numero-sapato').value,
-        manequim: document.getElementById('perfil-manequim').value,
-        nomeCompleto: document.getElementById('perfil-nome-completo').value,
-        idFuncional: document.getElementById('perfil-id-funcional').value,
-        rg: document.getElementById('perfil-rg').value,
-        cpf: document.getElementById('perfil-cpf').value,
-        cargo: document.getElementById('perfil-cargo-campo').value
-    };
-
-    // Habilita os campos sempre editáveis (qualquer pessoa, no próprio perfil)
-    ['perfil-contato-emergencia', 'perfil-telefone-emergencia', 'perfil-plano-saude',
-     'perfil-aceite-plano', 'perfil-numero-sapato', 'perfil-manequim'].forEach(id => {
-        document.getElementById(id).disabled = false;
-    });
-    document.getElementById('btn-alterar-foto').disabled = false;
-
-    // ESTE BLOCO SÓ LIBERA OS CAMPOS SENSÍVEIS (nome completo, ID funcional, RG,
-    // CPF, cargo) SE QUEM ESTÁ EDITANDO FOR ADMIN — poder total sobre o cadastro.
-    if (ehAdmin) {
-        ['perfil-nome-completo', 'perfil-id-funcional', 'perfil-rg', 'perfil-cpf', 'perfil-cargo-campo'].forEach(id => {
-            document.getElementById(id).disabled = false;
-        });
-    }
-
-    // Mostra botões de ação, esconde botão editar
-    document.getElementById('botoes-edicao-perfil').style.display = 'flex';
-    document.getElementById('btn-editar-perfil').style.display = 'none';
+  const u = pegarUsuarioSalvo();
+  const ehAdmin = u && u.nivel === 'ADMIN';
+  dadosPerfilOriginal = {
+    fotoSrc: document.getElementById('img-avatar-preview').src,
+    contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
+    telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
+    planoSaude: document.getElementById('perfil-plano-saude').value,
+    aceitePlano: document.getElementById('perfil-aceite-plano').value,
+    numeroSapato: document.getElementById('perfil-numero-sapato').value,
+    manequim: document.getElementById('perfil-manequim').value,
+    nomeCompleto: document.getElementById('perfil-nome-completo').value,
+    idFuncional: document.getElementById('perfil-id-funcional').value,
+    rg: document.getElementById('perfil-rg').value,
+    cpf: document.getElementById('perfil-cpf').value,
+    cargo: document.getElementById('perfil-cargo-campo').value
+  };
+  ['perfil-contato-emergencia','perfil-telefone-emergencia','perfil-plano-saude','perfil-aceite-plano','perfil-numero-sapato','perfil-manequim','perfil-nome-completo','perfil-id-funcional','perfil-rg','perfil-cpf','perfil-cargo-campo'].forEach(id => { document.getElementById(id).disabled = false; });
+  document.getElementById('btn-alterar-foto').disabled = false;
+  document.getElementById('botoes-edicao-perfil').style.display = 'flex';
 }
 
 function cancelarEdicaoPerfil() {
-    // Restaura valores originais
-    document.getElementById('img-avatar-preview').src = dadosPerfilOriginal.fotoSrc || FOTO_PADRAO_SVG;
-    document.getElementById('perfil-contato-emergencia').value = dadosPerfilOriginal.contatoEmergencia || '';
-    document.getElementById('perfil-telefone-emergencia').value = dadosPerfilOriginal.telefoneEmergencia || '';
-    document.getElementById('perfil-plano-saude').value = dadosPerfilOriginal.planoSaude || 'NÃO';
-    document.getElementById('perfil-aceite-plano').value = dadosPerfilOriginal.aceitePlano || '';
-    document.getElementById('perfil-numero-sapato').value = dadosPerfilOriginal.numeroSapato || '';
-    document.getElementById('perfil-manequim').value = dadosPerfilOriginal.manequim || '';
-    document.getElementById('perfil-nome-completo').value = dadosPerfilOriginal.nomeCompleto || '';
-    document.getElementById('perfil-id-funcional').value = dadosPerfilOriginal.idFuncional || '';
-    document.getElementById('perfil-rg').value = dadosPerfilOriginal.rg || '';
-    document.getElementById('perfil-cpf').value = dadosPerfilOriginal.cpf || '';
-    document.getElementById('perfil-cargo-campo').value = dadosPerfilOriginal.cargo || '';
-
-    // Desabilita todos os campos de novo
-    ['perfil-contato-emergencia', 'perfil-telefone-emergencia', 'perfil-plano-saude',
-     'perfil-aceite-plano', 'perfil-numero-sapato', 'perfil-manequim',
-     'perfil-nome-completo', 'perfil-id-funcional', 'perfil-rg', 'perfil-cpf', 'perfil-cargo-campo'].forEach(id => {
-        document.getElementById(id).disabled = true;
-    });
-    document.getElementById('btn-alterar-foto').disabled = true;
-
-    // Esconde botões de ação, mostra botão editar
-    document.getElementById('botoes-edicao-perfil').style.display = 'none';
-    document.getElementById('btn-editar-perfil').style.display = 'inline-block';
+  document.getElementById('img-avatar-preview').src = dadosPerfilOriginal.fotoSrc || FOTO_PADRAO_SVG;
+  document.getElementById('perfil-contato-emergencia').value = dadosPerfilOriginal.contatoEmergencia || '';
+  document.getElementById('perfil-telefone-emergencia').value = dadosPerfilOriginal.telefoneEmergencia || '';
+  document.getElementById('perfil-plano-saude').value = dadosPerfilOriginal.planoSaude || 'NÃO';
+  document.getElementById('perfil-aceite-plano').value = dadosPerfilOriginal.aceitePlano || '';
+  document.getElementById('perfil-numero-sapato').value = dadosPerfilOriginal.numeroSapato || '';
+  document.getElementById('perfil-manequim').value = dadosPerfilOriginal.manequim || '';
+  document.getElementById('perfil-nome-completo').value = dadosPerfilOriginal.nomeCompleto || '';
+  document.getElementById('perfil-id-funcional').value = dadosPerfilOriginal.idFuncional || '';
+  document.getElementById('perfil-rg').value = dadosPerfilOriginal.rg || '';
+  document.getElementById('perfil-cpf').value = dadosPerfilOriginal.cpf || '';
+  document.getElementById('perfil-cargo-campo').value = dadosPerfilOriginal.cargo || '';
+  ['perfil-contato-emergencia','perfil-telefone-emergencia','perfil-plano-saude','perfil-aceite-plano','perfil-numero-sapato','perfil-manequim','perfil-nome-completo','perfil-id-funcional','perfil-rg','perfil-cpf','perfil-cargo-campo'].forEach(id => { document.getElementById(id).disabled = true; });
+  document.getElementById('btn-alterar-foto').disabled = true;
+  document.getElementById('botoes-edicao-perfil').style.display = 'none';
 }
 
 function carregarPreviewFoto(event) {
-    const file = event.target.files[0];
-    if (file) {
-        if (file.size > 2 * 1024 * 1024) {
-            alert("A foto deve ter no máximo 2MB.");
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('img-avatar-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
+  const file = event.target.files[0];
+  if (file) {
+    if (file.size > 2 * 1024 * 1024) { alert("A foto deve ter no máximo 2MB."); return; }
+    const reader = new FileReader();
+    reader.onload = function(e) { document.getElementById('img-avatar-preview').src = e.target.result; };
+    reader.readAsDataURL(file);
+  }
 }
 
-// Constante para foto padrão SVG (evita erro de imagem quebrada)
-const FOTO_PADRAO_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
-
-// ESTE BLOCO PREENCHE O CARTÃO DE PERFIL NA TELA — usado tanto pro próprio
-// usuário logado quanto (via carregarPerfilDeOutroUsuario) pro Admin olhando
-// o perfil de qualquer profissional clicado na árvore de núcleos.
 function preencherCartaoPerfil(p) {
-    _usuarioIdAlvoPerfil = p.usuarioId || null;
-
-    document.getElementById('perfil-nome-exibicao').textContent = p.nome || 'NOME';
-    document.getElementById('perfil-cargo-exibicao').textContent = p.cargo || 'Cargo';
-    document.getElementById('img-avatar-preview').src = p.foto || FOTO_PADRAO_SVG;
-
-    document.getElementById('perfil-nome-completo').value = p.nomeCompleto || '';
-    document.getElementById('perfil-id-funcional').value = p.idFuncional || '';
-    document.getElementById('perfil-rg').value = p.rg || '';
-    document.getElementById('perfil-cpf').value = p.cpf || '';
-    document.getElementById('perfil-cargo-campo').value = p.cargo || '';
-
-    document.getElementById('perfil-contato-emergencia').value = p.contatoEmergencia || '';
-    document.getElementById('perfil-telefone-emergencia').value = p.telefoneEmergencia || '';
-    document.getElementById('perfil-plano-saude').value = p.planoSaude || 'NÃO';
-    document.getElementById('perfil-aceite-plano').value = p.aceitePlano || '';
-    document.getElementById('perfil-numero-sapato').value = p.numeroSapato || '';
-    document.getElementById('perfil-manequim').value = p.manequim || '';
-
-    dadosPerfilOriginal = {
-        fotoSrc: document.getElementById('img-avatar-preview').src,
-        contatoEmergencia: p.contatoEmergencia || '', telefoneEmergencia: p.telefoneEmergencia || '',
-        planoSaude: p.planoSaude || 'NÃO', aceitePlano: p.aceitePlano || '',
-        numeroSapato: p.numeroSapato || '', manequim: p.manequim || '',
-        nomeCompleto: p.nomeCompleto || '', idFuncional: p.idFuncional || '',
-        rg: p.rg || '', cpf: p.cpf || '', cargo: p.cargo || ''
-    };
+  _usuarioIdAlvoPerfil = p.usuarioId || null;
+  document.getElementById('perfil-nome-exibicao').textContent = p.nome || 'NOME';
+  document.getElementById('perfil-cargo-exibicao').textContent = p.cargo || 'Cargo';
+  document.getElementById('img-avatar-preview').src = p.foto || FOTO_PADRAO_SVG;
+  document.getElementById('perfil-nome-completo').value = p.nomeCompleto || '';
+  document.getElementById('perfil-id-funcional').value = p.idFuncional || '';
+  document.getElementById('perfil-rg').value = p.rg || '';
+  document.getElementById('perfil-cpf').value = p.cpf || '';
+  document.getElementById('perfil-cargo-campo').value = p.cargo || '';
+  document.getElementById('perfil-contato-emergencia').value = p.contatoEmergencia || '';
+  document.getElementById('perfil-telefone-emergencia').value = p.telefoneEmergencia || '';
+  document.getElementById('perfil-plano-saude').value = p.planoSaude || 'NÃO';
+  document.getElementById('perfil-aceite-plano').value = p.aceitePlano || '';
+  document.getElementById('perfil-numero-sapato').value = p.numeroSapato || '';
+  document.getElementById('perfil-manequim').value = p.manequim || '';
+  dadosPerfilOriginal = { fotoSrc: document.getElementById('img-avatar-preview').src, contatoEmergencia: p.contatoEmergencia||'', telefoneEmergencia: p.telefoneEmergencia||'', planoSaude: p.planoSaude||'NÃO', aceitePlano: p.aceitePlano||'', numeroSapato: p.numeroSapato||'', manequim: p.manequim||'', nomeCompleto: p.nomeCompleto||'', idFuncional: p.idFuncional||'', rg: p.rg||'', cpf: p.cpf||'', cargo: p.cargo||'' };
 }
 
 async function carregarPerfilNaTela() {
-    const resposta = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
-    if (!resposta.sucesso) return;
-    preencherCartaoPerfil(resposta.perfil);
-    document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
-    cancelarEdicaoPerfil(); // garante que os campos voltam desabilitados ao trocar de perfil
+  const r = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
+  if (!r.sucesso) return;
+  preencherCartaoPerfil(r.perfil);
+  document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
+  cancelarEdicaoPerfil();
 }
 
-// ESTE BLOCO ABRE O PERFIL DE OUTRO PROFISSIONAL — só o Admin consegue chamar
-// isso de verdade (o backend também confere), acionado ao clicar num nome
-// dentro da árvore de núcleos na Estrutura Organizacional.
 async function carregarPerfilDeOutroUsuario(usuarioId, nomeExibido) {
-    const resposta = await chamarBackend('obterPerfilPorId', { token: pegarTokenSalvo(), usuarioIdAlvo: usuarioId });
-    if (!resposta.sucesso) { alert(resposta.mensagem); return; }
-
-    preencherCartaoPerfil(resposta.perfil);
-    cancelarEdicaoPerfil();
-
-    document.getElementById('nomePerfilDeOutro').textContent = nomeExibido || resposta.perfil.nome;
-    document.getElementById('avisoPerfilDeOutro').classList.remove('oculto');
-
-    // Garante que o cabeçalho do perfil (que pode estar recolhido, no caso do Admin) fique visível
-    document.getElementById('perfilCorpo').style.display = 'block';
-    const botaoToggle = document.getElementById('btnTogglePerfil');
-    if (botaoToggle) botaoToggle.textContent = '🔼 Recolher';
-
-    document.getElementById('secao-perfil-profissional').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const r = await chamarBackend('obterPerfilPorId', { token: pegarTokenSalvo(), usuarioIdAlvo: usuarioId });
+  if (!r.sucesso) { alert(r.mensagem); return; }
+  preencherCartaoPerfil(r.perfil);
+  cancelarEdicaoPerfil();
+  document.getElementById('nomePerfilDeOutro').textContent = nomeExibido || r.perfil.nome;
+  document.getElementById('avisoPerfilDeOutro').classList.remove('oculto');
+  document.getElementById('secaoPautas').style.display = 'none';
+  document.getElementById('perfilCorpo').style.display = 'block';
+  document.getElementById('btnSetaRecolher').textContent = '∨';
+  document.getElementById('secao-perfil-profissional').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function salvarPerfilProfissional() {
-    const fotoSrc = document.getElementById('img-avatar-preview').src;
-    const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
-    const usuarioLogado = pegarUsuarioSalvo();
-    const ehAdmin = usuarioLogado && usuarioLogado.nivel === 'ADMIN';
-
-    const payload = {
-        token: pegarTokenSalvo(),
-        fotoBase64: fotoBase64,
-        contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
-        telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
-        planoSaude: document.getElementById('perfil-plano-saude').value,
-        aceitePlano: document.getElementById('perfil-aceite-plano').value,
-        numeroSapato: document.getElementById('perfil-numero-sapato').value,
-        manequim: document.getElementById('perfil-manequim').value
-    };
-
-    // Se quem está editando é Admin, manda também os campos sensíveis + o alvo (caso seja outro profissional)
-    if (ehAdmin) {
-        payload.nomeCompleto = document.getElementById('perfil-nome-completo').value;
-        payload.idFuncional = document.getElementById('perfil-id-funcional').value;
-        payload.rg = document.getElementById('perfil-rg').value;
-        payload.cpf = document.getElementById('perfil-cpf').value;
-        payload.cargo = document.getElementById('perfil-cargo-campo').value;
-        payload.nomeExibicao = document.getElementById('perfil-nome-exibicao').textContent;
-        if (_usuarioIdAlvoPerfil && _usuarioIdAlvoPerfil !== usuarioLogado.id) {
-            payload.usuarioIdAlvo = _usuarioIdAlvoPerfil;
-        }
-    }
-
-    const btnSalvar = document.querySelector('.btn-salvar-perfil');
-    if (btnSalvar) { btnSalvar.disabled = true; btnSalvar.innerText = "Salvando..."; }
-
-    const resposta = await chamarBackend('salvarPerfil', payload);
-
-    if (btnSalvar) { btnSalvar.disabled = false; btnSalvar.innerText = "💾 Salvar"; }
-
-    if (resposta.sucesso) {
-        alert(resposta.mensagem || "Perfil salvo!");
-        if (resposta.url) document.getElementById('img-avatar-preview').src = resposta.url;
-
-        // Recarrega o perfil certo: o próprio, ou o de quem estava sendo editado
-        if (payload.usuarioIdAlvo) {
-            await carregarPerfilDeOutroUsuario(payload.usuarioIdAlvo, payload.nomeExibicao);
-        } else {
-            await carregarPerfilNaTela();
-        }
-    } else {
-        alert("Erro ao salvar: " + (resposta.mensagem || "Falha na comunicação"));
-    }
+  const fotoSrc = document.getElementById('img-avatar-preview').src;
+  const fotoBase64 = (fotoSrc && !fotoSrc.includes('svg+xml')) ? fotoSrc : '';
+  const u = pegarUsuarioSalvo();
+  const ehAdmin = u && u.nivel === 'ADMIN';
+  const payload = {
+    token: pegarTokenSalvo(),
+    fotoBase64: fotoBase64,
+    contatoEmergencia: document.getElementById('perfil-contato-emergencia').value,
+    telefoneEmergencia: document.getElementById('perfil-telefone-emergencia').value,
+    planoSaude: document.getElementById('perfil-plano-saude').value,
+    aceitePlano: document.getElementById('perfil-aceite-plano').value,
+    numeroSapato: document.getElementById('perfil-numero-sapato').value,
+    manequim: document.getElementById('perfil-manequim').value
+  };
+  if (ehAdmin) {
+    payload.nomeCompleto = document.getElementById('perfil-nome-completo').value;
+    payload.idFuncional = document.getElementById('perfil-id-funcional').value;
+    payload.rg = document.getElementById('perfil-rg').value;
+    payload.cpf = document.getElementById('perfil-cpf').value;
+    payload.cargo = document.getElementById('perfil-cargo-campo').value;
+    payload.nomeExibicao = document.getElementById('perfil-nome-exibicao').textContent;
+    if (_usuarioIdAlvoPerfil && _usuarioIdAlvoPerfil !== u.id) payload.usuarioIdAlvo = _usuarioIdAlvoPerfil;
+  }
+  const btn = document.querySelector('.btn-salvar-perfil');
+  if (btn) { btn.disabled = true; btn.innerText = "Salvando..."; }
+  const r = await chamarBackend('salvarPerfil', payload);
+  if (btn) { btn.disabled = false; btn.innerText = "💾 Salvar"; }
+  if (r.sucesso) {
+    alert(r.mensagem || "Perfil salvo!");
+    if (r.url) document.getElementById('img-avatar-preview').src = r.url;
+    if (payload.usuarioIdAlvo) await carregarPerfilDeOutroUsuario(payload.usuarioIdAlvo, payload.nomeExibicao);
+    else await carregarPerfilNaTela();
+  } else { alert("Erro ao salvar: " + (r.mensagem || "Falha")); }
 }
 
-  /* ---------------------------------------------------------------
-     BLOCO JS 6 - INICIALIZAÇÃO DA PÁGINA
-     --------------------------------------------------------------- */
-  (function iniciar() {
-    if (pegarTokenSalvo() && pegarUsuarioSalvo()) {
-      iniciarPainelPrincipal();
-    } else {
-      mostrarTela('telaLogin');
-    }
-  })();
-// Toggle perfil — o cabeçalho nunca é escondido.
-// Admin: só mostra/esconde o próprio perfil (não tem seção de Pautas).
-// Demais níveis: alternam entre o corpo do perfil e a seção de Pautas.
-document.getElementById('btnTogglePerfil').addEventListener('click', function() {
-  const usuarioAtual = pegarUsuarioSalvo();
-  const corpoSecao = document.getElementById('perfilCorpo');
-  const btn = this;
-
-  if (usuarioAtual && usuarioAtual.nivel === 'ADMIN') {
-    const recolhido = corpoSecao.style.display === 'none';
-    corpoSecao.style.display = recolhido ? 'block' : 'none';
-    btn.textContent = recolhido ? '🔼 Recolher' : '👤 Ver Perfil';
-    return;
-  }
-
-  const pautasSecao = document.getElementById('secaoPautas');
-  const botaoEditar = document.getElementById('btn-editar-perfil');
-
-  if (pautasSecao.style.display === 'none') {
-    corpoSecao.style.display = 'none';
-    pautasSecao.style.display = 'block';
-    if (botaoEditar) botaoEditar.style.display = 'none';
-    btn.textContent = '👤 Perfil';
-    carregarPautas();
-  } else {
-    corpoSecao.style.display = 'block';
-    pautasSecao.style.display = 'none';
-    if (botaoEditar) botaoEditar.style.display = 'inline-block';
-    btn.textContent = '📋 Pautas';
-  }
-});
-
-// Função para carregar pautas
+/* ================================================================
+   PAUTAS
+   ================================================================ */
 async function carregarPautas() {
   const container = document.getElementById('listaPautasContainer');
-  container.innerHTML = 'Carregando...';
-
-  const resposta = await chamarBackend('listarPautas', { token: pegarTokenSalvo() });
-  if (!resposta.sucesso) {
-    container.innerHTML = `<p class="mensagem-erro">${resposta.mensagem}</p>`;
-    return;
-  }
-
-  const pautas = resposta.pautas || [];
-  if (pautas.length === 0) {
-    container.innerHTML = '<p style="color: var(--gov-texto-suave);">Nenhuma pauta encontrada.</p>';
-    return;
-  }
-
-  // Montar tabela
-  let html = `<table style="width:100%; border-collapse: collapse; font-size: 0.9rem;">
-    <thead>
-      <tr style="background: var(--gov-cinza-claro);">
-        <th style="padding: 8px; text-align:left;">Título</th>
-        <th style="padding: 8px; text-align:left;">Data</th>
-        <th style="padding: 8px; text-align:left;">Status</th>
-        <th style="padding: 8px; text-align:left;">Ações</th>
-      </tr>
-    </thead>
-    <tbody>`;
-
+  container.innerHTML = '<p style="color:var(--gov-texto-suave);">Carregando pautas...</p>';
+  const r = await chamarBackend('listarPautas', { token: pegarTokenSalvo() });
+  if (!r.sucesso) { container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
+  const pautas = r.pautas || [];
+  if (!pautas.length) { container.innerHTML = '<p style="color:var(--gov-texto-suave);">Nenhuma pauta encontrada.</p>'; return; }
+  let html = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:0.9rem;"><thead><tr style="background:var(--gov-cinza-claro);"><th style="padding:8px; text-align:left;">Título</th><th style="padding:8px; text-align:left;">Data Saída</th><th style="padding:8px; text-align:left;">Status</th><th style="padding:8px; text-align:left;">Ações</th></tr></thead><tbody>';
   pautas.forEach(p => {
-    const status = determinarStatus(p);
-    const cor = status.cor;
-    const label = status.label;
-
-    html += `<tr style="border-bottom: 1px solid var(--gov-borda);">
-      <td style="padding: 8px;">${p.Titulo_Producao_Email || 'Sem título'}</td>
-      <td style="padding: 8px;">${p.Data_Saida || ''}</td>
-      <td style="padding: 8px;"><span style="background: ${cor}; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold;">${label}</span></td>
-      <td style="padding: 8px;">
-        <button onclick="verPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; margin-right: 4px;">Ver</button>
-        <button onclick="editarPauta('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; background: var(--gov-azul-hover); margin-right: 4px;">Editar</button>
-        <button onclick="abrirRegistroRetorno('${p.ProducaoID}')" class="botao-principal" style="padding: 4px 12px; font-size: 0.75rem; background: var(--gov-verde);">🕐 Retorno</button>
-      </td>
-    </tr>`;
+    const st = determinarStatus(p);
+    html += '<tr style="border-bottom:1px solid var(--gov-borda);"><td style="padding:8px;">'+(p.Titulo_Producao_Email||'Sem título')+'</td><td style="padding:8px;">'+formatarData(p.Data_Saida)+'</td><td style="padding:8px;"><span style="background:'+st.cor+'; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold;">'+st.label+'</span></td><td style="padding:8px;"><button onclick="verPauta(\''+p.ProducaoID+'\')" class="botao-principal" style="padding:4px 10px; font-size:0.75rem; margin-right:4px; width:auto;">Ver</button><button onclick="editarPauta(\''+p.ProducaoID+'\')" class="botao-principal" style="padding:4px 10px; font-size:0.75rem; background:var(--gov-azul-hover); margin-right:4px; width:auto;">Editar</button><button onclick="abrirRegistroRetorno(\''+p.ProducaoID+'\')" class="botao-principal" style="padding:4px 10px; font-size:0.75rem; background:var(--gov-verde); width:auto;">🕐 Retorno</button></td></tr>';
   });
-
-  html += `</tbody></table>`;
+  html += '</tbody></table></div>';
   container.innerHTML = html;
 }
 
-// Função para determinar status e cor
-function determinarStatus(pauta) {
-  const agora = new Date();
-  const dataSaida = new Date(pauta.Data_Saida + 'T' + (pauta.Horario_Saida_Equipe || '00:00'));
-  
-  // 1. Se Producao_Realizada == "NÃO" -> Vermelho
-  if (pauta.Producao_Realizada === 'NÃO') {
-    return { cor: '#D32F2F', label: 'Cancelada' };
+function determinarStatus(p) {
+  if (p.Producao_Realizada === 'NÃO') return { cor: '#D32F2F', label: 'Cancelada' };
+  if (p.Producao_Realizada === 'SIM') {
+    const temVideo = p.Tem_Video === 'SIM', temFoto = p.Tem_Foto === 'SIM', temDigital = p.Tem_Digital === 'SIM';
+    const linkVideoOk = !temVideo || (p.Link_Video_Drive && String(p.Link_Video_Drive).trim() !== '');
+    const linkFotoOk = !temFoto || (p.Link_Foto_GooglePhotos && String(p.Link_Foto_GooglePhotos).trim() !== '');
+    const linkDigitalOk = !temDigital || (p.Link_Digital_RedeSocial && String(p.Link_Digital_RedeSocial).trim() !== '');
+    if (!linkVideoOk || !linkFotoOk || !linkDigitalOk) return { cor: '#F9A825', label: 'Aguardando links' };
+    return { cor: '#2E7D32', label: 'Aprovada' };
   }
-
-  // 2. Se data/hora de saída já passou -> Azul (em andamento)
-  if (dataSaida <= agora && pauta.Producao_Realizada !== 'SIM') {
-    return { cor: '#1976D2', label: 'Em andamento' };
+  const ds = parseDataBackend(p.Data_Saida), hs = parseDataBackend(p.Horario_Saida_Equipe);
+  if (ds && hs) {
+    const saida = new Date(ds.getFullYear(), ds.getMonth(), ds.getDate(), hs.getHours(), hs.getMinutes());
+    if (saida <= new Date()) return { cor: '#1976D2', label: 'Em andamento' };
   }
-
-  // 3. Se Producao_Realizada == "SIM" e faltam links -> Amarelo
-  if (pauta.Producao_Realizada === 'SIM') {
-    // Verificar links obrigatórios
-    const temVideo = pauta.Tem_Video === 'SIM';
-    const temFoto = pauta.Tem_Foto === 'SIM';
-    const temDigital = pauta.Tem_Digital === 'SIM';
-    
-    const linkVideoOk = !temVideo || (pauta.Link_Video_Drive && pauta.Link_Video_Drive.trim() !== '');
-    const linkFotoOk = !temFoto || (pauta.Link_Foto_GooglePhotos && pauta.Link_Foto_GooglePhotos.trim() !== '');
-    const linkDigitalOk = !temDigital || (pauta.Link_Digital_RedeSocial && pauta.Link_Digital_RedeSocial.trim() !== '');
-
-    if (!linkVideoOk || !linkFotoOk || !linkDigitalOk) {
-      return { cor: '#F9A825', label: 'Aguardando links' };
-    } else {
-      return { cor: '#2E7D32', label: 'Aprovada' };
-    }
-  }
-
-  // 4. Padrão: Laranja (pauta marcada, aguardando)
   return { cor: '#EF6C00', label: 'Marcada' };
 }
 
-/* =====================================================================
-   ESTE BLOCO ABRE O PAINEL DE VER/EDITAR PAUTA
-   ===================================================================== */
 let _pautaCarregadaAtual = null;
-
 async function verPauta(id) { await abrirPainelPauta(id, false); }
 async function editarPauta(id) { await abrirPainelPauta(id, true); }
 
 async function abrirPainelPauta(id, modoEdicao) {
-  const resposta = await chamarBackend('obterPauta', { token: pegarTokenSalvo(), pautaId: id });
-  if (!resposta.sucesso) { alert(resposta.mensagem); return; }
-
-  const p = resposta.pauta;
-  _pautaCarregadaAtual = p;
-
+  const r = await chamarBackend('obterPauta', { token: pegarTokenSalvo(), pautaId: id });
+  if (!r.sucesso) { alert(r.mensagem); return; }
+  const p = r.pauta; _pautaCarregadaAtual = p;
   document.getElementById('listaPautasContainer').style.display = 'none';
   document.getElementById('btnCriarPauta').style.display = 'none';
   document.getElementById('painelDetalhePauta').style.display = 'block';
   document.getElementById('tituloPainelPauta').textContent = modoEdicao ? '✏️ Editar Pauta' : '👁️ Ver Pauta';
-
-  const status = determinarStatus(p);
-  const statusEl = document.getElementById('statusPainelPauta');
-  statusEl.textContent = status.label;
-  statusEl.style.background = status.cor;
-
-  // Campos gerais (sempre só leitura, mesmo em modo edição — a estrutura da pauta
-  // em si não muda por aqui, só a parte de execução/entrega)
+  const st = determinarStatus(p);
+  const el = document.getElementById('statusPainelPauta');
+  el.textContent = st.label; el.style.background = st.cor;
   document.getElementById('dp-titulo').value = p.Titulo_Producao_Email || '';
   document.getElementById('dp-tipo-producao').value = p.Tipo_Producao || '';
-  document.getElementById('dp-data-saida').value = (p.Data_Saida || '') + ' às ' + (p.Horario_Saida_Equipe || '');
-  document.getElementById('dp-data-evento').value = (p.Data_Producao || '') + ' às ' + (p.Horario_Evento || '');
+  document.getElementById('dp-data-saida').value = formatarData(p.Data_Saida) + (p.Horario_Saida_Equipe ? ' às ' + formatarHora(p.Horario_Saida_Equipe) : '');
+  document.getElementById('dp-data-evento').value = formatarData(p.Data_Producao) + (p.Horario_Evento ? ' às ' + formatarHora(p.Horario_Evento) : '');
   document.getElementById('dp-local').value = [p.Cidade, p.Bairro, p.UF].filter(Boolean).join(' - ');
   document.getElementById('dp-motorista').value = p.Motorista || '';
-
   document.getElementById('dp-producao-realizada').value = p.Producao_Realizada || '';
   document.getElementById('dp-observacoes').value = p.Observacoes || '';
-
   document.getElementById('dp-nome-assessor').textContent = p.Assessor || '-';
   document.getElementById('dp-nome-video').textContent = p.Cinegrafista || '-';
   document.getElementById('dp-nome-foto').textContent = p.Fotografo || '-';
   document.getElementById('dp-nome-digital').textContent = p.Digital || '-';
-
   document.getElementById('dp-link-release').value = p.Link_Release_Assessor || '';
   document.getElementById('dp-link-video').value = p.Link_Video_Drive || '';
   document.getElementById('dp-link-foto').value = p.Link_Foto_GooglePhotos || '';
@@ -2294,25 +1150,17 @@ async function abrirPainelPauta(id, modoEdicao) {
   document.getElementById('dp-backup-video').checked = p.Backup_Rede_Video === 'SIM' || p.Backup_Rede_Video === true;
   document.getElementById('dp-backup-foto').checked = p.Backup_Rede_Foto === 'SIM' || p.Backup_Rede_Foto === true;
   document.getElementById('dp-backup-digital').checked = p.Backup_Rede_Digital === 'SIM' || p.Backup_Rede_Digital === true;
-
-  // Mostra cada bloco de link só se aquele papel existir na pauta (Tem_X = SIM)
   document.getElementById('dp-bloco-assessor').classList.toggle('oculto', p.Tem_Assessor !== 'SIM');
   document.getElementById('dp-bloco-video').classList.toggle('oculto', p.Tem_Video !== 'SIM');
   document.getElementById('dp-bloco-foto').classList.toggle('oculto', p.Tem_Foto !== 'SIM');
   document.getElementById('dp-bloco-digital').classList.toggle('oculto', p.Tem_Digital !== 'SIM');
-
-  // Habilita ou não os campos, conforme o modo
-  const camposEditaveis = ['dp-producao-realizada', 'dp-observacoes', 'dp-link-release', 'dp-link-video',
-    'dp-link-foto', 'dp-link-digital', 'dp-backup-video', 'dp-backup-foto', 'dp-backup-digital'];
-  camposEditaveis.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
+  const editaveis = ['dp-producao-realizada','dp-observacoes','dp-link-release','dp-link-video','dp-link-foto','dp-link-digital','dp-backup-video','dp-backup-foto','dp-backup-digital'];
+  editaveis.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
   document.getElementById('btnSalvarPainelPauta').classList.toggle('oculto', !modoEdicao);
-
   alternarCamposLinkPauta();
   document.getElementById('painelDetalhePauta').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ESTE BLOCO SÓ MOSTRA OS CAMPOS DE LINK/BACKUP SE Producao_Realizada = SIM
-// (mesmo que o papel exista na pauta, não faz sentido pedir link antes disso)
 function alternarCamposLinkPauta() {
   const realizada = document.getElementById('dp-producao-realizada').value === 'SIM';
   const p = _pautaCarregadaAtual || {};
@@ -2331,10 +1179,8 @@ function fecharPainelPauta() {
 
 async function salvarPainelPauta() {
   if (!_pautaCarregadaAtual) return;
-
-  const dadosAtualizados = {
-    token: pegarTokenSalvo(),
-    pautaId: _pautaCarregadaAtual.ProducaoID,
+  const dados = {
+    token: pegarTokenSalvo(), pautaId: _pautaCarregadaAtual.ProducaoID,
     Producao_Realizada: document.getElementById('dp-producao-realizada').value,
     Observacoes: document.getElementById('dp-observacoes').value,
     Link_Release_Assessor: document.getElementById('dp-link-release').value,
@@ -2345,122 +1191,84 @@ async function salvarPainelPauta() {
     Backup_Rede_Foto: document.getElementById('dp-backup-foto').checked ? 'SIM' : 'NÃO',
     Backup_Rede_Digital: document.getElementById('dp-backup-digital').checked ? 'SIM' : 'NÃO'
   };
-
-  const resposta = await chamarBackend('editarPauta', dadosAtualizados);
-  if (!resposta.sucesso) { alert('Erro ao salvar: ' + resposta.mensagem); return; }
-
-  alert('Pauta atualizada com sucesso!');
-  fecharPainelPauta();
-  carregarPautas();
+  const r = await chamarBackend('editarPauta', dados);
+  if (!r.sucesso) { alert('Erro ao salvar: ' + r.mensagem); return; }
+  alert('Pauta atualizada!'); fecharPainelPauta(); carregarPautas();
 }
 
-/* =====================================================================
-   ESTE BLOCO CONTROLA A CAIXINHA "REGISTRAR RETORNO DA EQUIPE"
-   Ao salvar, chama editarPauta no backend, que já recalcula sozinho
-   Pernoite/Quant_Pernoites/Valor_Pernoite/Quant_Refeicao/Valor_Refeicao.
-   ===================================================================== */
 let _pautaIdRetornoAtual = null;
-
 function abrirRegistroRetorno(pautaId) {
   _pautaIdRetornoAtual = pautaId;
   document.getElementById('caixaRegistroRetorno').style.display = 'block';
   document.getElementById('caixaRegistroRetorno').scrollIntoView({ behavior: 'smooth' });
 }
-
 function fecharRegistroRetorno() {
   _pautaIdRetornoAtual = null;
   document.getElementById('caixaRegistroRetorno').style.display = 'none';
   document.getElementById('retorno-data').value = '';
   document.getElementById('retorno-hora').value = '';
 }
-
 async function confirmarRegistroRetorno() {
   const data = document.getElementById('retorno-data').value;
   const hora = document.getElementById('retorno-hora').value;
-  if (!data || !hora) { alert('Preencha data e horário de retorno.'); return; }
-
-  const resposta = await chamarBackend('editarPauta', {
-    token: pegarTokenSalvo(),
-    pautaId: _pautaIdRetornoAtual,
-    Data_Retorno_Equipe: data,
-    Hora_Retorno_Equipe: hora
-  });
-
-  if (!resposta.sucesso) { alert('Erro: ' + resposta.mensagem); return; }
+  if (!data || !hora) { alert('Preencha data e horário.'); return; }
+  const r = await chamarBackend('editarPauta', { token: pegarTokenSalvo(), pautaId: _pautaIdRetornoAtual, Data_Retorno_Equipe: data, Hora_Retorno_Equipe: hora });
+  if (!r.sucesso) { alert('Erro: ' + r.mensagem); return; }
   alert('Retorno registrado! Diária/pernoite recalculados.');
-  fecharRegistroRetorno();
-  carregarPautas();
+  fecharRegistroRetorno(); carregarPautas();
 }
 
-/* =====================================================================
-   ESTE BLOCO ABRE/FECHA O FORMULÁRIO DE CRIAR PAUTA
-   ===================================================================== */
-document.getElementById('btnCriarPauta').addEventListener('click', function() {
+/* ================================================================
+   CRIAR NOVA PAUTA
+   ================================================================ */
+function abrirFormularioCriarPauta() {
   document.getElementById('listaPautasContainer').style.display = 'none';
-  this.style.display = 'none';
+  document.getElementById('btnCriarPauta').style.display = 'none';
   document.getElementById('formCriarPautaWrapper').style.display = 'block';
-});
+  document.getElementById('formCriarPautaWrapper').scrollIntoView({ behavior: 'smooth' });
+}
 
 function fecharFormCriarPauta() {
   document.getElementById('formCriarPauta').reset();
   document.getElementById('formCriarPautaWrapper').style.display = 'none';
   document.getElementById('listaPautasContainer').style.display = 'block';
   document.getElementById('btnCriarPauta').style.display = 'inline-block';
-  ['bloco-assessor','bloco-video','bloco-video-edicao','bloco-foto','bloco-digital'].forEach(id => {
-    document.getElementById(id).style.display = 'none';
-  });
+  ['bloco-assessor','bloco-video','bloco-video-edicao','bloco-foto','bloco-digital'].forEach(id => { document.getElementById(id).style.display = 'none'; });
 }
-
-// ESTE BLOCO MOSTRA/ESCONDE OS CAMPOS QUE SÓ APARECEM SE A RESPOSTA FOR "SIM"
 function alternarCampoCondicional(idSelect, idBloco) {
-  const valor = document.getElementById(idSelect).value;
-  document.getElementById(idBloco).style.display = (valor === 'SIM') ? 'block' : 'none';
-  if (idBloco === 'bloco-video') {
-    document.getElementById('bloco-video-edicao').style.display = (valor === 'SIM') ? 'block' : 'none';
-  }
+  const v = document.getElementById(idSelect).value;
+  document.getElementById(idBloco).style.display = (v === 'SIM') ? 'block' : 'none';
+  if (idBloco === 'bloco-video') document.getElementById('bloco-video-edicao').style.display = (v === 'SIM') ? 'block' : 'none';
 }
 
-// ESTE BLOCO MONTA OS CHECKBOXES DE EQUIPAMENTO A PARTIR DA LISTA FIXA
 const EQUIPAMENTOS_VIDEO = [
-  'Osmo FSB - 1', 'Osmo FSB - 2', 'Osmo FSB - 3', 'Drone FSB - 1', 'Drone FSB - 2',
-  'Mac Grafite', 'Mac Pérola', 'Maczinho', 'HDzinho A', 'HDzinho B', 'HDzinho C',
-  'Luz 1', 'Luz 2', 'Rebatedor mini 1', 'Rebatedor mini 2'
+  'Osmo FSB - 1','Osmo FSB - 2','Osmo FSB - 3','Drone FSB - 1','Drone FSB - 2',
+  'Mac Grafite','Mac Pérola','Maczinho','HDzinho A','HDzinho B','HDzinho C',
+  'Luz 1','Luz 2','Rebatedor mini 1','Rebatedor mini 2'
 ];
 (function montarGradeEquipamento() {
-  const grade = document.getElementById('gradeEquipamento');
-  if (!grade) return;
-  grade.innerHTML = EQUIPAMENTOS_VIDEO.map(nome =>
-    `<label><input type="checkbox" value="${nome}" class="chk-equipamento"> ${nome}</label>`
-  ).join('');
+  const g = document.getElementById('gradeEquipamento');
+  if (!g) return;
+  g.innerHTML = EQUIPAMENTOS_VIDEO.map(n => '<label><input type="checkbox" value="'+n+'" class="chk-equipamento"> '+n+'</label>').join('');
 })();
 
-// ESTE BLOCO FAZ A BUSCA DE ENDEREÇO PELO NOMINATIM (OpenStreetMap, gratuito)
 let timeoutBuscaEndereco = null;
 document.getElementById('pauta-endereco').addEventListener('input', function() {
   clearTimeout(timeoutBuscaEndereco);
   const texto = this.value;
-  const caixaSugestoes = document.getElementById('sugestoesEndereco');
-  if (texto.length < 5) { caixaSugestoes.innerHTML = ''; return; }
-
-  // Aguarda meio segundo sem digitar antes de buscar (evita estourar o limite de 1 req/seg do Nominatim)
+  const caixa = document.getElementById('sugestoesEndereco');
+  if (texto.length < 5) { caixa.innerHTML = ''; return; }
   timeoutBuscaEndereco = setTimeout(async () => {
     try {
       const url = 'https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=br&limit=5&q=' + encodeURIComponent(texto + ', Rio de Janeiro');
-      const resposta = await fetch(url, { headers: { 'Accept-Language': 'pt-BR' } });
-      const resultados = await resposta.json();
-
-      if (!resultados.length) { caixaSugestoes.innerHTML = '<div>Nenhum endereço encontrado</div>'; return; }
-
-      caixaSugestoes.innerHTML = resultados.map((r, i) =>
-        `<div onclick="selecionarEndereco(${i})">${r.display_name}</div>`
-      ).join('');
-      window._sugestoesEnderecoAtuais = resultados; // guarda pra selecionarEndereco() usar
-    } catch (erro) {
-      caixaSugestoes.innerHTML = '<div>Erro ao buscar endereço</div>';
-    }
+      const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR' } });
+      const resultados = await res.json();
+      if (!resultados.length) { caixa.innerHTML = '<div>Nenhum endereço encontrado</div>'; return; }
+      caixa.innerHTML = resultados.map((r, i) => '<div onclick="selecionarEndereco('+i+')">'+r.display_name+'</div>').join('');
+      window._sugestoesEnderecoAtuais = resultados;
+    } catch (e) { caixa.innerHTML = '<div>Erro ao buscar</div>'; }
   }, 500);
 });
-
 function selecionarEndereco(indice) {
   const r = window._sugestoesEnderecoAtuais[indice];
   const end = r.address || {};
@@ -2471,26 +1279,19 @@ function selecionarEndereco(indice) {
   document.getElementById('sugestoesEndereco').innerHTML = '';
 }
 
-// ESTE BLOCO CONFERE, ASSIM QUE O USUÁRIO SAI DO CAMPO DE TÍTULO, SE JÁ EXISTE PAUTA IGUAL
 document.getElementById('pauta-titulo-email').addEventListener('blur', async function() {
   const titulo = this.value.trim();
   const aviso = document.getElementById('avisoTituloDuplicado');
   if (!titulo) { aviso.style.display = 'none'; return; }
-
-  const resposta = await chamarBackend('verificarTituloPauta', { token: pegarTokenSalvo(), titulo });
-  aviso.style.display = (resposta.sucesso && resposta.duplicado) ? 'block' : 'none';
-  if (resposta.duplicado) {
-    aviso.textContent = '⚠️ Essa pauta já foi criada por ' + resposta.criadoPor + '.';
-  }
+  const r = await chamarBackend('verificarTituloPauta', { token: pegarTokenSalvo(), titulo });
+  aviso.style.display = (r.sucesso && r.duplicado) ? 'block' : 'none';
+  if (r.duplicado) aviso.textContent = '⚠️ Essa pauta já foi criada por ' + r.criadoPor + '.';
 });
 
-// ESTE BLOCO ABRE O ENVIO DA PAUTA PRA PLANILHA
-document.getElementById('formCriarPauta').addEventListener('submit', async function(evento) {
-  evento.preventDefault();
-
-  const equipamentosMarcados = Array.from(document.querySelectorAll('.chk-equipamento:checked')).map(c => c.value).join(', ');
-
-  const dadosPauta = {
+document.getElementById('formCriarPauta').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const equipamentos = Array.from(document.querySelectorAll('.chk-equipamento:checked')).map(c => c.value).join(', ');
+  const dados = {
     token: pegarTokenSalvo(),
     Tipo_Producao: document.getElementById('pauta-tipo-producao').value,
     Tipo_Video: document.getElementById('pauta-tipo-video').value,
@@ -2516,21 +1317,24 @@ document.getElementById('formCriarPauta').addEventListener('submit', async funct
     Fotografo: document.getElementById('pauta-fotografo').value,
     Tem_Digital: document.getElementById('pauta-tem-digital').value,
     Digital: document.getElementById('pauta-digital').value,
-    Equipamento_Usado_Video: equipamentosMarcados,
+    Equipamento_Usado_Video: equipamentos,
     Observacoes: document.getElementById('pauta-observacoes').value,
     Producao_Realizada: ''
   };
-
-  const resposta = await chamarBackend('criarPauta', dadosPauta);
-  if (!resposta.sucesso) {
-    alert('Erro ao criar pauta: ' + resposta.mensagem);
-    return;
-  }
-  alert('Pauta criada com sucesso!');
-  fecharFormCriarPauta();
+  const r = await chamarBackend('criarPauta', dados);
+  if (!r.sucesso) { alert('Erro ao criar pauta: ' + r.mensagem); return; }
+  alert('Pauta criada!'); 
+  fecharFormCriarPauta(); 
   carregarPautas();
 });
-  
+
+/* ================================================================
+   INICIALIZAÇÃO
+   ================================================================ */
+(function iniciar() {
+  if (pegarTokenSalvo() && pegarUsuarioSalvo()) iniciarPainelPrincipal();
+  else mostrarTela('telaLogin');
+})();
 </script>
 </body>
 </html>
