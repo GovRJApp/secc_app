@@ -50,7 +50,7 @@
   .cartao { background: #FFF; border-radius: var(--raio-card); border: 1px solid var(--gov-borda); padding: 20px; margin-bottom: 20px; box-shadow: var(--sombra-card); position: relative; }
   .cartao::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gov-azul); border-radius: var(--raio-card) 0 0 var(--raio-card); }
 
-  /* CARD PERFIL & MENU */
+  /* CARD PERFIL */
   .card-painel { background: #fff; border-radius: 10px; padding: 20px; max-width: 850px; margin: 16px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-top: 5px solid #005696; font-family: var(--fonte-oficial); position: relative; }
   .perfil-carteira { border-top: 5px solid var(--gov-azul); }
 
@@ -61,6 +61,7 @@
   .dropdown-hamburguer a:hover { background: var(--gov-cinza-claro); color: var(--gov-azul); }
 
   .perfil-cabecalho { display: flex; align-items: center; gap: 16px; padding-right: 40px; margin-bottom: 12px; }
+  .perfil-avatar { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .perfil-avatar .avatar-wrapper { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gov-azul); background: #f0f2f5; flex-shrink: 0; }
   .perfil-avatar .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
   
@@ -82,7 +83,14 @@
   .btn-cancelar-perfil { background: var(--gov-erro); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; }
   .btn-foto-upload { padding: 4px 10px; font-size: 0.75rem; border: 1px solid var(--gov-azul); background: #eef6ff; color: var(--gov-azul); border-radius: 4px; cursor: pointer; margin-top: 4px; }
 
-  /* CARDS RESTRUCTURADOS PARA MINHAS PAUTAS NO CELULAR */
+  /* ESTRUTURA ORGANIZACIONAL VISUAL */
+  .item-secretaria { padding: 12px; background: #FFF; border: 1px solid var(--gov-borda); border-left: 4px solid var(--gov-azul); border-radius: 8px; margin-bottom: 8px; font-size: 15px; color: var(--gov-azul-escuro); cursor: pointer; }
+  .item-subsecretaria { margin: 6px 0 6px 16px; padding: 10px; border-left: 4px solid var(--gov-verde); background: #F8FAFC; border-radius: 6px; font-size: 14px; cursor: pointer; }
+  .item-nucleo { margin: 4px 0 4px 32px; padding: 8px; border-left: 3px solid var(--gov-dourado); background: #FFF; border-radius: 6px; font-size: 13px; color: var(--gov-texto-suave); cursor: pointer; }
+  .item-profissional-clicavel { padding: 6px 12px 6px 32px; font-size: 13px; cursor: pointer; border-radius: 6px; }
+  .item-profissional-clicavel:hover { background: #EAF1FA; }
+
+  /* CARDS PAUTAS */
   .grid-pautas-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
   .card-item-pauta { background: #FFF; border: 1px solid var(--gov-borda); border-radius: 10px; padding: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 10px; border-left: 5px solid var(--gov-azul); }
   .card-pauta-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
@@ -398,8 +406,7 @@
 
     </div>
 
-    <!-- ESTRUTURA ORGANIZACIONAL E DEMAIS CARTÕES PERMANECEM MANTIDOS -->
-    <div class="cartao" id="cartaoEstrutura">
+    <div class="cartao oculto" id="cartaoEstrutura">
       <h2>Estrutura Organizacional Cadastrada</h2>
       <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
       <div class="lista-estrutura" id="listaEstrutura"><p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p></div>
@@ -412,7 +419,7 @@
 /* ================================================================
    CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
    ================================================================ */
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycby22pfXL_8TCSMzBMG7F3Cac3mc3NXzKdYBpnOB5ihCAgntjpFsAIZE-4aral9VClIW/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbytaxX_ZYmX3NX5T7vp-w4mwf5U3fBI2WbwpQlorZYPwVkwS1F5VoVgmONLmAZkFx6y/execc";
 let dadosEstruturaGlobal = null;
 let _nivelUsuarioLogado = '';
 const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
@@ -534,11 +541,85 @@ function executarAcaoMenu(opcao, event) {
 
 async function iniciarPainelPrincipal() {
   const u = pegarUsuarioSalvo();
+  if (!u) return;
   _nivelUsuarioLogado = u.nivel;
   mostrarTela('telaPrincipal'); window.scrollTo(0,0);
   document.getElementById('nomeUsuarioLogado').textContent = u.nome;
-  await carregarEstrutura();
+
+  const NIVEIS_ESTRUTURA = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'];
+  const exibeEstrutura = NIVEIS_ESTRUTURA.includes(u.nivel);
+  
+  const cartEstr = document.getElementById('cartaoEstrutura');
+  if (cartEstr) {
+    if (exibeEstrutura) {
+      cartEstr.classList.remove('oculto');
+      await carregarEstrutura();
+    } else {
+      cartEstr.classList.add('oculto');
+    }
+  }
+
   await carregarPerfilNaTela();
+}
+
+/* ================================================================
+   ESTRUTURA ORGANIZACIONAL
+   ================================================================ */
+async function carregarEstrutura() {
+  const r = await chamarBackend('listarEstrutura', { token: pegarTokenSalvo() });
+  const container = document.getElementById('listaEstrutura');
+  if (!r.sucesso) { if (container) container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
+  dadosEstruturaGlobal = r;
+
+  if (container) {
+    if (!(r.secretarias||[]).length) { container.innerHTML = '<p>Nenhuma secretaria cadastrada.</p>'; return; }
+    let html = '';
+    r.secretarias.forEach((sec, iSec) => {
+      const nucsDir = (r.nucleos||[]).filter(n => n.SecretariaID === sec.SecretariaID && !n.SubsecretariaID);
+      const subs = (r.subsecretarias||[]).filter(sub => sub.SecretariaID === sec.SecretariaID);
+      html += '<div><div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao(\'filhos-sec-'+iSec+'\',this)"><span class="acordeao-seta">▶</span> <strong>'+sec.Nome+'</strong> ('+sec.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sec-'+iSec+'">';
+      nucsDir.forEach(n => { html += renderizarItemNucleo(n); });
+      subs.forEach((sub, iSub) => {
+        const nucsSub = (r.nucleos||[]).filter(n => n.SubsecretariaID === sub.SubsecretariaID);
+        html += '<div class="acordeao-subsecretaria"><div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao(\'filhos-sub-'+iSec+'-'+iSub+'\',this)"><span class="acordeao-seta">▶</span> 📂 '+sub.Nome+' ('+sub.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sub-'+iSec+'-'+iSub+'">';
+        nucsSub.forEach(n => { html += renderizarItemNucleo(n, 24); });
+        if (!nucsSub.length) html += '<div class="item-nucleo" style="margin-left:24px; color:var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>';
+        html += '</div></div>';
+      });
+      html += '</div></div>';
+    });
+    container.innerHTML = html;
+  }
+}
+
+function renderizarItemNucleo(nucleo, margem) {
+  const idContainer = 'profissionais-nucleo-' + nucleo.NucleoID;
+  const estilo = margem ? ' style="margin-left:'+margem+'px;"' : '';
+  return '<div'+estilo+'><div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo(\''+nucleo.NucleoID+'\', \''+(nucleo.Nome||'').replace(/'/g,"\\'")+'\', \''+idContainer+'\', this)"><span class="acordeao-seta">▶</span> 📌 Núcleo: '+nucleo.Nome+'</div><div class="acordeao-filhos oculto" id="'+idContainer+'"></div></div>';
+}
+
+async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalho) {
+  const container = document.getElementById(idContainer);
+  const seta = cabecalho.querySelector('.acordeao-seta');
+  const abrir = container.classList.contains('oculto');
+  container.classList.toggle('oculto', !abrir);
+  if (seta) seta.textContent = abrir ? '▼' : '▶';
+  if (!abrir || container.dataset.carregado === '1') return;
+  container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Carregando...</div>';
+  const r = await chamarBackend('listarProfissionaisDoNucleo', { token: pegarTokenSalvo(), nucleoId });
+  if (!r.sucesso) { container.innerHTML = '<div style="padding:6px 12px; color:#B3261E; font-size:12px;">'+r.mensagem+'</div>'; return; }
+  const profs = r.profissionais || [];
+  if (!profs.length) container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Nenhum profissional cadastrado.</div>';
+  else container.innerHTML = profs.map(p => '<div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario(\''+p.id+'\', \''+(p.nome||'').replace(/'/g,"\\'")+'\')">👤 '+p.nome+' <span style="color:var(--gov-texto-suave); font-size:12px;">— '+(p.cargo||p.nivel)+'</span></div>').join('');
+  container.dataset.carregado = '1';
+}
+
+function alternarAcordeao(idFilhos, cabecalho) {
+  const filhos = document.getElementById(idFilhos);
+  const seta = cabecalho.querySelector('.acordeao-seta');
+  const abrir = filhos.classList.contains('oculto');
+  filhos.classList.toggle('oculto', !abrir);
+  if (seta) seta.textContent = abrir ? '▼' : '▶';
 }
 
 /* ================================================================
@@ -588,8 +669,14 @@ function carregarPreviewFoto(event) {
 function preencherCartaoPerfil(p) {
   _usuarioIdAlvoPerfil = p.usuarioId || null;
   document.getElementById('perfil-nome-exibicao').textContent = p.nome || 'NOME';
-  document.getElementById('perfil-cargo-exibicao').textContent = p.cargo || 'Cargo';
-  document.getElementById('img-avatar-preview').src = p.foto || FOTO_PADRAO_SVG;
+  document.getElementById('perfil-cargo-exibicao').textContent = p.cargo || p.nivel || 'Cargo';
+  
+  if (p.foto && String(p.foto).trim() !== '') {
+    document.getElementById('img-avatar-preview').src = p.foto;
+  } else {
+    document.getElementById('img-avatar-preview').src = FOTO_PADRAO_SVG;
+  }
+
   document.getElementById('perfil-nome-completo').value = p.nomeCompleto || '';
   document.getElementById('perfil-id-funcional').value = p.idFuncional || '';
   document.getElementById('perfil-rg').value = p.rg || '';
@@ -604,10 +691,25 @@ function preencherCartaoPerfil(p) {
 }
 
 async function carregarPerfilNaTela() {
+  _usuarioIdAlvoPerfil = null; // Reseta usuário alvo para apontar ao próprio perfil logado
+  document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
   const r = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
   if (!r.sucesso) return;
   preencherCartaoPerfil(r.perfil);
   cancelarEdicaoPerfil();
+}
+
+async function carregarPerfilDeOutroUsuario(usuarioId, nomeExibido) {
+  const r = await chamarBackend('obterPerfilPorId', { token: pegarTokenSalvo(), usuarioIdAlvo: usuarioId });
+  if (!r.sucesso) { alert(r.mensagem); return; }
+  preencherCartaoPerfil(r.perfil);
+  cancelarEdicaoPerfil();
+  document.getElementById('nomePerfilDeOutro').textContent = nomeExibido || r.perfil.nome;
+  document.getElementById('avisoPerfilDeOutro').classList.remove('oculto');
+  document.getElementById('secaoPautas').style.display = 'none';
+  document.getElementById('perfilCorpo').style.display = 'block';
+  document.getElementById('btnSetaRecolher').textContent = '∨';
+  document.getElementById('secao-perfil-profissional').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function salvarPerfilProfissional() {
@@ -622,13 +724,18 @@ async function salvarPerfilProfissional() {
     numeroSapato: document.getElementById('perfil-numero-sapato').value,
     manequim: document.getElementById('perfil-manequim').value
   };
+  if (_usuarioIdAlvoPerfil) payload.usuarioIdAlvo = _usuarioIdAlvoPerfil;
+
   const r = await chamarBackend('salvarPerfil', payload);
-  if (r.sucesso) { alert("Perfil salvo!"); await carregarPerfilNaTela(); }
-  else alert("Erro: " + r.mensagem);
+  if (r.sucesso) { 
+    alert("Perfil salvo!"); 
+    if (_usuarioIdAlvoPerfil) await carregarPerfilDeOutroUsuario(_usuarioIdAlvoPerfil, payload.nomeExibicao);
+    else await carregarPerfilNaTela(); 
+  } else alert("Erro: " + r.mensagem);
 }
 
 /* ================================================================
-   MINHAS PAUTAS (LAYOUT MOBILE EM CARDS E REGRAS DE STATUS)
+   MINHAS PAUTAS
    ================================================================ */
 async function carregarPautas() {
   const container = document.getElementById('listaPautasContainer');
@@ -736,7 +843,6 @@ async function abrirPainelPauta(id, modoEdicao) {
   const editaveisCampos = ['dp-producao-realizada','dp-observacoes','dp-link-release','dp-link-video','dp-link-foto','dp-link-digital','dp-backup-video','dp-backup-foto','dp-backup-digital'];
   editaveisCampos.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
 
-  // Regra especial para Data/Hora de Retorno no painel de edição
   document.getElementById('dp-data-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
   document.getElementById('dp-hora-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
 
