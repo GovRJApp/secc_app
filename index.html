@@ -196,8 +196,8 @@
           <button type="button" id="btn-alterar-foto" class="btn-foto-upload oculto" onclick="document.getElementById('input-upload-foto').click()">📷 Alterar Foto</button>
         </div>
         <div class="perfil-titulo">
-          <div class="perfil-nome" id="perfil-nome-exibicao">PAMPLONA</div>
-          <div class="perfil-cargo" id="perfil-cargo-exibicao">Cinegrafista</div>
+          <div class="perfil-nome" id="perfil-nome-exibicao">Carregando perfil...</div>
+          <div class="perfil-cargo" id="perfil-cargo-exibicao">Aguarde</div>
         </div>
       </div>
 
@@ -409,6 +409,37 @@
     <div class="cartao oculto" id="cartaoEstrutura">
       <h2>Estrutura Organizacional Cadastrada</h2>
       <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
+
+      <div class="secao-form-pauta oculto" id="formNovaSecretaria">
+        <h3>➕ Nova Secretaria</h3>
+        <div class="grid-form-pauta">
+          <div class="campo-group"><label for="nova-secretaria-nome">Nome</label><input type="text" id="nova-secretaria-nome" placeholder="Ex: Secretaria de Comunicação"></div>
+          <div class="campo-group"><label for="nova-secretaria-sigla">Sigla</label><input type="text" id="nova-secretaria-sigla" placeholder="Ex: SECC"></div>
+        </div>
+        <button type="button" class="botao-principal" style="width:auto; margin-top:14px;" onclick="criarSecretariaAction()">Criar Secretaria</button>
+      </div>
+
+      <div class="secao-form-pauta oculto" id="formNovaSubsecretaria">
+        <h3>➕ Nova Subsecretaria</h3>
+        <div class="grid-form-pauta">
+          <div class="campo-group"><label for="nova-subsecretaria-secretaria">Secretaria</label><select id="nova-subsecretaria-secretaria"><option value="">Selecione a secretaria...</option></select></div>
+          <div class="campo-group"><label for="nova-subsecretaria-nome">Nome</label><input type="text" id="nova-subsecretaria-nome" placeholder="Ex: Subsecretaria de Produção"></div>
+          <div class="campo-group"><label for="nova-subsecretaria-sigla">Sigla</label><input type="text" id="nova-subsecretaria-sigla" placeholder="Ex: SUBCOM"></div>
+        </div>
+        <button type="button" class="botao-principal" style="width:auto; margin-top:14px;" onclick="criarSubsecretariaAction()">Criar Subsecretaria</button>
+      </div>
+
+      <div class="secao-form-pauta oculto" id="formNovoNucleo">
+        <h3>➕ Novo Núcleo</h3>
+        <div class="grid-form-pauta">
+          <div class="campo-group"><label for="novo-nucleo-secretaria">Secretaria</label><select id="novo-nucleo-secretaria" onchange="atualizarSelectSubsecretariasNucleo()"><option value="">Selecione a secretaria...</option></select></div>
+          <div class="campo-group"><label for="novo-nucleo-subsecretaria">Subsecretaria (opcional)</label><select id="novo-nucleo-subsecretaria"><option value="">Núcleo direto da secretaria (sem subsecretaria)</option></select></div>
+          <div class="campo-group"><label for="novo-nucleo-nome">Nome do Núcleo</label><input type="text" id="novo-nucleo-nome" placeholder="Ex: Núcleo de Vídeo"></div>
+          <div class="campo-group"><label for="novo-nucleo-agenda">Link da Agenda Google (opcional)</label><input type="text" id="novo-nucleo-agenda" placeholder="https://calendar.google.com/..."></div>
+        </div>
+        <button type="button" class="botao-principal" style="width:auto; margin-top:14px;" onclick="criarNucleoAction()">Criar Núcleo</button>
+      </div>
+
       <div class="lista-estrutura" id="listaEstrutura"><p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p></div>
     </div>
 
@@ -419,7 +450,7 @@
 /* ================================================================
    CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
    ================================================================ */
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbyu16IHjjAkN4CwZW6TFswJ3kUyX30IG3n-18xsML14J2hv-HsVsre8RzKj_zmZtN91/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxt0_i1F9lpqeyZasdQfQJCMth4IYnn5e3dgkiTWK_f5gEHF8XLg0mXYwaTN6Rmz1Jt/exec";
 let dadosEstruturaGlobal = null;
 let _nivelUsuarioLogado = '';
 const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
@@ -559,6 +590,14 @@ async function iniciarPainelPrincipal() {
     }
   }
 
+  // Poderes de criação de estrutura por nível: só ADMIN cria Secretaria/Subsecretaria;
+  // ADMIN, SECRETARIO e SUBSECRETARIO podem criar Núcleo (dentro da própria secretaria).
+  const ehAdmin = u.nivel === 'ADMIN';
+  const podeCriarNucleo = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(u.nivel);
+  document.getElementById('formNovaSecretaria')?.classList.toggle('oculto', !ehAdmin);
+  document.getElementById('formNovaSubsecretaria')?.classList.toggle('oculto', !ehAdmin);
+  document.getElementById('formNovoNucleo')?.classList.toggle('oculto', !podeCriarNucleo);
+
   await carregarPerfilNaTela();
 }
 
@@ -590,6 +629,91 @@ async function carregarEstrutura() {
     });
     container.innerHTML = html;
   }
+  preencherSelectsEstrutura();
+}
+
+function preencherSelectsEstrutura() {
+  const usuario = pegarUsuarioSalvo();
+  const secretarias = (dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) || [];
+  const optsSecretarias = '<option value="">Selecione a secretaria...</option>' +
+    secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+' ('+s.Sigla+')</option>').join('');
+
+  const selSecSub = document.getElementById('nova-subsecretaria-secretaria');
+  if (selSecSub) selSecSub.innerHTML = optsSecretarias;
+
+  const selSecNuc = document.getElementById('novo-nucleo-secretaria');
+  if (selSecNuc) {
+    if (usuario && usuario.nivel !== 'ADMIN') {
+      // Secretário/Subsecretário só criam núcleo dentro da própria secretaria: trava a seleção.
+      const propria = secretarias.find(s => s.SecretariaID === usuario.secretariaId);
+      selSecNuc.innerHTML = propria ? '<option value="'+propria.SecretariaID+'">'+propria.Nome+' ('+propria.Sigla+')</option>' : optsSecretarias;
+      selSecNuc.disabled = true;
+    } else {
+      selSecNuc.innerHTML = optsSecretarias;
+      selSecNuc.disabled = false;
+    }
+    atualizarSelectSubsecretariasNucleo();
+  }
+}
+
+function atualizarSelectSubsecretariasNucleo() {
+  const usuario = pegarUsuarioSalvo();
+  const secId = document.getElementById('novo-nucleo-secretaria')?.value;
+  const selSub = document.getElementById('novo-nucleo-subsecretaria');
+  if (!selSub) return;
+  const subs = ((dadosEstruturaGlobal && dadosEstruturaGlobal.subsecretarias) || []).filter(s => s.SecretariaID === secId);
+  const optsSubs = '<option value="">Núcleo direto da secretaria (sem subsecretaria)</option>' +
+    subs.map(s => '<option value="'+s.SubsecretariaID+'">'+s.Nome+' ('+s.Sigla+')</option>').join('');
+  if (usuario && usuario.nivel === 'SUBSECRETARIO') {
+    // Subsecretário só cria núcleo dentro da própria subsecretaria: trava a seleção.
+    const propria = subs.find(s => s.SubsecretariaID === usuario.subsecretariaId);
+    selSub.innerHTML = propria ? '<option value="'+propria.SubsecretariaID+'">'+propria.Nome+' ('+propria.Sigla+')</option>' : optsSubs;
+    selSub.disabled = true;
+  } else {
+    selSub.innerHTML = optsSubs;
+    selSub.disabled = false;
+  }
+}
+
+async function criarSecretariaAction() {
+  const nome = document.getElementById('nova-secretaria-nome').value.trim();
+  const sigla = document.getElementById('nova-secretaria-sigla').value.trim();
+  if (!nome) { alert('Informe o nome da secretaria.'); return; }
+  const r = await chamarBackend('criarSecretaria', { token: pegarTokenSalvo(), nome, sigla });
+  if (!r.sucesso) { alert('Erro: ' + r.mensagem); return; }
+  alert('Secretaria criada com sucesso!');
+  document.getElementById('nova-secretaria-nome').value = '';
+  document.getElementById('nova-secretaria-sigla').value = '';
+  await carregarEstrutura();
+}
+
+async function criarSubsecretariaAction() {
+  const secretariaId = document.getElementById('nova-subsecretaria-secretaria').value;
+  const nome = document.getElementById('nova-subsecretaria-nome').value.trim();
+  const sigla = document.getElementById('nova-subsecretaria-sigla').value.trim();
+  if (!secretariaId) { alert('Selecione a secretaria.'); return; }
+  if (!nome) { alert('Informe o nome da subsecretaria.'); return; }
+  const r = await chamarBackend('criarSubsecretaria', { token: pegarTokenSalvo(), secretariaId, nome, sigla });
+  if (!r.sucesso) { alert('Erro: ' + r.mensagem); return; }
+  alert('Subsecretaria criada com sucesso!');
+  document.getElementById('nova-subsecretaria-nome').value = '';
+  document.getElementById('nova-subsecretaria-sigla').value = '';
+  await carregarEstrutura();
+}
+
+async function criarNucleoAction() {
+  const secretariaId = document.getElementById('novo-nucleo-secretaria').value;
+  const subsecretariaId = document.getElementById('novo-nucleo-subsecretaria').value;
+  const nome = document.getElementById('novo-nucleo-nome').value.trim();
+  const agendaGoogleUrl = document.getElementById('novo-nucleo-agenda').value.trim();
+  if (!secretariaId) { alert('Selecione a secretaria.'); return; }
+  if (!nome) { alert('Informe o nome do núcleo.'); return; }
+  const r = await chamarBackend('criarNucleo', { token: pegarTokenSalvo(), secretariaId, subsecretariaId, nome, agendaGoogleUrl });
+  if (!r.sucesso) { alert('Erro: ' + r.mensagem); return; }
+  alert('Núcleo criado com sucesso!');
+  document.getElementById('novo-nucleo-nome').value = '';
+  document.getElementById('novo-nucleo-agenda').value = '';
+  await carregarEstrutura();
 }
 
 function renderizarItemNucleo(nucleo, margem) {
@@ -690,11 +814,19 @@ function preencherCartaoPerfil(p) {
   document.getElementById('perfil-manequim').value = p.manequim || '';
 }
 
-async function carregarPerfilNaTela() {
+async function carregarPerfilNaTela(tentativas) {
+  tentativas = tentativas || 0;
   _usuarioIdAlvoPerfil = null; // Reseta usuário alvo para apontar ao próprio perfil logado
   document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
   const r = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
-  if (!r.sucesso) return;
+  if (!r.sucesso) {
+    // Nunca deixa o cartão com dados desatualizados/errados na tela: tenta de novo automaticamente
+    // e, se persistir, avisa claramente em vez de ficar em silêncio (era a causa do Admin ver o perfil de outra pessoa).
+    if (tentativas < 2) { setTimeout(() => carregarPerfilNaTela(tentativas + 1), 1200); return; }
+    document.getElementById('perfil-nome-exibicao').textContent = 'Erro ao carregar seu perfil';
+    document.getElementById('perfil-cargo-exibicao').innerHTML = '<a href="#" onclick="carregarPerfilNaTela(); return false;" style="color:var(--gov-erro);">'+(r.mensagem||'Sessão inválida')+' — toque para tentar novamente</a>';
+    return;
+  }
   preencherCartaoPerfil(r.perfil);
   cancelarEdicaoPerfil();
 }
