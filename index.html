@@ -184,6 +184,7 @@
           <a href="#" onclick="executarAcaoMenu('editar', event)">✏️ Editar Perfil</a>
           <a href="#" onclick="executarAcaoMenu('pautas', event)">📋 Minhas Pautas</a>
           <a href="#" onclick="executarAcaoMenu('criarPauta', event)">➕ Criar Pautas</a>
+          <a href="#" id="linkCadastrarProfissional" class="oculto" onclick="executarAcaoMenu('cadastrarProfissional', event)">👤+ Cadastrar Profissional</a>
         </div>
       </div>
 
@@ -404,6 +405,97 @@
         </div>
       </div>
 
+      <div id="secaoCadastroProfissional" style="display: none; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h2 style="margin:0; color: var(--gov-azul-escuro);">Cadastrar Novo Profissional</h2>
+        </div>
+
+        <div class="secao-form-pauta">
+          <h3>Acesso e Lotação</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="novo-prof-email">E-mail*</label><input type="email" id="novo-prof-email" placeholder="nome@rio.rj.gov.br"></div>
+            <div class="campo-group"><label for="novo-prof-nivel">Nível de Acesso*</label>
+              <select id="novo-prof-nivel">
+                <option value="PROFISSIONAL">Profissional</option>
+                <option value="SUBCOORDENADOR">Subcoordenador</option>
+                <option value="COORDENADOR">Coordenador</option>
+                <option value="SUBSECRETARIO">Subsecretário</option>
+                <option value="SECRETARIO">Secretário</option>
+                <option value="ADMIN">Administrador</option>
+              </select>
+            </div>
+            <div class="campo-group"><label for="novo-prof-secretaria">Secretaria</label><select id="novo-prof-secretaria" onchange="atualizarSelectsCadastroProfissional()"><option value="">Nenhuma</option></select></div>
+            <div class="campo-group"><label for="novo-prof-subsecretaria">Subsecretaria</label><select id="novo-prof-subsecretaria" onchange="atualizarSelectNucleoCadastroProfissional()"><option value="">Nenhuma</option></select></div>
+            <div class="campo-group"><label for="novo-prof-nucleo">Núcleo</label><select id="novo-prof-nucleo"><option value="">Nenhum</option></select></div>
+            <div class="campo-group"><label for="novo-prof-nome-exibicao">Nome de Exibição*</label><input type="text" id="novo-prof-nome-exibicao" placeholder="Como vai aparecer no app"></div>
+            <div class="campo-group"><label for="novo-prof-cargo">Cargo</label><input type="text" id="novo-prof-cargo" placeholder="Ex: Cinegrafista"></div>
+          </div>
+        </div>
+
+        <div class="secao-form-pauta">
+          <h3>Dados Pessoais</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="novo-prof-nome-completo">Nome Completo*</label><input type="text" id="novo-prof-nome-completo"></div>
+            <div class="campo-group"><label for="novo-prof-nome-mae">Nome da Mãe</label><input type="text" id="novo-prof-nome-mae"></div>
+            <div class="campo-group"><label for="novo-prof-nascimento">Data de Nascimento</label><input type="date" id="novo-prof-nascimento"></div>
+            <div class="campo-group"><label for="novo-prof-telefone">Telefone</label><input type="text" id="novo-prof-telefone" placeholder="(21) 90000-0000"></div>
+            <div class="campo-group"><label for="novo-prof-registro">Registro Profissional</label><input type="text" id="novo-prof-registro"></div>
+          </div>
+        </div>
+
+        <div class="secao-form-pauta">
+          <h3>Documentos</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="novo-prof-id-funcional">ID Funcional</label><input type="text" id="novo-prof-id-funcional"></div>
+            <div class="campo-group"><label for="novo-prof-rg">RG</label><input type="text" id="novo-prof-rg"></div>
+            <div class="campo-group"><label for="novo-prof-orgao-emissor">Órgão Emissor</label><input type="text" id="novo-prof-orgao-emissor"></div>
+            <div class="campo-group"><label for="novo-prof-data-expedicao">Data de Expedição</label><input type="date" id="novo-prof-data-expedicao"></div>
+            <div class="campo-group"><label for="novo-prof-cpf">CPF</label><input type="text" id="novo-prof-cpf"></div>
+          </div>
+        </div>
+
+        <div class="secao-form-pauta">
+          <h3>Vínculo</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="novo-prof-empregador">Empregador</label><input type="text" id="novo-prof-empregador" placeholder="Ex: NOMEADO, FSB..."></div>
+            <div class="campo-group"><label for="novo-prof-admissao">Data de Admissão</label><input type="date" id="novo-prof-admissao"></div>
+            <div class="campo-group"><label for="novo-prof-entrada">Horário de Entrada</label><input type="time" id="novo-prof-entrada"></div>
+            <div class="campo-group"><label for="novo-prof-saida">Horário de Saída</label><input type="time" id="novo-prof-saida"></div>
+          </div>
+        </div>
+
+        <div class="secao-form-pauta">
+          <h3>Endereço</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="novo-prof-cep">CEP</label><input type="text" id="novo-prof-cep"></div>
+            <div class="campo-group"><label for="novo-prof-endereco">Endereço Completo</label><input type="text" id="novo-prof-endereco"></div>
+            <div class="campo-group"><label for="novo-prof-bairro">Bairro</label><input type="text" id="novo-prof-bairro"></div>
+            <div class="campo-group"><label for="novo-prof-cidade">Cidade</label><input type="text" id="novo-prof-cidade"></div>
+            <div class="campo-group"><label for="novo-prof-uf">UF</label><input type="text" id="novo-prof-uf" maxlength="2" style="text-transform:uppercase;"></div>
+          </div>
+        </div>
+
+        <div class="secao-form-pauta">
+          <h3>Contato de Emergência e Saúde</h3>
+          <div class="grid-form-pauta">
+            <div class="campo-group"><label for="novo-prof-contato-emergencia">Nome do Contato</label><input type="text" id="novo-prof-contato-emergencia"></div>
+            <div class="campo-group"><label for="novo-prof-parentesco">Grau de Parentesco</label><input type="text" id="novo-prof-parentesco"></div>
+            <div class="campo-group"><label for="novo-prof-telefone-emergencia">Telefone do Contato</label><input type="text" id="novo-prof-telefone-emergencia"></div>
+            <div class="campo-group"><label for="novo-prof-plano-saude">Plano de Saúde</label><select id="novo-prof-plano-saude"><option value="NÃO">NÃO</option><option value="SIM">SIM</option></select></div>
+            <div class="campo-group"><label for="novo-prof-aceite-plano">Local de Atendimento</label><input type="text" id="novo-prof-aceite-plano"></div>
+            <div class="campo-group"><label for="novo-prof-numero-sapato">Nº do Calçado</label><input type="text" id="novo-prof-numero-sapato"></div>
+            <div class="campo-group"><label for="novo-prof-manequim">Manequim</label><input type="text" id="novo-prof-manequim"></div>
+            <div class="campo-group"><label for="novo-prof-alergia">Possui Alergia?</label><select id="novo-prof-alergia" onchange="alternarCampoCondicional('novo-prof-alergia','bloco-novo-prof-tipo-alergia')"><option>NÃO</option><option>SIM</option></select></div>
+            <div class="campo-group" id="bloco-novo-prof-tipo-alergia" style="display:none;"><label for="novo-prof-tipo-alergia">Qual Alergia?</label><input type="text" id="novo-prof-tipo-alergia"></div>
+          </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 20px;">
+          <button type="button" onclick="cancelarCadastroProfissional()" class="btn-cancelar-perfil">Cancelar</button>
+          <button type="button" onclick="salvarNovoProfissional()" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Cadastrar Profissional</button>
+        </div>
+      </div>
+
     </div>
 
     <div class="cartao oculto" id="cartaoEstrutura">
@@ -450,7 +542,7 @@
 /* ================================================================
    CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
    ================================================================ */
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxt0_i1F9lpqeyZasdQfQJCMth4IYnn5e3dgkiTWK_f5gEHF8XLg0mXYwaTN6Rmz1Jt/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxVngdAUE_YcwLhHLIC-nApkhqxMUPTSxVtVGScY2ZQ1BjbcqOsfVFdn5MXUV791LlE/exec";
 let dadosEstruturaGlobal = null;
 let _nivelUsuarioLogado = '';
 const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
@@ -549,24 +641,28 @@ function executarAcaoMenu(opcao, event) {
   document.getElementById('dropdownMenu').classList.add('oculto');
   const corpoPerfil = document.getElementById('perfilCorpo');
   const secaoPautas = document.getElementById('secaoPautas');
+  const secaoCadProf = document.getElementById('secaoCadastroProfissional');
   const btnSeta = document.getElementById('btnSetaRecolher');
 
+  corpoPerfil.style.display = 'none';
+  secaoPautas.style.display = 'none';
+  if (secaoCadProf) secaoCadProf.style.display = 'none';
+  btnSeta.textContent = '∧';
+
   if (opcao === 'editar') {
-    secaoPautas.style.display = 'none';
     corpoPerfil.style.display = 'block';
     btnSeta.textContent = '∨';
     habilitarEdicaoPerfil();
   } else if (opcao === 'pautas') {
-    corpoPerfil.style.display = 'none';
-    btnSeta.textContent = '∧';
     secaoPautas.style.display = 'block';
     fecharFormCriarPauta();
     carregarPautas();
   } else if (opcao === 'criarPauta') {
-    corpoPerfil.style.display = 'none';
-    btnSeta.textContent = '∧';
     secaoPautas.style.display = 'block';
     abrirFormularioCriarPauta();
+  } else if (opcao === 'cadastrarProfissional') {
+    if (secaoCadProf) secaoCadProf.style.display = 'block';
+    limparFormCadastroProfissional();
   }
 }
 
@@ -597,6 +693,7 @@ async function iniciarPainelPrincipal() {
   document.getElementById('formNovaSecretaria')?.classList.toggle('oculto', !ehAdmin);
   document.getElementById('formNovaSubsecretaria')?.classList.toggle('oculto', !ehAdmin);
   document.getElementById('formNovoNucleo')?.classList.toggle('oculto', !podeCriarNucleo);
+  document.getElementById('linkCadastrarProfissional')?.classList.toggle('oculto', !ehAdmin);
 
   await carregarPerfilNaTela();
 }
@@ -630,6 +727,7 @@ async function carregarEstrutura() {
     container.innerHTML = html;
   }
   preencherSelectsEstrutura();
+  preencherSelectsCadastroProfissional();
 }
 
 function preencherSelectsEstrutura() {
@@ -714,6 +812,100 @@ async function criarNucleoAction() {
   document.getElementById('novo-nucleo-nome').value = '';
   document.getElementById('novo-nucleo-agenda').value = '';
   await carregarEstrutura();
+}
+
+/* ================================================================
+   CADASTRO DE NOVO PROFISSIONAL (somente ADMIN)
+   ================================================================ */
+function preencherSelectsCadastroProfissional() {
+  const secretarias = (dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) || [];
+  const sel = document.getElementById('novo-prof-secretaria');
+  if (sel) sel.innerHTML = '<option value="">Nenhuma</option>' + secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+' ('+s.Sigla+')</option>').join('');
+  atualizarSelectsCadastroProfissional();
+}
+
+function atualizarSelectsCadastroProfissional() {
+  const secId = document.getElementById('novo-prof-secretaria')?.value;
+  const subs = ((dadosEstruturaGlobal && dadosEstruturaGlobal.subsecretarias) || []).filter(s => s.SecretariaID === secId);
+  const selSub = document.getElementById('novo-prof-subsecretaria');
+  if (selSub) selSub.innerHTML = '<option value="">Nenhuma</option>' + subs.map(s => '<option value="'+s.SubsecretariaID+'">'+s.Nome+' ('+s.Sigla+')</option>').join('');
+  atualizarSelectNucleoCadastroProfissional();
+}
+
+function atualizarSelectNucleoCadastroProfissional() {
+  const secId = document.getElementById('novo-prof-secretaria')?.value;
+  const subId = document.getElementById('novo-prof-subsecretaria')?.value;
+  const nucleos = ((dadosEstruturaGlobal && dadosEstruturaGlobal.nucleos) || []).filter(n => n.SecretariaID === secId && (subId ? n.SubsecretariaID === subId : true));
+  const selNuc = document.getElementById('novo-prof-nucleo');
+  if (selNuc) selNuc.innerHTML = '<option value="">Nenhum</option>' + nucleos.map(n => '<option value="'+n.NucleoID+'">'+n.Nome+'</option>').join('');
+}
+
+async function salvarNovoProfissional() {
+  const email = document.getElementById('novo-prof-email').value.trim();
+  const nomeExibicao = document.getElementById('novo-prof-nome-exibicao').value.trim();
+  const nomeCompleto = document.getElementById('novo-prof-nome-completo').value.trim();
+  if (!email) { alert('Informe o e-mail do profissional.'); return; }
+  if (!nomeExibicao) { alert('Informe o nome de exibição.'); return; }
+  if (!nomeCompleto) { alert('Informe o nome completo.'); return; }
+  const dados = {
+    token: pegarTokenSalvo(), email, nomeExibicao, nomeCompleto,
+    nivelAcesso: document.getElementById('novo-prof-nivel').value,
+    secretariaId: document.getElementById('novo-prof-secretaria').value,
+    subsecretariaId: document.getElementById('novo-prof-subsecretaria').value,
+    nucleoId: document.getElementById('novo-prof-nucleo').value,
+    cargo: document.getElementById('novo-prof-cargo').value,
+    nomeMae: document.getElementById('novo-prof-nome-mae').value,
+    dataNascimento: document.getElementById('novo-prof-nascimento').value,
+    telefone: document.getElementById('novo-prof-telefone').value,
+    registroProfissional: document.getElementById('novo-prof-registro').value,
+    idFuncional: document.getElementById('novo-prof-id-funcional').value,
+    rg: document.getElementById('novo-prof-rg').value,
+    orgaoEmissor: document.getElementById('novo-prof-orgao-emissor').value,
+    dataExpedicao: document.getElementById('novo-prof-data-expedicao').value,
+    cpf: document.getElementById('novo-prof-cpf').value,
+    empregador: document.getElementById('novo-prof-empregador').value,
+    dataAdmissao: document.getElementById('novo-prof-admissao').value,
+    horarioEntrada: document.getElementById('novo-prof-entrada').value,
+    horarioSaida: document.getElementById('novo-prof-saida').value,
+    cep: document.getElementById('novo-prof-cep').value,
+    enderecoCompleto: document.getElementById('novo-prof-endereco').value,
+    bairro: document.getElementById('novo-prof-bairro').value,
+    cidade: document.getElementById('novo-prof-cidade').value,
+    uf: document.getElementById('novo-prof-uf').value.toUpperCase(),
+    nomeContatoEmergencia: document.getElementById('novo-prof-contato-emergencia').value,
+    grauParentesco: document.getElementById('novo-prof-parentesco').value,
+    telefoneEmergencia: document.getElementById('novo-prof-telefone-emergencia').value,
+    planoSaude: document.getElementById('novo-prof-plano-saude').value,
+    aceitePlano: document.getElementById('novo-prof-aceite-plano').value,
+    numeroSapato: document.getElementById('novo-prof-numero-sapato').value,
+    manequim: document.getElementById('novo-prof-manequim').value,
+    alergia: document.getElementById('novo-prof-alergia').value,
+    tipoAlergia: document.getElementById('novo-prof-tipo-alergia').value
+  };
+  const r = await chamarBackend('criarUsuario', dados);
+  if (!r.sucesso) { alert('Erro: ' + r.mensagem); return; }
+  alert('Profissional cadastrado com sucesso! Um e-mail de boas-vindas com a senha provisória foi enviado para ' + email + '.');
+  limparFormCadastroProfissional();
+}
+
+function limparFormCadastroProfissional() {
+  ['novo-prof-email','novo-prof-nome-exibicao','novo-prof-cargo','novo-prof-nome-completo','novo-prof-nome-mae',
+   'novo-prof-nascimento','novo-prof-telefone','novo-prof-registro','novo-prof-id-funcional','novo-prof-rg',
+   'novo-prof-orgao-emissor','novo-prof-data-expedicao','novo-prof-cpf','novo-prof-empregador','novo-prof-admissao',
+   'novo-prof-entrada','novo-prof-saida','novo-prof-cep','novo-prof-endereco','novo-prof-bairro','novo-prof-cidade',
+   'novo-prof-uf','novo-prof-contato-emergencia','novo-prof-parentesco','novo-prof-telefone-emergencia',
+   'novo-prof-aceite-plano','novo-prof-numero-sapato','novo-prof-manequim','novo-prof-tipo-alergia'
+  ].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const nivel = document.getElementById('novo-prof-nivel'); if (nivel) nivel.value = 'PROFISSIONAL';
+  const plano = document.getElementById('novo-prof-plano-saude'); if (plano) plano.value = 'NÃO';
+  const alergia = document.getElementById('novo-prof-alergia'); if (alergia) alergia.value = 'NÃO';
+  const blocoAlergia = document.getElementById('bloco-novo-prof-tipo-alergia'); if (blocoAlergia) blocoAlergia.style.display = 'none';
+  preencherSelectsCadastroProfissional();
+}
+
+function cancelarCadastroProfissional() {
+  limparFormCadastroProfissional();
+  executarAcaoMenu('editar');
 }
 
 function renderizarItemNucleo(nucleo, margem) {
