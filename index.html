@@ -184,6 +184,7 @@
           <a href="#" onclick="executarAcaoMenu('editar', event)">✏️ Editar Perfil</a>
           <a href="#" onclick="executarAcaoMenu('pautas', event)">📋 Minhas Pautas</a>
           <a href="#" onclick="executarAcaoMenu('criarPauta', event)">➕ Criar Pautas</a>
+          <a href="#" onclick="executarAcaoMenu('historico', event)">🕘 Histórico de Pautas</a>
           <a href="#" id="linkCadastrarProfissional" class="oculto" onclick="executarAcaoMenu('cadastrarProfissional', event)">👤+ Cadastrar Profissional</a>
         </div>
       </div>
@@ -237,6 +238,7 @@
           <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
           <button id="btnCriarPauta" class="botao-principal" style="width: auto; padding: 8px 18px; background: var(--gov-verde);" onclick="abrirFormularioCriarPauta()">+ Nova Pauta</button>
         </div>
+        <p class="descricao" style="margin:-6px 0 12px;">Mostrando a semana atual. Pautas de outros períodos ficam em 🕘 Histórico de Pautas (menu ☰).</p>
         <div id="listaPautasContainer"><p style="color: var(--gov-texto-suave);">Carregando pautas...</p></div>
 
         <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none; margin-top:16px;">
@@ -405,6 +407,18 @@
         </div>
       </div>
 
+      <div id="secaoHistoricoPautas" style="display: none; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h2 style="margin:0; color: var(--gov-azul-escuro);">Histórico de Pautas</h2>
+        </div>
+        <p class="descricao" style="margin:-6px 0 12px;">Escolha um mês para ver as pautas daquele período. Nada é carregado até você escolher.</p>
+        <div class="campo-group" style="max-width: 320px; margin-bottom: 16px;">
+          <label for="historico-mes-select">Mês</label>
+          <select id="historico-mes-select" onchange="carregarHistoricoDoMes()"><option value="">Carregando meses...</option></select>
+        </div>
+        <div id="listaHistoricoPautasContainer"></div>
+      </div>
+
       <div id="secaoCadastroProfissional" style="display: none; margin-top: 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <h2 style="margin:0; color: var(--gov-azul-escuro);">Cadastrar Novo Profissional</h2>
@@ -542,7 +556,7 @@
 /* ================================================================
    CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
    ================================================================ */
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxVngdAUE_YcwLhHLIC-nApkhqxMUPTSxVtVGScY2ZQ1BjbcqOsfVFdn5MXUV791LlE/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxJR8fK5fB83AdFoNzqXO6JzDaN53rWh2IN8xmmKXaYG_o8RKT23EBjy1UleVgAtPux/exec";
 let dadosEstruturaGlobal = null;
 let _nivelUsuarioLogado = '';
 const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
@@ -641,11 +655,13 @@ function executarAcaoMenu(opcao, event) {
   document.getElementById('dropdownMenu').classList.add('oculto');
   const corpoPerfil = document.getElementById('perfilCorpo');
   const secaoPautas = document.getElementById('secaoPautas');
+  const secaoHistorico = document.getElementById('secaoHistoricoPautas');
   const secaoCadProf = document.getElementById('secaoCadastroProfissional');
   const btnSeta = document.getElementById('btnSetaRecolher');
 
   corpoPerfil.style.display = 'none';
   secaoPautas.style.display = 'none';
+  if (secaoHistorico) secaoHistorico.style.display = 'none';
   if (secaoCadProf) secaoCadProf.style.display = 'none';
   btnSeta.textContent = '∧';
 
@@ -660,6 +676,9 @@ function executarAcaoMenu(opcao, event) {
   } else if (opcao === 'criarPauta') {
     secaoPautas.style.display = 'block';
     abrirFormularioCriarPauta();
+  } else if (opcao === 'historico') {
+    if (secaoHistorico) secaoHistorico.style.display = 'block';
+    abrirHistoricoPautas();
   } else if (opcao === 'cadastrarProfissional') {
     if (secaoCadProf) secaoCadProf.style.display = 'block';
     limparFormCadastroProfissional();
@@ -1066,9 +1085,11 @@ async function carregarPautas() {
   container.innerHTML = '<p style="color:var(--gov-texto-suave);">Carregando pautas...</p>';
   const r = await chamarBackend('listarPautas', { token: pegarTokenSalvo() });
   if (!r.sucesso) { container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
-  const pautas = r.pautas || [];
-  if (!pautas.length) { container.innerHTML = '<p style="color:var(--gov-texto-suave);">Nenhuma pauta encontrada.</p>'; return; }
+  container.innerHTML = montarHtmlCardsPautas(r.pautas || []);
+}
 
+function montarHtmlCardsPautas(pautas) {
+  if (!pautas.length) return '<p style="color:var(--gov-texto-suave);">Nenhuma pauta encontrada.</p>';
   let html = '<div class="grid-pautas-cards">';
   pautas.forEach(p => {
     const st = determinarStatus(p);
@@ -1089,7 +1110,44 @@ async function carregarPautas() {
     '</div>';
   });
   html += '</div>';
-  container.innerHTML = html;
+  return html;
+}
+
+/* ================================================================
+   HISTÓRICO DE PAUTAS (meses anteriores, sob demanda)
+   ================================================================ */
+async function abrirHistoricoPautas() {
+  const select = document.getElementById('historico-mes-select');
+  const container = document.getElementById('listaHistoricoPautasContainer');
+  select.innerHTML = '<option value="">Carregando meses...</option>';
+  container.innerHTML = '';
+
+  const r = await chamarBackend('listarMesesComPautas', { token: pegarTokenSalvo() });
+  if (!r.sucesso) {
+    select.innerHTML = '<option value="">Erro ao carregar</option>';
+    container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>';
+    return;
+  }
+  const meses = r.meses || [];
+  if (!meses.length) {
+    select.innerHTML = '<option value="">Nenhum mês encontrado</option>';
+    container.innerHTML = '<p style="color:var(--gov-texto-suave);">Ainda não há pautas registradas em meses anteriores.</p>';
+    return;
+  }
+  select.innerHTML = '<option value="">Selecione um mês...</option>' +
+    meses.map(m => '<option value="'+m.ano+'-'+m.mes+'">'+m.label+' ('+m.quantidade+')</option>').join('');
+  container.innerHTML = '<p style="color:var(--gov-texto-suave);">Escolha um mês acima para ver as pautas daquele período.</p>';
+}
+
+async function carregarHistoricoDoMes() {
+  const valor = document.getElementById('historico-mes-select').value;
+  const container = document.getElementById('listaHistoricoPautasContainer');
+  if (!valor) { container.innerHTML = '<p style="color:var(--gov-texto-suave);">Escolha um mês acima para ver as pautas daquele período.</p>'; return; }
+  const [ano, mes] = valor.split('-');
+  container.innerHTML = '<p style="color:var(--gov-texto-suave);">Carregando pautas...</p>';
+  const r = await chamarBackend('listarPautasHistorico', { token: pegarTokenSalvo(), ano, mes });
+  if (!r.sucesso) { container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
+  container.innerHTML = montarHtmlCardsPautas(r.pautas || []);
 }
 
 function determinarStatus(p) {
