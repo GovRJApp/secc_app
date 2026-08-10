@@ -1193,18 +1193,46 @@ async function abrirPainelPauta(id, modoEdicao) {
   document.getElementById('dp-backup-foto').checked = p.Backup_Rede_Foto === 'SIM' || p.Backup_Rede_Foto === true;
   document.getElementById('dp-backup-digital').checked = p.Backup_Rede_Digital === 'SIM' || p.Backup_Rede_Digital === true;
   
-  const ehCoordOuAdmin = ['ADMIN', 'COORDENADOR', 'SUBCOORDENADOR'].includes(r.nivelUsuario);
+  const usuarioLogado = pegarUsuarioSalvo() || {};
+  const nivel = r.nivelUsuario || usuarioLogado.nivel;
+  const nucleoId = usuarioLogado.nucleoId || '';
   const dataJaSalva = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
   
   const editaveisCampos = ['dp-producao-realizada','dp-observacoes','dp-link-release','dp-link-video','dp-link-foto','dp-link-digital','dp-backup-video','dp-backup-foto','dp-backup-digital'];
   editaveisCampos.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
   
-  // Habilita a edição da equipe se for Coordenador, Subcoordenador ou Admin no modo edição
-  const podeEditarEquipe = modoEdicao && ehCoordOuAdmin;
-  ['dp-nome-assessor', 'dp-nome-video', 'dp-nome-foto', 'dp-nome-digital'].forEach(id => {
-    document.getElementById(id).disabled = !podeEditarEquipe;
-  });
+  // REGRA DE PERMISSÃO DE EDIÇÃO DA EQUIPE:
+  // Admins, Subsecretários e Coordenadores Gerais podem editar a equipe inteira.
+  // Coordenadores de Núcleo editam apenas o profissional referente ao seu próprio núcleo.
+  const ehAdminOuSuperior = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO', 'SUBCOORDENADOR'].includes(nivel);
+  
+  let podeAssessor = modoEdicao && ehAdminOuSuperior;
+  let podeVideo = modoEdicao && ehAdminOuSuperior;
+  let podeFoto = modoEdicao && ehAdminOuSuperior;
+  let podeDigital = modoEdicao && ehAdminOuSuperior;
 
+  if (modoEdicao && nivel === 'COORDENADOR') {
+    // Busca o núcleo no array da estrutura organizacional
+    const nucleos = (dadosEstruturaGlobal && dadosEstruturaGlobal.nucleos) || [];
+    const meunucleoObj = nucleos.find(n => n.NucleoID === nucleoId);
+    const nomeNucleoNorm = meunucleoObj ? meunucleoObj.Nome.toLowerCase() : '';
+
+    if (nomeNucleoNorm.includes('imprensa') || nomeNucleoNorm.includes('jornalismo') || nomeNucleoNorm.includes('assessor')) podeAssessor = true;
+    else if (nomeNucleoNorm.includes('vídeo') || nomeNucleoNorm.includes('video') || nomeNucleoNorm.includes('cinegrafista')) podeVideo = true;
+    else if (nomeNucleoNorm.includes('foto') || nomeNucleoNorm.includes('fotografia')) podeFoto = true;
+    else if (nomeNucleoNorm.includes('digital') || nomeNucleoNorm.includes('rede social')) podeDigital = true;
+    else {
+      // Se não identificar o núcleo pelo nome, autoriza por padrão o nível Coordenador
+      podeAssessor = podeVideo = podeFoto = podeDigital = true;
+    }
+  }
+
+  document.getElementById('dp-nome-assessor').disabled = !podeAssessor;
+  document.getElementById('dp-nome-video').disabled = !podeVideo;
+  document.getElementById('dp-nome-foto').disabled = !podeFoto;
+  document.getElementById('dp-nome-digital').disabled = !podeDigital;
+
+  const ehCoordOuAdmin = ['ADMIN', 'COORDENADOR', 'SUBCOORDENADOR'].includes(nivel);
   document.getElementById('dp-data-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
   document.getElementById('dp-hora-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
   document.getElementById('btnSalvarPainelPauta').classList.toggle('oculto', !modoEdicao);
