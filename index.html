@@ -49,36 +49,48 @@
   .conteudo-app { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
   .cartao { background: #FFF; border-radius: var(--raio-card); border: 1px solid var(--gov-borda); padding: 20px; margin-bottom: 20px; box-shadow: var(--sombra-card); position: relative; }
   .cartao::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gov-azul); border-radius: var(--raio-card) 0 0 var(--raio-card); }
+
+  /* CARD PERFIL */
   .card-painel { background: #fff; border-radius: 10px; padding: 20px; max-width: 850px; margin: 16px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-top: 5px solid #005696; font-family: var(--fonte-oficial); position: relative; }
   .perfil-carteira { border-top: 5px solid var(--gov-azul); }
+
   .menu-hamburguer-wrapper { position: absolute; top: 12px; right: 12px; z-index: 100; }
   .btn-hamburguer { background: none; border: none; font-size: 26px; color: #003F66; cursor: pointer; padding: 4px; line-height: 1; }
   .dropdown-hamburguer { position: absolute; right: 0; top: 36px; background: #FFF; border: 1px solid var(--gov-borda); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); display: flex; flex-direction: column; width: 170px; z-index: 101; overflow: hidden; }
   .dropdown-hamburguer a { padding: 12px 16px; text-decoration: none; color: var(--gov-texto); font-size: 14px; font-weight: 500; border-bottom: 1px solid #F0F0F0; transition: background 0.2s; }
   .dropdown-hamburguer a:hover { background: var(--gov-cinza-claro); color: var(--gov-azul); }
+
   .perfil-cabecalho { display: flex; align-items: center; gap: 16px; padding-right: 40px; margin-bottom: 12px; }
   .perfil-avatar { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .perfil-avatar .avatar-wrapper { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gov-azul); background: #f0f2f5; flex-shrink: 0; }
   .perfil-avatar .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  
   .perfil-titulo { display: flex; flex-direction: column; justify-content: center; }
   .perfil-nome { font-size: 1.35rem; font-weight: 900; text-transform: uppercase; color: var(--gov-azul-escuro); line-height: 1.1; margin: 0; }
   .perfil-cargo { font-size: 1rem; font-weight: 500; color: var(--gov-texto-suave); margin-top: 4px; }
+
   .perfil-divisor { border: none; border-top: 3.5px solid var(--gov-azul); margin: 10px 0 6px 0; }
   .wrapper-toggle-seta { text-align: right; margin-bottom: 12px; padding-right: 4px; }
   .btn-seta-toggle { background: none; border: none; font-size: 26px; font-weight: bold; color: var(--gov-azul-escuro); cursor: pointer; padding: 0; display: inline-block; }
+
   .perfil-campos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
   .campo-group { display: flex; flex-direction: column; gap: 4px; }
   .campo-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--gov-texto-suave); margin: 0; }
   .campo-group.editavel input, .campo-group.editavel select { width: 100%; padding: 8px 10px; border: 1px solid var(--gov-borda); border-radius: 6px; font-size: 0.95rem; background: #fff; }
   .campo-group.editavel input:disabled, .campo-group.editavel select:disabled { background: #f4f6f8; color: #555; }
+  
   .btn-salvar-perfil { background: var(--gov-sucesso); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-right: 12px; }
   .btn-cancelar-perfil { background: var(--gov-erro); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; }
   .btn-foto-upload { padding: 4px 10px; font-size: 0.75rem; border: 1px solid var(--gov-azul); background: #eef6ff; color: var(--gov-azul); border-radius: 4px; cursor: pointer; margin-top: 4px; }
+
+  /* ESTRUTURA ORGANIZACIONAL VISUAL */
   .item-secretaria { padding: 12px; background: #FFF; border: 1px solid var(--gov-borda); border-left: 4px solid var(--gov-azul); border-radius: 8px; margin-bottom: 8px; font-size: 15px; color: var(--gov-azul-escuro); cursor: pointer; }
   .item-subsecretaria { margin: 6px 0 6px 16px; padding: 10px; border-left: 4px solid var(--gov-verde); background: #F8FAFC; border-radius: 6px; font-size: 14px; cursor: pointer; }
   .item-nucleo { margin: 4px 0 4px 32px; padding: 8px; border-left: 3px solid var(--gov-dourado); background: #FFF; border-radius: 6px; font-size: 13px; color: var(--gov-texto-suave); cursor: pointer; }
   .item-profissional-clicavel { padding: 6px 12px 6px 32px; font-size: 13px; cursor: pointer; border-radius: 6px; }
   .item-profissional-clicavel:hover { background: #EAF1FA; }
+
+  /* CARDS PAUTAS */
   .grid-pautas-cards { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
   .card-item-pauta { background: #FFF; border: 1px solid var(--gov-borda); border-radius: 10px; padding: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 10px; border-left: 5px solid var(--gov-azul); }
   .card-pauta-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
@@ -86,13 +98,16 @@
   .badge-status { padding: 4px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 800; color: #FFF; white-space: nowrap; }
   .card-pauta-info { font-size: 0.82rem; color: var(--gov-texto-suave); display: flex; gap: 16px; }
   .card-pauta-acoes { display: flex; align-items: center; justify-content: flex-end; gap: 8px; border-top: 1px solid #F0F0F0; padding-top: 10px; margin-top: 2px; }
+  
   .btn-acao-pauta { padding: 6px 12px; font-size: 0.78rem; border-radius: 6px; font-weight: 700; border: none; color: #FFF; cursor: pointer; width: auto; }
   .btn-ver { background: var(--gov-azul); }
   .btn-editar { background: var(--gov-azul-hover); }
   .btn-retorno { background: var(--gov-verde); }
+
   .secao-form-pauta { border: 1px solid var(--gov-borda); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; background: #fafbfc; }
   .secao-form-pauta h3 { margin: 0 0 14px; font-size: 0.95rem; color: var(--gov-azul-escuro); text-transform: uppercase; letter-spacing: 0.5px; }
   .grid-form-pauta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px 20px; }
+
   @media (max-width: 600px) {
     .perfil-campos-grid { grid-template-columns: 1fr; gap: 12px; }
     .card-pauta-acoes { justify-content: space-between; }
@@ -102,6 +117,7 @@
 <base target="_blank">
 </head>
 <body>
+
 <div class="tela-login" id="telaLogin">
   <div class="cartao-login">
     <div class="header-login">
@@ -159,7 +175,9 @@
   </div>
   
   <div class="conteudo-app">
+
     <div id="secao-perfil-profissional" class="card-painel perfil-carteira">
+      
       <div class="menu-hamburguer-wrapper" id="wrapperHamburguer">
         <button type="button" class="btn-hamburguer" onclick="alternarMenuHamburguer(event)">☰</button>
         <div id="dropdownMenu" class="dropdown-hamburguer oculto">
@@ -170,7 +188,7 @@
           <a href="#" id="linkCadastrarProfissional" class="oculto" onclick="executarAcaoMenu('cadastrarProfissional', event)">👤+ Cadastrar Profissional</a>
         </div>
       </div>
-      
+
       <div class="perfil-cabecalho">
         <div class="perfil-avatar">
           <div class="avatar-wrapper">
@@ -184,12 +202,13 @@
           <div class="perfil-cargo" id="perfil-cargo-exibicao">Aguarde</div>
         </div>
       </div>
-      
+
       <hr class="perfil-divisor">
+
       <div class="wrapper-toggle-seta">
         <button type="button" id="btnSetaRecolher" class="btn-seta-toggle" onclick="alternarVisibilidadePerfil()" title="Recolher / Expandir Perfil">∨</button>
       </div>
-      
+
       <div class="perfil-corpo" id="perfilCorpo">
         <div id="avisoPerfilDeOutro" class="oculto" style="background:#FFF4E5; border:1px solid #F0B84C; border-radius:8px; padding:10px 14px; margin-bottom:16px; font-size:13px; display:flex; justify-content:space-between; align-items:center;">
           <span>👁️ Você está vendo o perfil de <strong id="nomePerfilDeOutro"></strong> (modo Admin)</span>
@@ -213,7 +232,7 @@
           <button type="button" onclick="cancelarEdicaoPerfil()" class="btn-cancelar-perfil">❌ Cancelar</button>
         </div>
       </div>
-      
+
       <div id="secaoPautas" style="display: none; margin-top: 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <h2 style="margin:0; color: var(--gov-azul-escuro);">Minhas Pautas</h2>
@@ -221,7 +240,7 @@
         </div>
         <p class="descricao" style="margin:-6px 0 12px;">Mostrando a semana atual. Pautas de outros períodos ficam em 🕘 Histórico de Pautas (menu ☰).</p>
         <div id="listaPautasContainer"><p style="color: var(--gov-texto-suave);">Carregando pautas...</p></div>
-        
+
         <div id="caixaRegistroRetorno" class="secao-form-pauta" style="display:none; margin-top:16px;">
           <h3>Registrar Retorno da Equipe</h3>
           <div class="grid-form-pauta">
@@ -233,7 +252,7 @@
             <button type="button" onclick="confirmarRegistroRetorno()" class="botao-principal" style="width:auto; padding:10px 24px;">Salvar Retorno</button>
           </div>
         </div>
-        
+
         <div id="painelDetalhePauta" class="secao-form-pauta" style="display:none; margin-top:16px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <h3 style="margin:0;" id="tituloPainelPauta">Detalhes da Pauta</h3>
@@ -249,17 +268,6 @@
             <div class="campo-group"><label>Local</label><input type="text" id="dp-local" disabled></div>
             <div class="campo-group"><label>Motorista</label><input type="text" id="dp-motorista" disabled></div>
           </div>
-
-          <div style="border-top: 2px dashed var(--gov-borda); margin: 16px 0; padding-top: 12px;">
-            <h4 style="margin: 0 0 12px 0; color: var(--gov-azul-escuro); font-size: 0.9rem; text-transform: uppercase;">Equipe Escalada</h4>
-            <div class="grid-form-pauta" style="margin-bottom:14px;">
-              <div class="campo-group"><label for="dp-nome-assessor">Assessor de Imprensa</label><input type="text" id="dp-nome-assessor" disabled placeholder="Nome do Assessor"></div>
-              <div class="campo-group"><label for="dp-nome-video">Cinegrafista</label><input type="text" id="dp-nome-video" disabled placeholder="Nome do Cinegrafista"></div>
-              <div class="campo-group"><label for="dp-nome-foto">Fotógrafo</label><input type="text" id="dp-nome-foto" disabled placeholder="Nome do Fotógrafo"></div>
-              <div class="campo-group"><label for="dp-nome-digital">Profissional Digital</label><input type="text" id="dp-nome-digital" disabled placeholder="Nome do Digital"></div>
-            </div>
-          </div>
-
           <div class="campo-group" style="margin-bottom:14px;">
             <label for="dp-producao-realizada">A produção foi realizada?</label>
             <select id="dp-producao-realizada" disabled onchange="alternarCamposLinkPauta()">
@@ -269,21 +277,21 @@
             </select>
           </div>
           <div id="dp-bloco-assessor" class="campo-group oculto" style="margin-bottom:12px;">
-            <label for="dp-link-release">Link do Release</label>
+            <label for="dp-link-release">Link do Release (Assessor: <span id="dp-nome-assessor"></span>)</label>
             <input type="text" id="dp-link-release" placeholder="Cole o link aqui" disabled>
           </div>
           <div id="dp-bloco-video" class="campo-group oculto" style="margin-bottom:12px;">
-            <label for="dp-link-video">Link do Vídeo/Drive</label>
+            <label for="dp-link-video">Link do Vídeo/Drive (Cinegrafista: <span id="dp-nome-video"></span>)</label>
             <input type="text" id="dp-link-video" placeholder="Cole o link aqui" disabled>
             <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;"><input type="checkbox" id="dp-backup-video" style="width:auto;" disabled> Backup na rede feito (Núcleo de Vídeo)</label>
           </div>
           <div id="dp-bloco-foto" class="campo-group oculto" style="margin-bottom:12px;">
-            <label for="dp-link-foto">Link das Fotos/Google Photos</label>
+            <label for="dp-link-foto">Link das Fotos/Google Photos (Fotógrafo: <span id="dp-nome-foto"></span>)</label>
             <input type="text" id="dp-link-foto" placeholder="Cole o link aqui" disabled>
             <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;"><input type="checkbox" id="dp-backup-foto" style="width:auto;" disabled> Backup na rede feito (Núcleo de Fotografia)</label>
           </div>
           <div id="dp-bloco-digital" class="campo-group oculto" style="margin-bottom:12px;">
-            <label for="dp-link-digital">Link do Digital/Rede Social</label>
+            <label for="dp-link-digital">Link do Digital/Rede Social (Profissional: <span id="dp-nome-digital"></span>)</label>
             <input type="text" id="dp-link-digital" placeholder="Cole o link aqui" disabled>
             <label style="margin-top:8px; display:flex; align-items:center; gap:6px; font-weight:400;"><input type="checkbox" id="dp-backup-digital" style="width:auto;" disabled> Backup na rede feito (Núcleo de Digital)</label>
           </div>
@@ -349,7 +357,8 @@
               <div class="grid-form-pauta">
                 <div class="campo-group" style="grid-column: 1 / -1; position: relative;">
                   <label for="pauta-endereco">Endereço*</label>
-                  <input type="text" id="pauta-endereco" placeholder="Digite o endereço..." autocomplete="off" required>
+                  <input type="text" id="pauta-endereco" placeholder="Digite o endereço e escolha uma sugestão..." autocomplete="off" required>
+                  <div id="sugestoesEndereco" class="lista-sugestoes-endereco"></div>
                 </div>
                 <div class="campo-group"><label>Cidade</label><input type="text" id="pauta-cidade" disabled></div>
                 <div class="campo-group"><label>Bairro</label><input type="text" id="pauta-bairro" disabled></div>
@@ -402,7 +411,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <h2 style="margin:0; color: var(--gov-azul-escuro);">Histórico de Pautas</h2>
         </div>
-        <p class="descricao" style="margin:-6px 0 12px;">Escolha um mês para ver as pautas daquele período.</p>
+        <p class="descricao" style="margin:-6px 0 12px;">Escolha um mês para ver as pautas daquele período. Nada é carregado até você escolher.</p>
         <div class="campo-group" style="max-width: 320px; margin-bottom: 16px;">
           <label for="historico-mes-select">Mês</label>
           <select id="historico-mes-select" onchange="carregarHistoricoDoMes()"><option value="">Carregando meses...</option></select>
@@ -414,6 +423,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
           <h2 style="margin:0; color: var(--gov-azul-escuro);">Cadastrar Novo Profissional</h2>
         </div>
+
         <div class="secao-form-pauta">
           <h3>Acesso e Lotação</h3>
           <div class="grid-form-pauta">
@@ -435,6 +445,7 @@
             <div class="campo-group"><label for="novo-prof-cargo">Cargo</label><input type="text" id="novo-prof-cargo" placeholder="Ex: Cinegrafista"></div>
           </div>
         </div>
+
         <div class="secao-form-pauta">
           <h3>Dados Pessoais</h3>
           <div class="grid-form-pauta">
@@ -445,6 +456,7 @@
             <div class="campo-group"><label for="novo-prof-registro">Registro Profissional</label><input type="text" id="novo-prof-registro"></div>
           </div>
         </div>
+
         <div class="secao-form-pauta">
           <h3>Documentos</h3>
           <div class="grid-form-pauta">
@@ -455,6 +467,7 @@
             <div class="campo-group"><label for="novo-prof-cpf">CPF</label><input type="text" id="novo-prof-cpf"></div>
           </div>
         </div>
+
         <div class="secao-form-pauta">
           <h3>Vínculo</h3>
           <div class="grid-form-pauta">
@@ -464,6 +477,7 @@
             <div class="campo-group"><label for="novo-prof-saida">Horário de Saída</label><input type="time" id="novo-prof-saida"></div>
           </div>
         </div>
+
         <div class="secao-form-pauta">
           <h3>Endereço</h3>
           <div class="grid-form-pauta">
@@ -474,6 +488,7 @@
             <div class="campo-group"><label for="novo-prof-uf">UF</label><input type="text" id="novo-prof-uf" maxlength="2" style="text-transform:uppercase;"></div>
           </div>
         </div>
+
         <div class="secao-form-pauta">
           <h3>Contato de Emergência e Saúde</h3>
           <div class="grid-form-pauta">
@@ -488,17 +503,19 @@
             <div class="campo-group" id="bloco-novo-prof-tipo-alergia" style="display:none;"><label for="novo-prof-tipo-alergia">Qual Alergia?</label><input type="text" id="novo-prof-tipo-alergia"></div>
           </div>
         </div>
+
         <div style="text-align: right; margin-top: 20px;">
           <button type="button" onclick="cancelarCadastroProfissional()" class="btn-cancelar-perfil">Cancelar</button>
           <button type="button" onclick="salvarNovoProfissional()" class="botao-principal" style="width: auto; padding: 12px 32px;">💾 Cadastrar Profissional</button>
         </div>
       </div>
+
     </div>
 
     <div class="cartao oculto" id="cartaoEstrutura">
       <h2>Estrutura Organizacional Cadastrada</h2>
       <p class="descricao">Secretarias, Subsecretarias e Núcleos visíveis para o seu nível de acesso.</p>
-      
+
       <div class="secao-form-pauta oculto" id="formNovaSecretaria">
         <h3>➕ Nova Secretaria</h3>
         <div class="grid-form-pauta">
@@ -531,6 +548,7 @@
 
       <div class="lista-estrutura" id="listaEstrutura"><p style="color: var(--gov-texto-suave); font-size: 13px;">Carregando dados da estrutura...</p></div>
     </div>
+
   </div>
 </div>
 
@@ -538,9 +556,7 @@
 /* ================================================================
    CONFIGURAÇÃO E VARIÁVEIS GLOBAIS
    ================================================================ */
-const API_SECRET_TOKEN = 'SECC_GOV_RJ_SECRET_KEY_2026_PRO_SECURE!';
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxJR8fK5fB83AdFoNzqXO6JzDaN53rWh2IN8xmmKXaYG_o8RKT23EBjy1UleVgAtPux/exec";
-
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbxjK484nCK3ZT3uSVntRcyAHUlmjnESFKLL_7-6f7TogliP3iFw9h2sM6dI8S5Nm0mn/exec";
 let dadosEstruturaGlobal = null;
 let _nivelUsuarioLogado = '';
 const FOTO_PADRAO_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='130' height='130' viewBox='0 0 24 24' fill='%23cccccc'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
@@ -554,21 +570,36 @@ function parseDataBackend(valor) {
   const d = new Date(valor);
   return isNaN(d.getTime()) ? null : d;
 }
-
 function formatarData(valor) {
   const d = parseDataBackend(valor);
   if (!d) return valor || '';
   return d.toLocaleDateString('pt-BR');
 }
-
 function formatarHora(valor) {
   const d = parseDataBackend(valor);
   if (!d) return valor || '';
   return d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
 }
 
+// Nunca confiar em texto vindo do backend (nome de pauta, de profissional, de núcleo etc.) ao montar HTML:
+// qualquer um desses campos pode ter sido digitado por outro usuário. escaparHtml() é para texto solto
+// dentro de uma tag; escaparParaOnclick() é para valores usados dentro de onclick="funcao('...')".
+function escaparHtml(texto) {
+  if (texto === null || texto === undefined) return '';
+  return String(texto)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function escaparParaOnclick(texto) {
+  const comoStringJs = String(texto === null || texto === undefined ? '' : texto).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  return escaparHtml(comoStringJs);
+}
+
 async function chamarBackend(acao, parametros = {}) {
-  const payload = { action: acao, apiToken: API_SECRET_TOKEN, ...parametros };
+  const payload = { action: acao, ...parametros };
   try {
     const resposta = await fetch(URL_BACKEND, {
       method: "POST",
@@ -590,7 +621,6 @@ function salvarSessao(token, usuario, manterConectado) {
   const outra = manterConectado ? sessionStorage : localStorage;
   outra.removeItem('secc_token'); outra.removeItem('secc_usuario');
 }
-
 function pegarTokenSalvo() { return localStorage.getItem('secc_token') || sessionStorage.getItem('secc_token'); }
 function pegarUsuarioSalvo() { const b = localStorage.getItem('secc_usuario') || sessionStorage.getItem('secc_usuario'); return b ? JSON.parse(b) : null; }
 function limparSessao() { ['secc_token','secc_usuario'].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); }); }
@@ -645,13 +675,13 @@ function executarAcaoMenu(opcao, event) {
   const secaoHistorico = document.getElementById('secaoHistoricoPautas');
   const secaoCadProf = document.getElementById('secaoCadastroProfissional');
   const btnSeta = document.getElementById('btnSetaRecolher');
-  
+
   corpoPerfil.style.display = 'none';
   secaoPautas.style.display = 'none';
   if (secaoHistorico) secaoHistorico.style.display = 'none';
   if (secaoCadProf) secaoCadProf.style.display = 'none';
   btnSeta.textContent = '∧';
-  
+
   if (opcao === 'editar') {
     corpoPerfil.style.display = 'block';
     btnSeta.textContent = '∨';
@@ -678,6 +708,7 @@ async function iniciarPainelPrincipal() {
   _nivelUsuarioLogado = u.nivel;
   mostrarTela('telaPrincipal'); window.scrollTo(0,0);
   document.getElementById('nomeUsuarioLogado').textContent = u.nome;
+
   const NIVEIS_ESTRUTURA = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'];
   const exibeEstrutura = NIVEIS_ESTRUTURA.includes(u.nivel);
   
@@ -691,12 +722,15 @@ async function iniciarPainelPrincipal() {
     }
   }
 
+  // Poderes de criação de estrutura por nível: só ADMIN cria Secretaria/Subsecretaria;
+  // ADMIN, SECRETARIO e SUBSECRETARIO podem criar Núcleo (dentro da própria secretaria).
   const ehAdmin = u.nivel === 'ADMIN';
   const podeCriarNucleo = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO'].includes(u.nivel);
   document.getElementById('formNovaSecretaria')?.classList.toggle('oculto', !ehAdmin);
   document.getElementById('formNovaSubsecretaria')?.classList.toggle('oculto', !ehAdmin);
   document.getElementById('formNovoNucleo')?.classList.toggle('oculto', !podeCriarNucleo);
   document.getElementById('linkCadastrarProfissional')?.classList.toggle('oculto', !ehAdmin);
+
   await carregarPerfilNaTela();
 }
 
@@ -708,17 +742,18 @@ async function carregarEstrutura() {
   const container = document.getElementById('listaEstrutura');
   if (!r.sucesso) { if (container) container.innerHTML = '<p class="mensagem-erro">'+r.mensagem+'</p>'; return; }
   dadosEstruturaGlobal = r;
+
   if (container) {
     if (!(r.secretarias||[]).length) { container.innerHTML = '<p>Nenhuma secretaria cadastrada.</p>'; return; }
     let html = '';
     r.secretarias.forEach((sec, iSec) => {
       const nucsDir = (r.nucleos||[]).filter(n => n.SecretariaID === sec.SecretariaID && !n.SubsecretariaID);
       const subs = (r.subsecretarias||[]).filter(sub => sub.SecretariaID === sec.SecretariaID);
-      html += '<div><div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao(\'filhos-sec-'+iSec+'\',this)"><span class="acordeao-seta">▶</span> <strong>'+sec.Nome+'</strong> ('+sec.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sec-'+iSec+'">';
+      html += '<div><div class="acordeao-cabecalho item-secretaria" onclick="alternarAcordeao(\'filhos-sec-'+iSec+'\',this)"><span class="acordeao-seta">▶</span> <strong>'+escaparHtml(sec.Nome)+'</strong> ('+escaparHtml(sec.Sigla)+')</div><div class="acordeao-filhos oculto" id="filhos-sec-'+iSec+'">';
       nucsDir.forEach(n => { html += renderizarItemNucleo(n); });
       subs.forEach((sub, iSub) => {
         const nucsSub = (r.nucleos||[]).filter(n => n.SubsecretariaID === sub.SubsecretariaID);
-        html += '<div class="acordeao-subsecretaria"><div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao(\'filhos-sub-'+iSec+'-'+iSub+'\',this)"><span class="acordeao-seta">▶</span> 📂 '+sub.Nome+' ('+sub.Sigla+')</div><div class="acordeao-filhos oculto" id="filhos-sub-'+iSec+'-'+iSub+'">';
+        html += '<div class="acordeao-subsecretaria"><div class="acordeao-cabecalho item-subsecretaria" onclick="alternarAcordeao(\'filhos-sub-'+iSec+'-'+iSub+'\',this)"><span class="acordeao-seta">▶</span> 📂 '+escaparHtml(sub.Nome)+' ('+escaparHtml(sub.Sigla)+')</div><div class="acordeao-filhos oculto" id="filhos-sub-'+iSec+'-'+iSub+'">';
         nucsSub.forEach(n => { html += renderizarItemNucleo(n, 24); });
         if (!nucsSub.length) html += '<div class="item-nucleo" style="margin-left:24px; color:var(--gov-texto-suave);">Nenhum núcleo cadastrado</div>';
         html += '</div></div>';
@@ -736,11 +771,14 @@ function preencherSelectsEstrutura() {
   const secretarias = (dadosEstruturaGlobal && dadosEstruturaGlobal.secretarias) || [];
   const optsSecretarias = '<option value="">Selecione a secretaria...</option>' +
     secretarias.map(s => '<option value="'+s.SecretariaID+'">'+s.Nome+' ('+s.Sigla+')</option>').join('');
+
   const selSecSub = document.getElementById('nova-subsecretaria-secretaria');
   if (selSecSub) selSecSub.innerHTML = optsSecretarias;
+
   const selSecNuc = document.getElementById('novo-nucleo-secretaria');
   if (selSecNuc) {
     if (usuario && usuario.nivel !== 'ADMIN') {
+      // Secretário/Subsecretário só criam núcleo dentro da própria secretaria: trava a seleção.
       const propria = secretarias.find(s => s.SecretariaID === usuario.secretariaId);
       selSecNuc.innerHTML = propria ? '<option value="'+propria.SecretariaID+'">'+propria.Nome+' ('+propria.Sigla+')</option>' : optsSecretarias;
       selSecNuc.disabled = true;
@@ -761,6 +799,7 @@ function atualizarSelectSubsecretariasNucleo() {
   const optsSubs = '<option value="">Núcleo direto da secretaria (sem subsecretaria)</option>' +
     subs.map(s => '<option value="'+s.SubsecretariaID+'">'+s.Nome+' ('+s.Sigla+')</option>').join('');
   if (usuario && usuario.nivel === 'SUBSECRETARIO') {
+    // Subsecretário só cria núcleo dentro da própria subsecretaria: trava a seleção.
     const propria = subs.find(s => s.SubsecretariaID === usuario.subsecretariaId);
     selSub.innerHTML = propria ? '<option value="'+propria.SubsecretariaID+'">'+propria.Nome+' ('+propria.Sigla+')</option>' : optsSubs;
     selSub.disabled = true;
@@ -908,7 +947,7 @@ function cancelarCadastroProfissional() {
 function renderizarItemNucleo(nucleo, margem) {
   const idContainer = 'profissionais-nucleo-' + nucleo.NucleoID;
   const estilo = margem ? ' style="margin-left:'+margem+'px;"' : '';
-  return '<div'+estilo+'><div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo(\''+nucleo.NucleoID+'\', \''+(nucleo.Nome||'').replace(/'/g,"\\'")+'\', \''+idContainer+'\', this)"><span class="acordeao-seta">▶</span> 📌 Núcleo: '+nucleo.Nome+'</div><div class="acordeao-filhos oculto" id="'+idContainer+'"></div></div>';
+  return '<div'+estilo+'><div class="acordeao-cabecalho item-nucleo" onclick="alternarNucleo(\''+nucleo.NucleoID+'\', \''+escaparParaOnclick(nucleo.Nome)+'\', \''+idContainer+'\', this)"><span class="acordeao-seta">▶</span> 📌 Núcleo: '+escaparHtml(nucleo.Nome)+'</div><div class="acordeao-filhos oculto" id="'+idContainer+'"></div></div>';
 }
 
 async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalho) {
@@ -923,7 +962,7 @@ async function alternarNucleo(nucleoId, nomeNucleo, idContainer, cabecalho) {
   if (!r.sucesso) { container.innerHTML = '<div style="padding:6px 12px; color:#B3261E; font-size:12px;">'+r.mensagem+'</div>'; return; }
   const profs = r.profissionais || [];
   if (!profs.length) container.innerHTML = '<div style="padding:6px 12px; color:var(--gov-texto-suave); font-size:12px;">Nenhum profissional cadastrado.</div>';
-  else container.innerHTML = profs.map(p => '<div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario(\''+p.id+'\', \''+(p.nome||'').replace(/'/g,"\\'")+'\')">👤 '+p.nome+' <span style="color:var(--gov-texto-suave); font-size:12px;">— '+(p.cargo||p.nivel)+'</span></div>').join('');
+  else container.innerHTML = profs.map(p => '<div class="item-profissional-clicavel" onclick="carregarPerfilDeOutroUsuario(\''+p.id+'\', \''+escaparParaOnclick(p.nome)+'\')">👤 '+escaparHtml(p.nome)+' <span style="color:var(--gov-texto-suave); font-size:12px;">— '+escaparHtml(p.cargo||p.nivel)+'</span></div>').join('');
   container.dataset.carregado = '1';
 }
 
@@ -989,6 +1028,7 @@ function preencherCartaoPerfil(p) {
   } else {
     document.getElementById('img-avatar-preview').src = FOTO_PADRAO_SVG;
   }
+
   document.getElementById('perfil-nome-completo').value = p.nomeCompleto || '';
   document.getElementById('perfil-id-funcional').value = p.idFuncional || '';
   document.getElementById('perfil-rg').value = p.rg || '';
@@ -1004,10 +1044,12 @@ function preencherCartaoPerfil(p) {
 
 async function carregarPerfilNaTela(tentativas) {
   tentativas = tentativas || 0;
-  _usuarioIdAlvoPerfil = null;
+  _usuarioIdAlvoPerfil = null; // Reseta usuário alvo para apontar ao próprio perfil logado
   document.getElementById('avisoPerfilDeOutro').classList.add('oculto');
   const r = await chamarBackend('obterPerfil', { token: pegarTokenSalvo() });
   if (!r.sucesso) {
+    // Nunca deixa o cartão com dados desatualizados/errados na tela: tenta de novo automaticamente
+    // e, se persistir, avisa claramente em vez de ficar em silêncio (era a causa do Admin ver o perfil de outra pessoa).
     if (tentativas < 2) { setTimeout(() => carregarPerfilNaTela(tentativas + 1), 1200); return; }
     document.getElementById('perfil-nome-exibicao').textContent = 'Erro ao carregar seu perfil';
     document.getElementById('perfil-cargo-exibicao').innerHTML = '<a href="#" onclick="carregarPerfilNaTela(); return false;" style="color:var(--gov-erro);">'+(r.mensagem||'Sessão inválida')+' — toque para tentar novamente</a>';
@@ -1043,6 +1085,7 @@ async function salvarPerfilProfissional() {
     manequim: document.getElementById('perfil-manequim').value
   };
   if (_usuarioIdAlvoPerfil) payload.usuarioIdAlvo = _usuarioIdAlvoPerfil;
+
   const r = await chamarBackend('salvarPerfil', payload);
   if (r.sucesso) { 
     alert("Perfil salvo!"); 
@@ -1069,9 +1112,10 @@ function montarHtmlCardsPautas(pautas) {
     const st = determinarStatus(p);
     const jaTeveRetorno = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
     const ocultarBotaoRetorno = (jaTeveRetorno && p.Producao_Realizada === 'SIM');
+
     html += '<div class="card-item-pauta">' +
       '<div class="card-pauta-topo">' +
-        '<div class="card-pauta-titulo">' + (p.Titulo_Producao_Email || 'Sem título') + '</div>' +
+        '<div class="card-pauta-titulo">' + escaparHtml(p.Titulo_Producao_Email || 'Sem título') + '</div>' +
         '<span class="badge-status" style="background:' + st.cor + ';">' + st.label + '</span>' +
       '</div>' +
       '<div class="card-pauta-info">📅 Saída: ' + formatarData(p.Data_Saida) + '</div>' +
@@ -1087,13 +1131,14 @@ function montarHtmlCardsPautas(pautas) {
 }
 
 /* ================================================================
-   HISTÓRICO DE PAUTAS
+   HISTÓRICO DE PAUTAS (meses anteriores, sob demanda)
    ================================================================ */
 async function abrirHistoricoPautas() {
   const select = document.getElementById('historico-mes-select');
   const container = document.getElementById('listaHistoricoPautasContainer');
   select.innerHTML = '<option value="">Carregando meses...</option>';
   container.innerHTML = '';
+
   const r = await chamarBackend('listarMesesComPautas', { token: pegarTokenSalvo() });
   if (!r.sucesso) {
     select.innerHTML = '<option value="">Erro ao carregar</option>';
@@ -1141,8 +1186,10 @@ function determinarStatus(p) {
     }
     return { cor: '#005A92', label: 'Em Aprovação' };
   }
+
   const jaTeveRetorno = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
   if (jaTeveRetorno) return { cor: '#005A92', label: 'Em Aprovação' };
+
   const ds = parseDataBackend(p.Data_Saida), hs = parseDataBackend(p.Horario_Saida_Equipe);
   if (ds && hs) {
     const saida = new Date(ds.getFullYear(), ds.getMonth(), ds.getDate(), hs.getHours(), hs.getMinutes());
@@ -1163,11 +1210,10 @@ async function abrirPainelPauta(id, modoEdicao) {
   document.getElementById('btnCriarPauta').style.display = 'none';
   document.getElementById('painelDetalhePauta').style.display = 'block';
   document.getElementById('tituloPainelPauta').textContent = modoEdicao ? '✏️ Editar Pauta' : '👁️ Ver Pauta';
-  
   const st = determinarStatus(p);
   const el = document.getElementById('statusPainelPauta');
   el.textContent = st.label; el.style.background = st.cor;
-  
+
   document.getElementById('dp-titulo').value = p.Titulo_Producao_Email || '';
   document.getElementById('dp-tipo-producao').value = p.Tipo_Producao || '';
   document.getElementById('dp-data-saida').value = formatarData(p.Data_Saida) + (p.Horario_Saida_Equipe ? ' às ' + formatarHora(p.Horario_Saida_Equipe) : '');
@@ -1176,15 +1222,12 @@ async function abrirPainelPauta(id, modoEdicao) {
   document.getElementById('dp-data-evento').value = formatarData(p.Data_Producao) + (p.Horario_Evento ? ' às ' + formatarHora(p.Horario_Evento) : '');
   document.getElementById('dp-local').value = [p.Cidade, p.Bairro, p.UF].filter(Boolean).join(' - ');
   document.getElementById('dp-motorista').value = p.Motorista || '';
-  
-  // Preenche a equipe escalada
-  document.getElementById('dp-nome-assessor').value = p.Assessor || '';
-  document.getElementById('dp-nome-video').value = p.Cinegrafista || '';
-  document.getElementById('dp-nome-foto').value = p.Fotografo || '';
-  document.getElementById('dp-nome-digital').value = p.Digital || '';
-
   document.getElementById('dp-producao-realizada').value = p.Producao_Realizada || '';
   document.getElementById('dp-observacoes').value = p.Observacoes || '';
+  document.getElementById('dp-nome-assessor').textContent = p.Assessor || '-';
+  document.getElementById('dp-nome-video').textContent = p.Cinegrafista || '-';
+  document.getElementById('dp-nome-foto').textContent = p.Fotografo || '-';
+  document.getElementById('dp-nome-digital').textContent = p.Digital || '-';
   document.getElementById('dp-link-release').value = p.Link_Release_Assessor || '';
   document.getElementById('dp-link-video').value = p.Link_Video_Drive || '';
   document.getElementById('dp-link-foto').value = p.Link_Foto_GooglePhotos || '';
@@ -1192,51 +1235,17 @@ async function abrirPainelPauta(id, modoEdicao) {
   document.getElementById('dp-backup-video').checked = p.Backup_Rede_Video === 'SIM' || p.Backup_Rede_Video === true;
   document.getElementById('dp-backup-foto').checked = p.Backup_Rede_Foto === 'SIM' || p.Backup_Rede_Foto === true;
   document.getElementById('dp-backup-digital').checked = p.Backup_Rede_Digital === 'SIM' || p.Backup_Rede_Digital === true;
-  
-  const usuarioLogado = pegarUsuarioSalvo() || {};
-  const nivel = r.nivelUsuario || usuarioLogado.nivel;
-  const nucleoId = usuarioLogado.nucleoId || '';
+
+  const ehCoordOuAdmin = ['ADMIN', 'COORDENADOR', 'SUBCOORDENADOR'].includes(r.nivelUsuario);
   const dataJaSalva = p.Data_Retorno_Equipe && String(p.Data_Retorno_Equipe).trim() !== '';
-  
+
   const editaveisCampos = ['dp-producao-realizada','dp-observacoes','dp-link-release','dp-link-video','dp-link-foto','dp-link-digital','dp-backup-video','dp-backup-foto','dp-backup-digital'];
   editaveisCampos.forEach(id => { document.getElementById(id).disabled = !modoEdicao; });
-  
-  // REGRA DE PERMISSÃO DE EDIÇÃO DA EQUIPE:
-  // Admins, Subsecretários e Coordenadores Gerais podem editar a equipe inteira.
-  // Coordenadores de Núcleo editam apenas o profissional referente ao seu próprio núcleo.
-  const ehAdminOuSuperior = ['ADMIN', 'SECRETARIO', 'SUBSECRETARIO', 'SUBCOORDENADOR'].includes(nivel);
-  
-  let podeAssessor = modoEdicao && ehAdminOuSuperior;
-  let podeVideo = modoEdicao && ehAdminOuSuperior;
-  let podeFoto = modoEdicao && ehAdminOuSuperior;
-  let podeDigital = modoEdicao && ehAdminOuSuperior;
 
-  if (modoEdicao && nivel === 'COORDENADOR') {
-    // Busca o núcleo no array da estrutura organizacional
-    const nucleos = (dadosEstruturaGlobal && dadosEstruturaGlobal.nucleos) || [];
-    const meunucleoObj = nucleos.find(n => n.NucleoID === nucleoId);
-    const nomeNucleoNorm = meunucleoObj ? meunucleoObj.Nome.toLowerCase() : '';
-
-    if (nomeNucleoNorm.includes('imprensa') || nomeNucleoNorm.includes('jornalismo') || nomeNucleoNorm.includes('assessor')) podeAssessor = true;
-    else if (nomeNucleoNorm.includes('vídeo') || nomeNucleoNorm.includes('video') || nomeNucleoNorm.includes('cinegrafista')) podeVideo = true;
-    else if (nomeNucleoNorm.includes('foto') || nomeNucleoNorm.includes('fotografia')) podeFoto = true;
-    else if (nomeNucleoNorm.includes('digital') || nomeNucleoNorm.includes('rede social')) podeDigital = true;
-    else {
-      // Se não identificar o núcleo pelo nome, autoriza por padrão o nível Coordenador
-      podeAssessor = podeVideo = podeFoto = podeDigital = true;
-    }
-  }
-
-  document.getElementById('dp-nome-assessor').disabled = !podeAssessor;
-  document.getElementById('dp-nome-video').disabled = !podeVideo;
-  document.getElementById('dp-nome-foto').disabled = !podeFoto;
-  document.getElementById('dp-nome-digital').disabled = !podeDigital;
-
-  const ehCoordOuAdmin = ['ADMIN', 'COORDENADOR', 'SUBCOORDENADOR'].includes(nivel);
   document.getElementById('dp-data-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
   document.getElementById('dp-hora-retorno').disabled = !(modoEdicao && (ehCoordOuAdmin || !dataJaSalva));
+
   document.getElementById('btnSalvarPainelPauta').classList.toggle('oculto', !modoEdicao);
-  
   alternarCamposLinkPauta();
   document.getElementById('painelDetalhePauta').scrollIntoView({ behavior: 'smooth' });
 }
@@ -1273,10 +1282,6 @@ async function salvarPainelPauta() {
   if (!_pautaCarregadaAtual) return;
   const dados = {
     token: pegarTokenSalvo(), pautaId: _pautaCarregadaAtual.ProducaoID,
-    Assessor: document.getElementById('dp-nome-assessor').value.trim(),
-    Cinegrafista: document.getElementById('dp-nome-video').value.trim(),
-    Fotografo: document.getElementById('dp-nome-foto').value.trim(),
-    Digital: document.getElementById('dp-nome-digital').value.trim(),
     Producao_Realizada: document.getElementById('dp-producao-realizada').value,
     Data_Retorno_Equipe: document.getElementById('dp-data-retorno').value,
     Hora_Retorno_Equipe: document.getElementById('dp-hora-retorno').value,
@@ -1291,7 +1296,7 @@ async function salvarPainelPauta() {
   };
   const r = await chamarBackend('editarPauta', dados);
   if (!r.sucesso) { alert('Erro ao salvar: ' + r.mensagem); return; }
-  alert('Pauta e equipe atualizadas com sucesso!'); fecharPainelPauta(); carregarPautas();
+  alert('Pauta atualizada!'); fecharPainelPauta(); carregarPautas();
 }
 
 let _pautaIdRetornoAtual = null;
@@ -1300,7 +1305,6 @@ function abrirRegistroRetorno(pautaId) {
   document.getElementById('caixaRegistroRetorno').style.display = 'block';
   document.getElementById('caixaRegistroRetorno').scrollIntoView({ behavior: 'smooth' });
 }
-
 function fecharRegistroRetorno() {
   _pautaIdRetornoAtual = null;
   document.getElementById('caixaRegistroRetorno').style.display = 'none';
